@@ -89,8 +89,4 @@
   .fontsize{
     font-size: 18px;
   }
-
-  .line{
-    border: 1px solid black;
-  }
 </style>
