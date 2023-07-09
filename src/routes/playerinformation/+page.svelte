@@ -88,6 +88,7 @@
     </button>
   </div>
   
+  <div class="name">Abcd Efghi</div>
   <div class="image">
     선수 이미지가 나와요!!
   </div>
@@ -232,5 +233,12 @@
 
   .body{
     overflow: auto;
+  }
+
+  .name{
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
   }
 </style> 
