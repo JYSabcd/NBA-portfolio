@@ -2,15 +2,21 @@
 
 </script>
 
-<body class="backgroundimage">
+<body class="backgroundimage body">
     <div>
         <div class="title">오늘의 경기</div>
         <div class="title">MM/DD</div>
-        <div><img src="/DEN.svg" alt="DEN.svg"><div class="title">A 팀 VS B 팀</div><img src="/LAL.svg" alt="LAL.svg"></div>
+        <div class="center">
+            <img src="/TeamLogo/DEN.svg" alt="DEN.svg" class="image">
+            <div class="title inlineblock">A 팀 VS B 팀</div>
+            <img src="/TeamLogo/LAL.svg" alt="LAL.svg" class="image">
+        </div>
     </div>
+
     <div>
         <input class="center" type="range" min="1" max="48" step="1">
     </div>
+
     <div class="tposition">
         A 팀
         <table>
@@ -192,6 +198,10 @@
 </body>
 
 <style>
+    .center{
+        margin: 0 auto;
+    }
+
     .title{
         text-align: center;
         font-size: 20px;
@@ -199,11 +209,16 @@
         margin-top: 20px;
     }
 
+    .inlineblock{
+        display: inline-block;
+    }
+
     .backgroundimage{
         background-image: url(https://img.freepik.com/premium-vector/basketball-court-floor-wi-line-on-wood-texture-background_64749-2679.jpg);
+        background-repeat: no-repeat;
         background-position: center;
         height: 35%;
-        width: 90%;        
+        width: 100%;        
     }
 
     .center{
@@ -223,5 +238,16 @@
     }
     .tposition{
         margin-top: 200px;
+    }
+
+    .image{
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+    }
+
+    .body{
+        overflow: auto;
+        height: calc(100vh - 50px);
     }
 </style>
