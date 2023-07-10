@@ -233,6 +233,7 @@
 
   .body{
     overflow: auto;
+    height: calc(100vh - 50px);
   }
 
   .name{
