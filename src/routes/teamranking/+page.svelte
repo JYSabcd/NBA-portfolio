@@ -79,15 +79,15 @@
     {/each}
 </select>
 
-<button on:click={TeamRankingSearch}>조회</button>
+<button class="button" on:click={TeamRankingSearch}>조회</button>
 
 <table>
     {#if TableData !== undefined}
     <thead>
 		<tr>
-            <th>순위</th>
+            <th class="thcolor">순위</th>
             {#each TableHeader as HeaderName}
-                <th on:click={SetSortIndex(HeaderName)}>{HeaderName}</th>
+                <th class="thcolor" on:click={SetSortIndex(HeaderName)}>{HeaderName}</th>
             {/each}
         </tr>
 	</thead>
@@ -107,10 +107,40 @@
 <style>
     table {
         border-collapse: collapse;
+        width: 80%;
     }
+
     th, td {
         border: 1px solid black;
         text-align: center;
         min-width: 50px;
+    }
+
+    .thcolor{
+        background-color: lightgray;
+    }
+
+    .thcolor:hover{
+        cursor: pointer;
+    }
+
+    .thcolor:active{
+        cursor: pointer;
+    }
+
+    .button{
+        background-color: rgb(121 207 159);
+        padding: 10px;
+        padding-left: 20px;
+        padding-right: 20px;
+        border-radius: 10%;
+    }
+
+    select:hover{
+        cursor: pointer;
+    }
+
+    select:active{
+        cursor: pointer;
     }
 </style>
