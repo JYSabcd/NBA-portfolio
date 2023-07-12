@@ -4,7 +4,7 @@
 </script>
 
 <header>
-    <a class="menu" href="/"><img src="/logo-nba.svg" alt="logo-nba.svg" /></a>
+    <a class="menu" href="/home"><img src="/logo-nba.svg" alt="logo-nba.svg" /></a>
     <a class="menu" href="/home">&#xd648;</a>
     <div class="menu">
         <Button class="menu"><Chevron><p class="fontsize">순위</p></Chevron></Button>
