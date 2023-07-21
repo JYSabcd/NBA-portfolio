@@ -1,4 +1,5 @@
 import { json } from '@sveltejs/kit';
+import { ALL } from 'dns';
 
 const headersList = {
     'Host': 'stats.nba.com',
@@ -27,7 +28,7 @@ const options = {
 // ,'AST_RANK','TOV_RANK','STL_RANK','BLK_RANK','BLKA_RANK','PF_RANK','PFD_RANK','PTS_RANK','PLUS_MINUS_RANK']
 
 /** @type {string[]} */
-const arrHeader = ['TEAM_NAME','GP','W','L','W_PCT','FG_PCT','FG3_PCT','FT_PCT'];
+const arrHeader = ['TEAM_NAME','GP','W','L','W_PCT','FG_PCT','FG3_PCT','FT_PCT','TEAM_ID']; //  'TEAM_ID'는 로고에만 참조하고 한 컬럼을 차지하지는 않는다.
 
 export interface Main {
     resource:   string;
@@ -80,9 +81,14 @@ export async function GET({url}) {
     //console.log(url);
     //console.log(url.searchParams.get('Conference'));
 
-    let URL = "https://stats.nba.com/stats/leaguedashteamstats?LastNGames=0&LeagueID=00&MeasureType=Base&Month=0&OpponentTeamID=0&PaceAdjust=N&Period=0&PlusMinus=N&PORound=0&Rank=N&SeasonType=Regular+Season"
-        + "&Conference=" + url.searchParams.get('Conference')
-        + "&Season=" + url.searchParams.get('Season');
+    let URL = "https://stats.nba.com/stats/leaguedashteamstats?LastNGames=0&LeagueID=00&MeasureType=Base&Month=0&OpponentTeamID=0&PaceAdjust=N&Period=0&PlusMinus=N&PORound=0&Rank=N"
+        + "&Season=" + url.searchParams.get('Season')
+        + "&SeasonType=" + url.searchParams.get('SeasonType');
+
+
+    if(url.searchParams.get('Conference') !== "All"){
+        URL+= "&Conference=" + url.searchParams.get('Conference')
+    }
     const res = await fetch(URL, options);
     const ResJson = await res.json();
 
