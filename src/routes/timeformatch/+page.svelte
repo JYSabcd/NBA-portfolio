@@ -2,204 +2,228 @@
 
 </script>
 
-<body class="backgroundimage body">
+<body class="body">
     <div>
         <div class="title">오늘의 경기</div>
         <div class="title">MM/DD</div>
-        <div class="center">
-            <img src="/TeamLogo/DEN.svg" alt="DEN.svg" class="image">
+        <div class="imagecenter">
+            <img src="/TeamLogo/1610612737.svg" alt="DEN.svg" class="image">
             <div class="title inlineblock">A 팀 VS B 팀</div>
-            <img src="/TeamLogo/LAL.svg" alt="LAL.svg" class="image">
+            <img src="/TeamLogo/1610612738.svg" alt="LAL.svg" class="image">
         </div>
+        <img src="/basketballcourt.jpg" alt="basketballcourt.jpg" class="court">
     </div>
 
-    <div>
-        <input class="center" type="range" min="1" max="48" step="1">
-    </div>
+    <input class="center" type="range" min="0" max="48" list="tickmarks">
+    <datalist id="tickmarks">
+        <option value="0">시작</option>
+        <option value="12">1Q 끝</option>
+        <option value="24">2Q 끝</option>
+        <option value="36">3Q 끝</option>
+        <option value="48">4Q 끝</option>
+    </datalist>
 
     <div class="tposition">
-        A 팀
+        <div class="title">A 팀</div>
         <table>
             <tr>
-                <td class="table">
+                <th>
                     선수 이름
-                </td>
-                <td class="table">
+                </th>
+                <th>
                     출전시간
-                </td>
-                <td class="table">
+                </th>
+                <th>
                     득점
-                </td>
-                <td class="table">
+                </th>
+                <th>
                     리바운드
-                </td>
-                <td class="table">
+                </th>
+                <th>
                     어시스트
-                </td>
-                <td class="table">
+                </th>
+                <th>
                     스틸
-                </td>
-                <td class="table">
+                </th>
+                <th>
                     블록
-                </td>
-                <td class="table">
+                </th>
+                <th>
                     야투율
-                </td>
-                <td class="table">
+                </th>
+                <th>
                     3점 성공률
-                </td>
+                </th>
             </tr>
             <tr>
-                <td class="table">aaaa</td>
-                <td class="table">1111</td>
-                <td class="table">2222</td>
-                <td class="table">3333</td>
-                <td class="table">4444</td>
-                <td class="table">5555</td>
-                <td class="table">6666</td>
-                <td class="table">7777</td>
-                <td class="table">8888</td>
+                <td>aaaa</td>
+                <td>1111</td>
+                <td>2222</td>
+                <td>3333</td>
+                <td>4444</td>
+                <td>5555</td>
+                <td>6666</td>
+                <td>7777</td>
+                <td>8888</td>
             </tr>
             <tr>
-                <td class="table">bbbb</td>
-                <td class="table">1111</td>
-                <td class="table">2222</td>
-                <td class="table">3333</td>
-                <td class="table">4444</td>
-                <td class="table">5555</td>
-                <td class="table">6666</td>
-                <td class="table">7777</td>
-                <td class="table">8888</td>
+                <td>bbbb</td>
+                <td>1111</td>
+                <td>2222</td>
+                <td>3333</td>
+                <td>4444</td>
+                <td>5555</td>
+                <td>6666</td>
+                <td>7777</td>
+                <td>8888</td>
             </tr>
             <tr>
-                <td class="table">cccc</td>
-                <td class="table">1111</td>
-                <td class="table">2222</td>
-                <td class="table">3333</td>
-                <td class="table">4444</td>
-                <td class="table">5555</td>
-                <td class="table">6666</td>
-                <td class="table">7777</td>
-                <td class="table">8888</td>
+                <td>cccc</td>
+                <td>1111</td>
+                <td>2222</td>
+                <td>3333</td>
+                <td>4444</td>
+                <td>5555</td>
+                <td>6666</td>
+                <td>7777</td>
+                <td>8888</td>
             </tr>
             <tr>
-                <td class="table">dddd</td>
-                <td class="table">1111</td>
-                <td class="table">2222</td>
-                <td class="table">3333</td>
-                <td class="table">4444</td>
-                <td class="table">5555</td>
-                <td class="table">6666</td>
-                <td class="table">7777</td>
-                <td class="table">8888</td>
+                <td>dddd</td>
+                <td>1111</td>
+                <td>2222</td>
+                <td>3333</td>
+                <td>4444</td>
+                <td>5555</td>
+                <td>6666</td>
+                <td>7777</td>
+                <td>8888</td>
             </tr>
             <tr>
-                <td class="table">eeee</td>
-                <td class="table">1111</td>
-                <td class="table">2222</td>
-                <td class="table">3333</td>
-                <td class="table">4444</td>
-                <td class="table">5555</td>
-                <td class="table">6666</td>
-                <td class="table">7777</td>
-                <td class="table">8888</td>
+                <td>eeee</td>
+                <td>1111</td>
+                <td>2222</td>
+                <td>3333</td>
+                <td>4444</td>
+                <td>5555</td>
+                <td>6666</td>
+                <td>7777</td>
+                <td>8888</td>
             </tr>
         </table>
     </div>
     <div class="tposition">
-        B 팀
+        <div class="title">B 팀</div>
         <table>
             <tr>
-                <td class="table">
+                <th>
                     선수 이름
-                </td>
-                <td class="table">
+                </th>
+                <th>
                     출전시간
-                </td>
-                <td class="table">
+                </th>
+                <th>
                     득점
-                </td>
-                <td class="table">
+                </th>
+                <th>
                     리바운드
-                </td>
-                <td class="table">
+                </th>
+                <th>
                     어시스트
-                </td>
-                <td class="table">
+                </th>
+                <th>
                     스틸
-                </td>
-                <td class="table">
+                </th>
+                <th>
                     블록
-                </td>
-                <td class="table">
+                </th>
+                <th>
                     야투율
-                </td>
-                <td class="table">
+                </th>
+                <th>
                     3점 성공률
-                </td>
+                </th>
             </tr>
             <tr>
-                <td class="table">aaaa</td>
-                <td class="table">1111</td>
-                <td class="table">2222</td>
-                <td class="table">3333</td>
-                <td class="table">4444</td>
-                <td class="table">5555</td>
-                <td class="table">6666</td>
-                <td class="table">7777</td>
-                <td class="table">8888</td>
+                <td>aaaa</td>
+                <td>1111</td>
+                <td>2222</td>
+                <td>3333</td>
+                <td>4444</td>
+                <td>5555</td>
+                <td>6666</td>
+                <td>7777</td>
+                <td>8888</td>
             </tr>
             <tr>
-                <td class="table">bbbb</td>
-                <td class="table">1111</td>
-                <td class="table">2222</td>
-                <td class="table">3333</td>
-                <td class="table">4444</td>
-                <td class="table">5555</td>
-                <td class="table">6666</td>
-                <td class="table">7777</td>
-                <td class="table">8888</td>
+                <td>bbbb</td>
+                <td>1111</td>
+                <td>2222</td>
+                <td>3333</td>
+                <td>4444</td>
+                <td>5555</td>
+                <td>6666</td>
+                <td>7777</td>
+                <td>8888</td>
             </tr>
             <tr>
-                <td class="table">cccc</td>
-                <td class="table">1111</td>
-                <td class="table">2222</td>
-                <td class="table">3333</td>
-                <td class="table">4444</td>
-                <td class="table">5555</td>
-                <td class="table">6666</td>
-                <td class="table">7777</td>
-                <td class="table">8888</td>
+                <td>cccc</td>
+                <td>1111</td>
+                <td>2222</td>
+                <td>3333</td>
+                <td>4444</td>
+                <td>5555</td>
+                <td>6666</td>
+                <td>7777</td>
+                <td>8888</td>
             </tr>
             <tr>
-                <td class="table">dddd</td>
-                <td class="table">1111</td>
-                <td class="table">2222</td>
-                <td class="table">3333</td>
-                <td class="table">4444</td>
-                <td class="table">5555</td>
-                <td class="table">6666</td>
-                <td class="table">7777</td>
-                <td class="table">8888</td>
+                <td>dddd</td>
+                <td>1111</td>
+                <td>2222</td>
+                <td>3333</td>
+                <td>4444</td>
+                <td>5555</td>
+                <td>6666</td>
+                <td>7777</td>
+                <td>8888</td>
             </tr>
             <tr>
-                <td class="table">eeee</td>
-                <td class="table">1111</td>
-                <td class="table">2222</td>
-                <td class="table">3333</td>
-                <td class="table">4444</td>
-                <td class="table">5555</td>
-                <td class="table">6666</td>
-                <td class="table">7777</td>
-                <td class="table">8888</td>
+                <td>eeee</td>
+                <td>1111</td>
+                <td>2222</td>
+                <td>3333</td>
+                <td>4444</td>
+                <td>5555</td>
+                <td>6666</td>
+                <td>7777</td>
+                <td>8888</td>
             </tr>
         </table>
     </div>
 </body>
 
 <style>
+    datalist{
+        display: grid;
+        grid-auto-flow: column;
+        width:100%;
+        text-align: center;
+        }
+
+    .title{
+        font-weight: bold;
+        font-size: 20px;
+    }
+
     .center{
         margin: 0 auto;
+        width: 100%;
+    }
+
+    .imagecenter{
+        display: inline-block;
+        margin-left: 480px;
     }
 
     .title{
@@ -213,12 +237,13 @@
         display: inline-block;
     }
 
-    .backgroundimage{
-        background-image: url(https://img.freepik.com/premium-vector/basketball-court-floor-wi-line-on-wood-texture-background_64749-2679.jpg);
-        background-repeat: no-repeat;
-        background-position: center;
-        height: 35%;
-        width: 100%;        
+    .court{
+        display: inline-block;
+        width: 70%;
+        height: 10%;
+        margin-left: 200px;
+        margin-top: 30px;
+        margin-bottom: 30px;
     }
 
     .center{
@@ -227,17 +252,16 @@
         width: 90%;
     }
 
-    .table{
-        display: inline-flex;
+    table{
+        min-width: 70%;
         padding-left: 5px;
         padding-right: 5px;
-        width: 95px;
-        justify-content: center;
         border: 1px solid black;
         border-collapse: collapse;
+        margin: 20px auto;
     }
     .tposition{
-        margin-top: 200px;
+        margin: 50px auto;
     }
 
     .image{
@@ -249,5 +273,31 @@
     .body{
         overflow: auto;
         height: calc(100vh - 50px);
+    }
+
+    tr{
+        transition: 0.3s;
+    }
+
+    tr:hover{
+        background-color: #D0E3ED;
+        cursor:pointer;
+    }
+
+    th{
+        background-color: rgb(229,231,235);
+    }
+
+    td{
+        text-align: center;
+    }
+
+    td,th{
+        border: 1px solid black;
+        min-width: 100px;
+    }
+
+    th:hover{
+        background-color: #D0E3ED;
     }
 </style>
