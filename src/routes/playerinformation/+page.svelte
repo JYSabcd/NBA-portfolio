@@ -167,13 +167,13 @@
         <th class="border">경기 당 평균 득점</th>
         <th class="border">경기 당 평균 리바운드</th>
         <th class="border">경기 당 평균 어시스트</th>
-        <th class="border">선수 공헌도</th>
+        <th class="border">선수 공헌도 (PIE)</th>
       </tr>
       <tr>
-        <td class="border">25.3</td>
-        <td class="border">12.5</td>
-        <td class="border">10.2</td>
-        <td class="border">15.8</td>
+        <td class="border">29.4</td>
+        <td class="border">6.1</td>
+        <td class="border">6.3</td>
+        <td class="border">16.6</td>
       </tr>
     </table>
 
@@ -185,10 +185,10 @@
         <th class="border">등번호 & 포지션</th>
       </tr>
       <tr>
-        <td class="border">2.06m (6`9”)</td>
-        <td class="border">113kg (250lb)</td>
+        <td class="border">1.88m (6'2")</td>
+        <td class="border">84kg (185lb)</td>
         <td class="border">미국 (USA)</td>
-        <td class="border">23 & forward</td>
+        <td class="border">30 & guard</td>
       </tr>
       <tr class="th">
         <th class="border">나이</th>
@@ -197,10 +197,10 @@
         <th class="border">경력</th>
       </tr>
       <tr>
-        <td class="border">31세</td>
-        <td class="border">1993년 7월 8일</td>
-        <td class="border">2013 R1 1순위 지명</td>
-        <td class="border">10년차</td>
+        <td class="border">35세</td>
+        <td class="border">1988년 7월 8일</td>
+        <td class="border">2009 NBA 드래프트 1라운드 7순위</td>
+        <td class="border">14년차</td>
       </tr>
     </table>
     
