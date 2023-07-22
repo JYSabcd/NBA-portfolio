@@ -137,12 +137,12 @@
         <th class="border">포지션</th>
       </tr>
       <tr>
-        <td class="border">31</td>
-        <td class="border">25.3</td>
-        <td class="border">12.5</td>
-        <td class="border">10.2</td>
-        <td class="border">15.8</td>
-        <td class="border">forward</td>
+        <td class="border">35</td>
+        <td class="border">29.4</td>
+        <td class="border">6.1</td>
+        <td class="border">6.3</td>
+        <td class="border">16.6</td>
+        <td class="border">guard</td>
       </tr>
     </table>
   </div>
