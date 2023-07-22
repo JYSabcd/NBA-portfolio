@@ -128,17 +128,17 @@
         <th class="border">경기 당 평균 득점</th>
         <th class="border">경기 당 평균 리바운드</th>
         <th class="border">경기 당 평균 어시스트</th>
-        <th class="border">선수 공헌도</th>
+        <th class="border">선수 공헌도 (PIE)</th>
       </tr>
       <tr>
-        <td class="border">31</td>
-        <td class="border">25.3</td>
-        <td class="border">12.5</td>
-        <td class="border">10.2</td>
-        <td class="border">15.8</td>
+        <td class="border">35</td>
+        <td class="border">29.4</td>
+        <td class="border">6.1</td>
+        <td class="border">6.3</td>
+        <td class="border">16.6</td>
       </tr>
     </table>
-    <img src="/Arrow/Arrow.png" alt="" class="arrow" />
+    <img src="/Arrow/Arrow.png" alt="Arrow" class="arrow" />
   </div>
 
   <div class="groupbox2">
@@ -152,10 +152,10 @@
         <th class="border">선수 공헌도</th>
       </tr>
       <tr>
-        <td class="border">32</td>
-        <td class="border">24.7</td>
-        <td class="border">12.3</td>
-        <td class="border">10.8</td>
+        <td class="border">36</td>
+        <td class="border">27.7</td>
+        <td class="border">6.0</td>
+        <td class="border">5.8</td>
         <td class="border">15.4</td>
       </tr>
     </table>
