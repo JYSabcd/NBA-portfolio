@@ -169,7 +169,7 @@
           <td class="border">10</td>
           <td class="border">11</td>
           <td class="border">14.3</td>
-          <td class="border">forward</td>
+          <td class="border">guard</td>
         </tr>
         <tr>
           <td class="border"><Avatar /></td>
@@ -179,7 +179,7 @@
           <td class="border">8.2</td>
           <td class="border">12.2</td>
           <td class="border">14.2</td>
-          <td class="border">forward</td>
+          <td class="border">guard</td>
         </tr>
         <tr>
           <td class="border"><Avatar /></td>
@@ -189,7 +189,7 @@
           <td class="border">13.8</td>
           <td class="border">8.8</td>
           <td class="border">14.9</td>
-          <td class="border">forward</td>
+          <td class="border">guard</td>
         </tr>
       </table>
     </div>
