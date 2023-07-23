@@ -1,99 +1,134 @@
 <script lang="ts">
+    let today = new Date();   
+    let year = today.getFullYear(); // 년도
+    let month = today.getMonth() + 1;  // 월
+    let date = today.getDate();  // 날짜
+    let day = today.getDay();  // 요일
 </script>
-    <h1 class="YYMMDD">2023년 6월 10일</h1>
+
+<div>
+    <h1 class="date">{year + '년 ' + month + '월 ' + date + '일'}</h1>
 
     <div>
-        <div class="day sunday">일</div>
-        <div class="day">월</div>
-        <div class="day">화</div>
-        <div class="day">수</div>
-        <div class="day">목</div>
-        <div class="day">금</div>
-        <div class="day saturday today">토</div>
+        <table class="week">
+            <tr class="border">
+                <td class="day sunday">일</td>
+                <td class="day">월</td>
+                <td class="day">화</td>
+                <td class="day">수</td>
+                <td class="day">목</td>
+                <td class="day">금</td>
+                <td class="day saturday">토</td>
+            </tr>
+        </table>
     </div>
     
-    <div>
-        <div class="mvptitle">오늘의 MVP</div>
-        <div class="mvpPT">
-            <br>
-            <strong>득점</strong><br>
-            Devin Booker 33.7<br>
-            Anthony Edwards 31.6<br>
-            Stephen Curry 30.5<br>
-            Nikola Jokic 29.9<br>   
-            Trae Young 29.2</div>
-        <div class="mvpREB">
-            <br>
-            <strong>리바운드</strong><br>
-            1. Anthony Davis 14.1<br>
-            2. Nikola Jokic 13.3<br>
-            3. Kevon Looney 13.1<br>
-            4. Rudy Gobert 12.2<br>
-            5. Domantas Sabonis 11.0
+    <div class="mvptitle">오늘의 MVP</div>
+
+    <div class="line">
+        <div class="box mvpPT">
+            <div class="title">득점</div>
+            <div>1. Nikola Jokic DEN 28</div>
+            <div>2. JImmy Butler MIA 21</div>
+            <div>3. Bam Adebayo MIA 20</div>
+            <div>4. Michael Porter Jr. DEN 16</div>
+            <div>5. Jamal Murray  DEN 14</div>
         </div>
-        <div class="mvpAST">
-            <br>
-            <strong>어시스트</strong><br>
-            1. Nikola Jokic 10.3<br>
-            2. Trae Young 10.2<br>
-            3. James Harden 8.3<br>
-            4. Jrue Holiday 8.0<br>
-            5. De'Aaron Fox 7.7
+        <div class="box mvpREB">
+            <div class="title">리바운드</div>
+            <div>1. Nikola Jokic DEN 28</div>
+            <div>2. JImmy Butler MIA 21</div>
+            <div>3. Bam Adebayo MIA 20</div>
+            <div>4. Michael Porter Jr. DEN 16</div>
+            <div>5. Jamal Murray  DEN 14</div>
         </div>
-        <div class="mvpBLK">
-            <br>
-            <strong>블락</strong><br>
-            1. Anthony Davis 3.1<br>
-            2. Joel Embiid 2.8<br>
-            3. Anthony Edwards 2.0<br>
-            3. Jaren Jackson Jr. 2.0<br>
-            5. Brook Lopez 1.8
+        <div class="box mvpAST">
+            <div class="title">어시스트</div>
+            <div>1. Nikola Jokic DEN 28</div>
+            <div>2. JImmy Butler MIA 21</div>
+            <div>3. Bam Adebayo MIA 20</div>
+            <div>4. Michael Porter Jr. DEN 16</div>
+            <div>5. Jamal Murray  DEN 14</div>
         </div>
-        <div class="mvpSTL">
-            <br>
-            <strong>스틸</strong><br>
-            1. De'Aaron Fox 2.1<br>
-            1. Jimmy Butler 2.1<br>
-            3. Donovan Mitchell 2.0<br>
-            3. Dejounte Murray 2.0<br>
-            5. James Harden 1.8<br>  
+    </div>
+    
+    <div class="line">
+        <div class="box mvpBLK">
+            <div class="title">블록</div>
+            <div>1. Nikola Jokic DEN 28</div>
+            <div>2. JImmy Butler MIA 21</div>
+            <div>3. Bam Adebayo MIA 20</div>
+            <div>4. Michael Porter Jr. DEN 16</div>
+            <div>5. Jamal Murray  DEN 14</div>
         </div>
-        <div class="mvpFTP">
-            <br>
-            <strong>야투율</strong><br>
-            1. Nic Claxton 72.0<br>
-            2. Rudy Gobert 63.0<br>
-            3. Jarrett Allen 61.1<br>
-            4. Clint Capela 60.5<br>
-            5. Devin Booker 58.5<br>
+        <div class="box mvpSTL">
+            <div class="title">스틸</div>
+            <div>1. Nikola Jokic DEN 28</div>
+            <div>2. JImmy Butler MIA 21</div>
+            <div>3. Bam Adebayo MIA 20</div>
+            <div>4. Michael Porter Jr. DEN 16</div>
+            <div>5. Jamal Murray  DEN 14</div>
+        </div>
+        <div class="box mvpFTP">
+            <div class="title">판타지 포인트</div>
+            <div>1. Nikola Jokic DEN 28</div>
+            <div>2. JImmy Butler MIA 21</div>
+            <div>3. Bam Adebayo MIA 20</div>
+            <div>4. Michael Porter Jr. DEN 16</div>
+            <div>5. Jamal Murray  DEN 14</div>
         </div> 
     </div>
+</div>
     
 <style>
-    .YYMMDD{
+    .date{
         display: inline-flex;
         width: 150px;
         height: 60px;
         background-color: skyblue;
         line-height: 60px;
-        text-align: center;
-        font-weight: 400;
+        justify-content: center;
+        font-weight: 18px;
         font-size: 15px;
-        margin: 10px;
+        margin: 30px;
+        border-radius: 10px;
+    }
+
+    .week{
+        margin: 30px auto;
+        text-align: center;
+    }
+    
+    .line{
+        display: flex;
+    }
+
+    .title{
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .box{
+        width: 300px;
+        height: 180px;
+        margin: 30px auto;
+        text-align: center;
+        border-radius: 30px;
     }
 
     .day{
-        display: inline-block;
-        width: 90px;
+        display: inline-flex;
+        width: 70px;
         height: 60px;
         font-weight: 400;
         font-size: 20px;
         text-align: center;
         line-height: 60px;
-        margin-top: 30px;
-        border: 1px solid black;
-        margin: 10px;
         justify-content: center;
+    }
+
+    tr{
+        border: 1px solid black;
     }
 
     .sunday{
@@ -105,88 +140,52 @@
     }
 
     .mvptitle{
-        width: 145px;
-        height: 50px;
-        padding: 15px;
-        left: 1400px;
-        top: 100px;
-        left: 1300px;
+        margin: 20px auto;
+        width: 200px;
+        height: 100px;
+        line-height: 100px;
         font-family: 'Inter';
-        font-style: bold;
-        font-weight: 700;
-        font-size: 25px;
-        line-height: 30px;
-        display:inline-flex;
-        align-items: center;
+        font-weight: bold;
         text-align: center;
-        color: #000000;
-        background-color: rgba(233, 240, 140, 0.61);;
+        justify-content: center;
+        font-size: 25px;
+        background-color: #FCCEE2;
+        border-radius: 20px;
     }
 
     .mvpPT{
-        display:inline-flex;
         text-align: center;
-        width: 280px;
-        height: 170px;
-        left: 1000px;
-        top: 200px;
-        background: rgba(255, 138, 138, 0.61);
+        background: #FDB7BA;
         border-radius: 50px;
-        text-align: center;
     }
 
     .mvpREB{
-        display:inline-flex;
         text-align: center;
-        width: 280px;
-        height: 170px;
-        left: 1500px;
-        top: 200px;
-        background: rgba(255, 194, 138, 0.61);
+        background: #F3CDAD;
         border-radius: 50px;
     }
 
     .mvpAST{
-        display:inline-flex;
         text-align: center;
-        width: 280px;
-        height: 170px;
-        left: 1000px;
-        top: 450px;
-        background: rgba(248, 231, 87, 0.6);
+        background: #FCFFB0;
         border-radius: 50px;
     }
 
     .mvpBLK{
-        display:inline-flex;
         text-align: center;
-        width: 280px;
-        height: 170px;
-        left: 1500px;
-        top: 450px;
-        background: rgba(162, 255, 138, 0.61);
+        background: #AFFFBA;
         border-radius: 50px;
     }
     
     .mvpSTL{
-        display:inline-flex;
         text-align: center;
-        width: 280px;
-        height: 170px;
-        left: 1000px;
-        top: 700px;
-        background: rgba(138, 171, 255, 0.61);
+        background: #98BBEB;
         border-radius: 50px;
     }
 
     .mvpFTP{
-        display:inline-flex;
         text-align: center;
-        width: 280px;
-        height: 170px;
-        left: 1500px;
-        top: 700px;
-        background: rgba(218, 138, 255, 0.61);
+        background: #E2B9FF;
         border-radius: 50px;
     }
 
