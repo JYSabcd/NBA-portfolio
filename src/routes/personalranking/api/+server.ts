@@ -31,7 +31,7 @@ const options = {
 /** @type {string[]} */
 
 // 경기 수 & 출전 시간 & 득점 & 리바운드 & 어시스트 & 스틸 & 블록 & 야투 성공률(%) & 3점 성공률(%) & 자유투 성공률(%)
-const arrHeader = ['PLAYER_NAME','GP','MIN','PTS','REB','AST','STL','BLK','FG_PCT','FG3_PCT','FT_PCT','TEAM_ID'];
+const arrHeader = ['PLAYER_NAME','GP','MIN','PTS','REB','AST','STL','BLK','FG_PCT','FG3_PCT','FT_PCT','TEAM_ID','PLAYER_ID'];
 
 export interface Main {
     resource:   string;

@@ -115,11 +115,8 @@
                     {#each TableHeader as _, ColIndex}
                         {#if ColIndex == 0}
                             <td class="teamname">
-                                {#if SelectedSeasonType === "All Star"}
-                                    <img src="/TeamLogo/{data[11]}.svg" alt="TeamLogo" class="image" />
-                                {:else}
-                                    <img src="/TeamLogo/{data[11]}.svg" alt="TeamLogo" class="image" />
-                                {/if}
+                                <img src="/TeamLogo/{data[11]}.svg" alt="TeamLogo" class="logoimage" />
+                                <img src="https://cdn.nba.com/headshots/nba/latest/1040x760/{data[12]}.png" alt="TeamLogo" class="playerimage" />
                                 <span>{data[ColIndex]}</span>
                             </td>
                         {:else if ColIndex == 1}
@@ -227,12 +224,20 @@
         cursor: pointer;
     }
     
-    .image{
+    .logoimage{
+        display: inline;
+        width: 40px;
+        height: 40px;
+        /* margin-right: 10px; */
+        margin-left: 5px;
+    }
+
+    .playerimage{
         display: inline;
         width: 40px;
         height: 40px;
         margin-right: 10px;
-        margin-left: 5px;
+        /* margin-left: 5px; */
     }
 
     .teamname{
