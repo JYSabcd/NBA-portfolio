@@ -86,6 +86,7 @@ export interface ResultSet {
     rowSet:  Array<Array<number | string>>;
 }
 
+/** @type {import('./$types').RequestHandler} */
 export async function GET({url}) {
 	
     // console.log(url);
