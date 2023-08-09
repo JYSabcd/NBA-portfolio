@@ -1,73 +1,15 @@
 <script lang="ts">
-  const SeasonArray = [
-    "1996-97",
-    "1997-98",
-    "1998-99",
-    "1999-00",
-    "2000-01",
-    "2001-02",
-    "2002-03",
-    "2003-04",
-    "2004-05",
-    "2005-06",
-    "2006-07",
-    "2007-08",
-    "2008-09",
-    "2009-10",
-    "2010-11",
-    "2011-12",
-    "2012-13",
-    "2013-14",
-    "2014-15",
-    "2015-16",
-    "2016-17",
-    "2017-18",
-    "2018-19",
-    "2019-20",
-    "2020-21",
-    "2021-22",
-    "2022-23",
-  ];
+    const SeasonArray = ['2022-23','2021-22','2020-21','2019-20','2018-19','2017-18','2016-17','2015-16','2014-15'
+    ,'2013-14','2012-13','2011-12','2010-11','2009-10','2008-09','2007-08', '2006-07','2005-06','2004-05','2003-04'
+    ,'2002-03','2001-02','2000-01','1999-00','1998-99','1997-98','1996-97'];
 
-  const SeasontypeArray = [
-    "Preseason",
-    "Regular Season",
-    "Playoffs",
-    "All-Star",
-  ];
+  const SeasontypeArray = ["Preseason", "Regular Season", "Playoffs", "All-Star"];
 
-  const TeamnameArray = [
-    "Atlanta Hawks",
-    "Boston Celtics",
-    "Brooklyn Nets",
-    "Charlotte Hornets",
-    "Chicago Bulls",
-    "Cleveland Cavaliers",
-    "Dallas Mavericks",
-    "Denver Nuggets",
-    "Detroit Pistons",
-    "Golden State Warriors",
-    "Houston Rockets",
-    "Indiana Pacers",
-    "Los Angeles Clippers",
-    "Los Angeles Lakers",
-    "Memphis Grizzlies",
-    "Miami Heat",
-    "Milwaukee Bucks",
-    "Minnesota Timberwolves",
-    "New Orleans PelicaBHns",
-    "New York Knicks",
-    "Oklahoma City Thunder",
-    "Orlando Magic",
-    "Philadelphia 76ers",
-    "Phoenix Suns",
-    "Portland Trail Blazers",
-    "Sacramento Kings",
-    "San Antonio Spurs",
-    "Toronto Raptors",
-    "Utah Jazz",
-    "Washington Wizards",
-  ];
+  const TeamnameArray = ["Atlanta Hawks", "Boston Celtics", "Brooklyn Nets", "Charlotte Hornets", "Chicago Bulls", "Cleveland Cavaliers",
+    "Dallas Mavericks", "Denver Nuggets", "Detroit Pistons", "Golden State Warriors", "Houston Rockets", "Indiana Pacers", "Los Angeles Clippers",
+    "Los Angeles Lakers", "Memphis Grizzlies", "Miami Heat", "Milwaukee Bucks", "Minnesota Timberwolves", "New Orleans Pelicans","New York Knicks",
+    "Oklahoma City Thunder", "Orlando Magic", "Philadelphia 76ers", "Phoenix Suns", "Portland Trail Blazers", "Sacramento Kings", "San Antonio Spurs",
+    "Toronto Raptors", "Utah Jazz", "Washington Wizards"];
 
   let SelectedSeason = "2022-23";
 
@@ -164,16 +106,16 @@
   
     <table class="table">
       <tr class="th">
+        <th class="border">경기 당 평균 출전시간</th>
         <th class="border">경기 당 평균 득점</th>
         <th class="border">경기 당 평균 리바운드</th>
-        <th class="border">경기 당 평균 어시스트</th>
-        <th class="border">선수 공헌도 (PIE)</th>
+        <th class="border">경기 당 평균 어시스트</th>        
       </tr>
       <tr>
+        <td class="border">34.7</td>
         <td class="border">29.4</td>
         <td class="border">6.1</td>
         <td class="border">6.3</td>
-        <td class="border">16.6</td>
       </tr>
     </table>
 
@@ -193,13 +135,13 @@
       <tr class="th">
         <th class="border">나이</th>
         <th class="border">생년원일</th>
-        <th class="border">드래프트</th>
+        <th class="border">판타지 포인트</th>
         <th class="border">경력</th>
       </tr>
       <tr>
         <td class="border">35세</td>
         <td class="border">1988년 7월 8일</td>
-        <td class="border">2009 NBA 드래프트 1라운드 7순위</td>
+        <td class="border">46.8</td>
         <td class="border">14년차</td>
       </tr>
     </table>
