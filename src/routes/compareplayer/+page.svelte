@@ -6,8 +6,7 @@
     let PlayerCT1 = PlayerCT_PlusButton; //  Player Container Type 1
     let PlayerCT2 = PlayerCT_PlusButton; //  Player Container Type 2
 
-    let Player1_Name = "";
-    let Player2_Name = "";
+    let IsAverageMode = false;  //  false : 평균값 사용 안함, true : 평균값 사용 (Player2 정보에 평균값 표시)
 
     const SeasonArray = [
         "2022-23",
@@ -284,75 +283,181 @@
         },
     };
 
-    let playerrosters1 = [
-        []
-    ];
 
-    let playerrosters2 = [
-        []
-    ];
+    let playerrosters1 = [];    //  api에서 얻어온 플레이어 리스트
+    let playerrosters2 = [];
 
+    let PlayerData1 = [];   //  api에서 얻어온 선수 기록
+    let PlayerData2 = [];
+
+    let Average =[];    //  api에서 얻어온 한 시즌 선수들의 평균 (58경기 이상 선수만)
 
     let SelectedSeason1 = "";
     let SelectedTeamname1 = "";
-    let SelectedPlayerRosters1 = "";
+    let SelectedPlayerInfo1 = [];   //  ["PlayerName", PlayerID]
 
     let SelectedSeason2 = "";
     let SelectedTeamname2 = "";
-    let SelectedPlayerRosters2 = "";
+    let SelectedPlayerInfo2 = [];   //  ["PlayerName", PlayerID]
 
-    async function ChangeTeam1() {
+    async function ChangeRoster1() {
+
+        if (SelectedTeamname1 === "" || SelectedSeason1 === "") {
+            return;
+        }
+
+        playerrosters1 = [];
+
         let TeamID1 = TeamObj[SelectedTeamname1]["TeamID"];
-        let TeamID2 = TeamObj[SelectedTeamname2]["TeamID"];
-
-
-        const response1 = await fetch(`compareplayer/api/playerrosters?Season=${SelectedSeason1}&TeamID=${TeamID1}`);
-        const response2 = await fetch(`compareplayer/api/playerrosters?Season=${SelectedSeason2}&TeamID=${TeamID2}`);
-		
+        const response1 = await fetch(
+            `compareplayer/api/playerrosters?Season=${SelectedSeason1}&TeamID=${TeamID1}`
+        );
         playerrosters1 = await response1.json();
+    }
+
+    async function ChangeRoster2() {
+
+        if (SelectedTeamname2 === "" || SelectedSeason2 === "") {
+            return;
+        }
+
+        playerrosters2 = [];
+
+        let TeamID2 = TeamObj[SelectedTeamname2]["TeamID"];
+        const response2 = await fetch(
+            `compareplayer/api/playerrosters?Season=${SelectedSeason2}&TeamID=${TeamID2}`
+        );
         playerrosters2 = await response2.json();
+    }
+
+    async function PlayerDataLoading1() {
+        const response3 = await fetch(
+            `compareplayer/api/playerstats?Season=${SelectedSeason1}&PlayerID=${SelectedPlayerInfo1[1]}`
+        );
+        PlayerData1 = await response3.json();
+        console.log("PlayerDataLoading1", PlayerData1);
+    }
+
+    async function PlayerDataLoading2() {
+        const response4 = await fetch(
+            `compareplayer/api/playerstats?Season=${SelectedSeason2}&PlayerID=${SelectedPlayerInfo2[1]}`
+        );
+        PlayerData2 = await response4.json();
+        console.log("PlayerDataLoading2", PlayerData2);
+    }
+    
+    async function Averagebutton() {
+        if(PlayerCT1 !== PlayerCT_Selected){
+            alert('첫 번째 선수를 먼저 골라주세요');
+            return;
+        }
+
+        Reset2();   //  평균값은 플레이어2에 적용되므로 기존에 선택된 값이 있다면 초기화 시킨다.
+
+        const response5 = await fetch(
+            `compareplayer/api/playerstatsaverage?Season=${SelectedSeason1}`
+        );
+        IsAverageMode = true;
+        Average = await response5.json();
+
+        console.log("Averagebutton", Average);
+    }
+
+    function Selecting1() {
+        PlayerCT1 = PlayerCT_Selecting;
+    }
+
+    function Selecting2() {
+        PlayerCT2 = PlayerCT_Selecting;
+
+        IsAverageMode = false;
+    }
+
+    function Selected1() {
+        PlayerCT1 = PlayerCT_Selected;
+        PlayerDataLoading1();
+    }
+
+    function Selected2() {
+        PlayerCT2 = PlayerCT_Selected;
+
+        IsAverageMode = false;
+
+        PlayerDataLoading2();
+    }
+
+    function ResetAll() {
+        PlayerCT1 = PlayerCT_PlusButton;
+        PlayerCT2 = PlayerCT_PlusButton;
+
+        playerrosters1 = [];
+        PlayerData1 = [];
+        playerrosters2 = [];
+        PlayerData2 = [];
+        Average = [];
+
+        SelectedSeason1 = "";
+        SelectedTeamname1 = "";
+        SelectedPlayerInfo1 = [];
+        SelectedSeason2 = "";
+        SelectedTeamname2 = "";
+        SelectedPlayerInfo2 = [];
+        Average = [];
+
+        IsAverageMode = false;
+    }
+    function Reset1() {
+        PlayerCT1 = PlayerCT_PlusButton;
+
+        playerrosters1 = [];
+        PlayerData1 = [];
+
+        SelectedSeason1 = "";
+        SelectedTeamname1 = "";
+        SelectedPlayerInfo1 = [];
+    }
+
+    function Reset2() {
+        PlayerCT2 = PlayerCT_PlusButton;
+
+        playerrosters2 = [];
+        PlayerData2 = [];
+        Average = [];
+
+        SelectedSeason2 = "";
+        SelectedTeamname2 = "";
+        SelectedPlayerInfo2 = [];
+
+        IsAverageMode = false;
     }
 </script>
 
 <div class="body">
     <div class="white">
         <div class="button">
-            <div
-                class="NBAavarage circle"
-                on:click={() => alert("이 선수를 NBA 평균과 비교하시겠습니까?")}
-            >
-                NBA 평균
-            </div>
-            <div
-                class="reset"
-                on:click={() => {
-                    PlayerCT1 = PlayerCT_PlusButton;
-                    Player1_Name = "";
-                    PlayerCT2 = PlayerCT_PlusButton;
-                    Player2_Name = "";
-                }}
-            >
-                선수 초기화
-            </div>
+            <div class="NBAAverage space" on:click={Averagebutton}>NBA 평균</div>
+            <div class="reset" on:click={ResetAll}>선수 초기화</div>
         </div>
 
         <div class="flex">
             <div class="player-container">
-                <div class="text">선수1 이름 : {Player1_Name}</div>
+                <div class="text">선수1 이름 : {SelectedPlayerInfo1[0]?SelectedPlayerInfo1[0]:"---"}</div>
 
                 {#if PlayerCT1 === PlayerCT_PlusButton}
-                    <div
-                        class="comparebox firstp1"
-                        on:click={() => (PlayerCT1 = PlayerCT_Selecting)}
-                    >
+                    <div class="comparebox firstp1" on:click={Selecting1}>
                         +
                     </div>
                 {:else if PlayerCT1 === PlayerCT_Selecting}
                     <div class="comparebox secondp1">
                         <div class="distance">
                             <div>시즌연도</div>
-                            <select bind:value={SelectedSeason1}>
-                                <option value="" hidden selected>연도를 선택해주세요</option>
+                            <select
+                                bind:value={SelectedSeason1}
+                                on:change={ChangeRoster1}
+                            >
+                                <option value="" hidden selected
+                                    >연도를 선택해주세요</option
+                                >
                                 {#each SeasonArray as Season}
                                     <option class="option" value={Season}>
                                         {Season}
@@ -364,9 +469,11 @@
                             <div>팀이름</div>
                             <select
                                 bind:value={SelectedTeamname1}
-                                on:change={ChangeTeam1}
+                                on:change={ChangeRoster1}
                             >
-                            <option value="" hidden selected>팀을 선택해주세요</option>
+                                <option value="" hidden selected>
+                                    팀을 선택해주세요
+                                </option>
                                 {#each TeamnameArray as teamname}
                                     <option class="option" value={teamname}>
                                         {teamname}
@@ -376,159 +483,166 @@
                         </div>
                         <div class="distance">
                             <div>선수 로스터</div>
-                            <select bind:value={SelectedPlayerRosters1}>
-                                <option value="" hidden selected>팀 연도를 먼저 선택해주세요</option>
-                                {#each playerrosters1 as playerroster1}
-                                    <option
-                                        class="option"
-                                        value={playerroster1[0]}
-                                    >
-                                        {playerroster1[0]}
+                            <select bind:value={SelectedPlayerInfo1}>
+                                <option value="" hidden selected>
+                                    팀 연도를 먼저 선택해주세요.
+                                </option>
+                                {#each playerrosters1 as playerinfo}
+                                    <option class="option" value={playerinfo}>
+                                        {playerinfo[0]}
                                     </option>
                                 {/each}
                             </select>
                         </div>
-                        <button
-                            class="NBAavarage distance"
-                            on:click={() => {
-                                PlayerCT1 = PlayerCT_Selected;
-                                Player1_Name = "Stephen Curry";
-                            }}>조회하기</button
-                        >
+                        {#if SelectedSeason1 !== "" && SelectedTeamname1 !== "" && SelectedPlayerInfo1[0] !== ""}
+                            <button
+                                class="NBAAverage distance"
+                                on:click={Selected1}
+                                >조회하기
+                            </button>
+                        {:else}
+                            <button class="NBAAverage distance">
+                                조회하기
+                            </button>
+                        {/if}
                     </div>
                 {:else if PlayerCT1 === PlayerCT_Selected}
-
                     <img
-                        src="https://cdn.nba.com/headshots/nba/latest/1040x760/201939.png"
+                        src="https://cdn.nba.com/headshots/nba/latest/1040x760/{SelectedPlayerInfo1[1]}.png"
                         alt="Player Headshot"
                     />
-                    
-                    <div
-                        class="reset center"
-                        on:click={() => {
-                            PlayerCT1 = PlayerCT_PlusButton;
-                            Player1_Name = "";
-                        }}
-                    >
+
+                    <div class="reset center" on:click={Reset1}>
                         선수1 초기화
                     </div>
                 {/if}
             </div>
 
-            <div>
+            <div class="position">
                 <table class="table">
                     <tbody class="font">
-                        <tr>
-                            <td class="bigger">34.7</td>
-                            <td>평균 출전 시간</td>
-                            <td>34.6</td>
-                        </tr>
-                        <tr>
-                            <td class="bigger">29.4</td>
-                            <td>평균 득점</td>
-                            <td>27.8</td>
-                        </tr>
-                        <tr>
-                            <td class="bigger">6.1</td>
-                            <td>평균 리바운드</td>
-                            <td>4.5</td>
-                        </tr>
-                        <tr>
-                            <td class="bigger">6.3</td>
-                            <td>평균 어시스트</td>
-                            <td>5.5</td>
-                        </tr>
-                        <tr>
-                            <td>0.9</td>
-                            <td>평균 스틸</td>
-                            <td class="bigger">1.0</td>
-                        </tr>
-                        <tr>
-                            <td class="bigger">0.4</td>
-                            <td>평균 블록</td>
-                            <td>0.3</td>
-                        </tr>
+                        <tr><td>{PlayerData1[0]!==undefined?PlayerData1[0]:"--"}</td></tr>
+                        <tr><td>{PlayerData1[1]!==undefined?PlayerData1[1]:"--"}</td></tr>
+                        <tr><td>{PlayerData1[2]!==undefined?PlayerData1[2]:"--"}</td></tr>
+                        <tr><td>{PlayerData1[3]!==undefined?PlayerData1[3]:"--"}</td></tr>
+                        <tr><td class="bigger">{PlayerData1[4]!==undefined?PlayerData1[4]:"--"}</td></tr>
+                        <tr><td>{PlayerData1[5]!==undefined?PlayerData1[5]:"--"}</td></tr>
                     </tbody>
                 </table>
+
+                <table class="table">
+                    <tbody class="font">
+                        <tr><td>평균 출전 시간</td></tr>
+                        <tr><td>평균 득점</td></tr>
+                        <tr><td>평균 리바운드</td></tr>
+                        <tr><td>평균 어시스트</td></tr>
+                        <tr><td>평균 스틸</td></tr>
+                        <tr><td>평균 블록</td></tr>
+                    </tbody>
+                </table>
+
+                {#if IsAverageMode === true}
+                    <table class="table">
+                        <tbody class="font">
+                            <tr><td>{Average[0]!==undefined?Average[0]:"--"}</td></tr>
+                            <tr><td>{Average[1]!==undefined?Average[1]:"--"}</td></tr>
+                            <tr><td>{Average[2]!==undefined?Average[2]:"--"}</td></tr>
+                            <tr><td>{Average[3]!==undefined?Average[3]:"--"}</td></tr>
+                            <tr><td class="bigger">{Average[4]!==undefined?Average[4]:"--"}</td></tr>
+                            <tr><td>{Average[5]!==undefined?Average[5]:"--"}</td></tr>
+                        </tbody>
+                    </table>
+                {:else}
+                    <table class="table">
+                        <tbody class="font">
+                            <tr><td>{PlayerData2[0]!==undefined?PlayerData2[0]:"--"}</td></tr>
+                            <tr><td>{PlayerData2[1]!==undefined?PlayerData2[1]:"--"}</td></tr>
+                            <tr><td>{PlayerData2[2]!==undefined?PlayerData2[2]:"--"}</td></tr>
+                            <tr><td>{PlayerData2[3]!==undefined?PlayerData2[3]:"--"}</td></tr>
+                            <tr><td class="bigger">{PlayerData2[4]!==undefined?PlayerData2[4]:"--"}</td></tr>
+                            <tr><td>{PlayerData2[5]!==undefined?PlayerData2[5]:"--"}</td></tr>
+                        </tbody>
+                    </table>
+                {/if}
             </div>
+
             <div class="player-container">
-                <div class="text">선수2 이름 : {Player2_Name}</div>
+                <div class="text">선수2 이름 : {SelectedPlayerInfo2[0]?SelectedPlayerInfo2[0]:"---"}</div>
 
                 {#if PlayerCT2 === PlayerCT_PlusButton}
-                    <div>
-                        <div
-                            class="comparebox firstp2"
-                            on:click={() => (PlayerCT2 = PlayerCT_Selecting)}
-                        >
-                            +
-                        </div>
+                    <div class="comparebox firstp2" on:click={Selecting2}>
+                        +
                     </div>
                 {:else if PlayerCT2 === PlayerCT_Selecting}
-                    <div>
-                        <div class="comparebox secondp2">
-                            <div class="distance">
-                                <div>시즌연도</div>
-                                <select bind:value={SelectedSeason2}>
-                                    <option value="" hidden selected>연도를 선택해주세요</option>
-                                    {#each SeasonArray as Season}
-                                        <option class="option" value={Season}>
-                                            {Season}
-                                        </option>
-                                    {/each}
-                                </select>
-                            </div>
-                            <div class="distance">
-                                <div>팀이름</div>
-                                <select bind:value={SelectedTeamname2}>
-                                    <option value="" hidden selected>팀을 선택해주세요</option>
-                                    {#each TeamnameArray as teamname}
-                                        <option class="option" value={teamname}>
-                                            {teamname}
-                                        </option>
-                                    {/each}
-                                </select>
-                            </div>
-                            <div class="distance">
-                                <div>선수 로스터</div>
-                                <select bind:value={SelectedPlayerRosters2}>
-                                    <option value="" hidden selected>팀 연도를 먼저 선택해주세요</option>
-                                    {#each playerrosters2 as playerroster2}
-                                        <option
-                                            class="option"
-                                            value={playerroster2[0]}
-                                        >
-                                            {playerroster2[0]}
-                                        </option>
-                                    {/each}
-                                </select>
-                            </div>
-                            <button
-                                class="NBAavarage distance"
-                                on:click={() => {
-                                    PlayerCT2 = PlayerCT_Selected;
-                                    Player2_Name = "Devin Booker";
-                                }}>조회하기</button
+                    <div class="comparebox secondp2">
+                        <div class="distance">
+                            <div>시즌연도</div>
+                            <select
+                                bind:value={SelectedSeason2}
+                                on:change={ChangeRoster2}
                             >
+                                <option value="" hidden selected
+                                    >연도를 선택해주세요</option
+                                >
+                                {#each SeasonArray as Season}
+                                    <option class="option" value={Season}>
+                                        {Season}
+                                    </option>
+                                {/each}
+                            </select>
                         </div>
+                        <div class="distance">
+                            <div>팀이름</div>
+                            <select
+                                bind:value={SelectedTeamname2}
+                                on:change={ChangeRoster2}
+                            >
+                                <option value="" hidden selected>
+                                    팀을 선택해주세요
+                                </option>
+                                {#each TeamnameArray as teamname}
+                                    <option class="option" value={teamname}>
+                                        {teamname}
+                                    </option>
+                                {/each}
+                            </select>
+                        </div>
+                        <div class="distance">
+                            <div>선수 로스터</div>
+                            <select bind:value={SelectedPlayerInfo2}>
+                                <option value="" hidden selected>
+                                    팀 연도를 먼저 선택해주세요.
+                                </option>
+                                {#each playerrosters2 as playerinfo}
+                                    <option class="option" value={playerinfo}>
+                                        {playerinfo[0]}
+                                    </option>
+                                {/each}
+                            </select>
+                        </div>
+                        {#if SelectedSeason2 !== "" && SelectedTeamname2 !== "" && SelectedPlayerInfo2[0] !== ""}
+                            <button
+                                class="NBAAverage distance"
+                                on:click={Selected2}
+                                >조회하기
+                            </button>
+                        {:else}
+                            <button class="NBAAverage distance">
+                                조회하기
+                            </button>
+                        {/if}
                     </div>
                 {:else if PlayerCT2 === PlayerCT_Selected}
-                    <div>
-                        <img
-                            src="https://cdn.nba.com/headshots/nba/latest/1040x760/1626164.png"
-                            alt="Player Headshot"
-                        />
-                    </div>
-                    <div
-                        class="reset center"
-                        on:click={() => {
-                            PlayerCT2 = PlayerCT_PlusButton;
-                            Player2_Name = "";
-                        }}
-                    >
+                    <img
+                        src="https://cdn.nba.com/headshots/nba/latest/1040x760/{SelectedPlayerInfo2[1]}.png"
+                        alt="Player Headshot"
+                    />
+
+                    <div class="reset center" on:click={Reset2}>
                         선수2 초기화
                     </div>
                 {/if}
-            </div>
+            </div>           
         </div>
     </div>
 </div>
@@ -552,6 +666,7 @@
 
     .button {
         margin-left: 70%;
+        margin-top: 10px;
     }
 
     .text {
@@ -564,8 +679,12 @@
     }
 
     .table {
-        width: 420px;
+        width: 140px;
         margin: 200px auto;
+    }
+    
+    .position{
+        display: flex;
     }
 
     .flex {
@@ -619,12 +738,14 @@
         font-size: 20px;
     }
 
+    select{
+        text-align: center;
+    }
+
     .reset {
         display: inline;
-        justify-content: center;
         width: 150px;
         height: 50px;
-        line-height: 50px;
         background: #db4455;
         border-radius: 50px;
         border: 1px solid black;
@@ -635,32 +756,22 @@
         cursor: pointer;
     }
 
-    .reset:active {
-        cursor: wait;
-    }
-
-    .NBAavarage {
+    .NBAAverage {
         display: inline;
-        justify-content: center;
         width: 150px;
         height: 50px;
-        line-height: 50px;
         background-color: #57bd85;
         border-radius: 50px;
         border: 1px solid black;
     }
 
-    .circle {
+    .space {
         padding: 15px;
         margin-right: 30px;
     }
 
-    .NBAavarage:hover {
+    .NBAAverage:hover {
         cursor: pointer;
-    }
-
-    .NBAavarage:active {
-        cursor: wait;
     }
 
     .font {
@@ -692,5 +803,6 @@
         display: flex;
         margin: 30px auto;
         line-height: 20px;
+        text-align: center;
     }
 </style>
