@@ -1,21 +1,334 @@
 <script lang="ts">
-    const SeasonArray = ['2022-23','2021-22','2020-21','2019-20','2018-19','2017-18','2016-17','2015-16','2014-15'
-    ,'2013-14','2012-13','2011-12','2010-11','2009-10','2008-09','2007-08', '2006-07','2005-06','2004-05','2003-04'
-    ,'2002-03','2001-02','2000-01','1999-00','1998-99','1997-98','1996-97'];
+  const SeasonArray = [
+    "2022-23",
+    "2021-22",
+    "2020-21",
+    "2019-20",
+    "2018-19",
+    "2017-18",
+    "2016-17",
+    "2015-16",
+    "2014-15",
+    "2013-14",
+    "2012-13",
+    "2011-12",
+    "2010-11",
+    "2009-10",
+    "2008-09",
+    "2007-08",
+    "2006-07",
+    "2005-06",
+    "2004-05",
+    "2003-04",
+    "2002-03",
+    "2001-02",
+    "2000-01",
+    "1999-00",
+    "1998-99",
+    "1997-98",
+    "1996-97",
+  ];
 
-  const SeasontypeArray = ["Preseason", "Regular Season", "Playoffs", "All-Star"];
+  const TeamnameArray = [
+    "Atlanta Hawks",
+    "Boston Celtics",
+    "Brooklyn Nets",
+    "Charlotte Hornets",
+    "Chicago Bulls",
+    "Cleveland Cavaliers",
+    "Dallas Mavericks",
+    "Denver Nuggets",
+    "Detroit Pistons",
+    "Golden State Warriors",
+    "Houston Rockets",
+    "Indiana Pacers",
+    "Los Angeles Clippers",
+    "Los Angeles Lakers",
+    "Memphis Grizzlies",
+    "Miami Heat",
+    "Milwaukee Bucks",
+    "Minnesota Timberwolves",
+    "New Orleans Pelicans",
+    "New York Knicks",
+    "Oklahoma City Thunder",
+    "Orlando Magic",
+    "Philadelphia 76ers",
+    "Phoenix Suns",
+    "Portland Trail Blazers",
+    "Sacramento Kings",
+    "San Antonio Spurs",
+    "Toronto Raptors",
+    "Utah Jazz",
+    "Washington Wizards",
+  ];
 
-  const TeamnameArray = ["Atlanta Hawks", "Boston Celtics", "Brooklyn Nets", "Charlotte Hornets", "Chicago Bulls", "Cleveland Cavaliers",
-    "Dallas Mavericks", "Denver Nuggets", "Detroit Pistons", "Golden State Warriors", "Houston Rockets", "Indiana Pacers", "Los Angeles Clippers",
-    "Los Angeles Lakers", "Memphis Grizzlies", "Miami Heat", "Milwaukee Bucks", "Minnesota Timberwolves", "New Orleans Pelicans","New York Knicks",
-    "Oklahoma City Thunder", "Orlando Magic", "Philadelphia 76ers", "Phoenix Suns", "Portland Trail Blazers", "Sacramento Kings", "San Antonio Spurs",
-    "Toronto Raptors", "Utah Jazz", "Washington Wizards"];
+  const TeamObj = {
+    "Atlanta Hawks": {
+      TeamID: 1610612737,
+      Abbrev: "ATL",
+      TeamName: "Hawks",
+      City: "Atlanta",
+    },
+
+    "Boston Celtics": {
+      TeamID: 1610612738,
+      Abbrev: "BOS",
+      TeamName: "Celtics",
+      City: "Boston",
+    },
+
+    "Brooklyn Nets": {
+      TeamID: 1610612751,
+      Abbrev: "BKN",
+      TeamName: "Nets",
+      City: "Brooklyn",
+    },
+
+    "Charlotte Hornets": {
+      TeamID: 1610612766,
+      Abbrev: "CHA",
+      TeamName: "Hornets",
+      City: "Charlotte",
+    },
+
+    "Chicago Bulls": {
+      TeamID: 1610612741,
+      Abbrev: "CHI",
+      TeamName: "Bulls",
+      City: "Chicago",
+    },
+
+    "Cleveland Cavaliers": {
+      TeamID: 1610612739,
+      Abbrev: "CLE",
+      TeamName: "Cavaliers",
+      City: "Cleveland",
+    },
+
+    "Dallas Mavericks": {
+      TeamID: 1610612742,
+      Abbrev: "DAL",
+      TeamName: "Mavericks",
+      City: "Dallas",
+    },
+
+    "Denver Nuggets": {
+      TeamID: 1610612743,
+      Abbrev: "DEN",
+      TeamName: "Nuggets",
+      City: "Denver",
+    },
+
+    "Detroit Pistons": {
+      TeamID: 1610612765,
+      Abbrev: "DET",
+      TeamName: "Pistons",
+      City: "Detroit",
+    },
+
+    "Golden State Warriors": {
+      TeamID: 1610612744,
+      Abbrev: "GSW",
+      TeamName: "Warriors",
+      City: "Golden State",
+    },
+
+    "Houston Rockets": {
+      TeamID: 1610612745,
+      Abbrev: "HOU",
+      TeamName: "Rockets",
+      City: "Houston",
+    },
+
+    "Indiana Pacers": {
+      TeamID: 1610612754,
+      Abbrev: "IND",
+      TeamName: "Pacers",
+      City: "Indiana",
+    },
+
+    "Los Angeles Clippers": {
+      TeamID: 1610612746,
+      Abbrev: "LAC",
+      TeamName: "Clippers",
+      City: "Los Angeles",
+    },
+
+    "Los Angeles Lakers": {
+      TeamID: 1610612747,
+      Abbrev: "LAL",
+      TeamName: "Lakers",
+      City: "Los Angeles",
+    },
+
+    "Memphis Grizzlies": {
+      TeamID: 1610612763,
+      Abbrev: "MEM",
+      TeamName: "Grizzlies",
+      City: "Memphis",
+    },
+
+    "Miami Heat": {
+      TeamID: 1610612748,
+      Abbrev: "MIA",
+      TeamName: "Heat",
+      City: "Miami",
+    },
+
+    "Milwaukee Bucks": {
+      TeamID: 1610612749,
+      Abbrev: "MIL",
+      TeamName: "Bucks",
+      City: "Milwaukee",
+    },
+
+    "Minnesota Timberwolves": {
+      TeamID: 1610612750,
+      Abbrev: "MIN",
+      TeamName: "Timberwolves",
+      City: "Minnesota",
+    },
+
+    "New Orleans Pelicans": {
+      TeamID: 1610612740,
+      Abbrev: "NOP",
+      TeamName: "Pelicans",
+      City: "New Orleans",
+    },
+
+    "New York Knicks": {
+      TeamID: 1610612752,
+      Abbrev: "NYK",
+      TeamName: "Knicks",
+      City: "New York",
+    },
+
+    "Oklahoma City Thunder": {
+      TeamID: 1610612760,
+      Abbrev: "OKC",
+      TeamName: "Thunder",
+      City: "Oklahoma City",
+    },
+
+    "Orlando Magic": {
+      TeamID: 1610612753,
+      Abbrev: "ORL",
+      TeamName: "Magic",
+      City: "Orlando",
+    },
+
+    "Philadelphia 76ers": {
+      TeamID: 1610612755,
+      Abbrev: "PHI",
+      TeamName: "76ers",
+      City: "Philadelphia",
+    },
+
+    "Phoenix Suns": {
+      TeamID: 1610612756,
+      Abbrev: "PHX",
+      TeamName: "Suns",
+      City: "Phoenix",
+    },
+
+    "Portland Trail Blazers": {
+      TeamID: 1610612757,
+      Abbrev: "POR",
+      TeamName: "Trail Blazers",
+      City: "Portland",
+    },
+
+    "Sacramento Kings": {
+      TeamID: 1610612758,
+      Abbrev: "SAC",
+      TeamName: "Kings",
+      City: "Sacramento",
+    },
+
+    "San Antonio Spurs": {
+      TeamID: 1610612759,
+      Abbrev: "SAS",
+      TeamName: "Spurs",
+      City: "San Antonio",
+    },
+
+    "Toronto Raptors": {
+      TeamID: 1610612761,
+      Abbrev: "TOR",
+      TeamName: "Raptors",
+      City: "Toronto",
+    },
+
+    "Utah Jazz": {
+      TeamID: 1610612762,
+      Abbrev: "UTA",
+      TeamName: "Jazz",
+      City: "Utah",
+    },
+
+    "Washington Wizards": {
+      TeamID: 1610612764,
+      Abbrev: "WAS",
+      TeamName: "Wizards",
+      City: "Washington",
+    },
+  };
+
+  const TableHeaders = ["이름", "등번호", "포지션", "나이", "키", "몸무게"];
 
   let SelectedSeason = "2022-23";
 
-  let SelectedSeasontype = "Regular Season";
-
   let SelectedTeamname = "Atlanta Hawks";
+
+  let Playerroaster = [];
+
+  let Mainplayer = [];
+
+  let Mainplayerstats = [];
+
+  let tablename = "";
+
+  let MainplayerSeason = ""
+
+  async function PlayerRoaster() {
+    let TeamID = TeamObj[SelectedTeamname]["TeamID"];
+    const response1 = await fetch(
+      `playerinformation/api/PlayerRoaster?Season=${SelectedSeason}&TeamID=${TeamID}`
+    );
+    Playerroaster = await response1.json();
+    tablename = SelectedSeason + " 시즌 " + SelectedTeamname;
+  }
+
+  async function GETMainPlayer(PlayerID) {
+    const response2 = await fetch(
+      `playerinformation/api/MainPlayer1?PlayerID=${PlayerID}`
+    );
+    Mainplayer = await response2.json();
+    console.log(Mainplayer);
+  }
+
+  async function GETMainplayerstats(PlayerID) {
+    const response3 = await fetch(
+      `playerinformation/api/MainPlayer2?Season=${SelectedSeason}&PlayerID=${PlayerID}`
+    );
+    Mainplayerstats = await response3.json();
+    MainplayerSeason = SelectedSeason;
+  }
+
+  function SelectPlayer(ArrayIndex) {
+    const PlayerID = Playerroaster[ArrayIndex][6];
+
+    GETMainPlayer(PlayerID);
+    GETMainplayerstats(PlayerID);
+
+    // 선수 정보창으로 스크롤 이동.
+    const el = document.querySelector('#section');
+		if (!el) return;
+    el.scrollIntoView({
+      behavior: 'smooth'
+    });
+  }
+  
 </script>
 
 <div class="body">
@@ -32,17 +345,6 @@
     </div>
 
     <div>
-      <div class="selectinformation">시즌타입</div>
-      <select class="overflow selectbox" bind:value={SelectedSeasontype}>
-        {#each SeasontypeArray as Seasontype}
-          <option class="option" value={Seasontype}>
-            {Seasontype}
-          </option>
-        {/each}
-      </select>
-    </div>
-
-    <div>
       <div class="selectinformation">팀이름</div>
       <select class="overflow selectbox" bind:value={SelectedTeamname}>
         {#each TeamnameArray as teamname}
@@ -53,101 +355,136 @@
       </select>
     </div>
 
-    <button class="search" on:click={() => alert("조회하기")}>
-      조회하기
-    </button>
+    <button class="search" on:click={PlayerRoaster}> 조회하기 </button>
   </div>
 
-  <div class="groupbox2">
-    <div>
-      <div class="text">다른 선수들</div>
+  {#if Playerroaster.length > 0}
+    <div class="groupbox2">
+      <div>
+        <div class="text">{tablename} 선수들</div>
         <table class="table">
           <tr class="th">
-            <th class="border">이름</th>
-            <th class="border">등번호 & 포지션</th>
-            <th class="border">키</th>
-            <th class="border">몸무게</th>
-            <th class="border">나이</th>
-            <th class="border">국적</th>
+            {#each TableHeaders as header}
+              <th class="option">
+                {header}
+              </th>
+            {/each}
           </tr>
-          <tr>
-            <td class="border">aaaaa</td>
-            <td class="border">1 & guard</td>
-            <td class="border">1.90m (6`2")</td>
-            <td class="border">84kg (185 lbs)</td>
-            <td class="border">30세</td>
-            <td class="border">그리스 (Greece)</td>
-          </tr>
-          <tr>
-            <td class="border">bbbbb</td>
-            <td class="border">3 & forward</td>
-            <td class="border">2.00m (6`5")</td>
-            <td class="border">95kg (209 lbs)</td>
-            <td class="border">25세</td>
-            <td class="border">미국 (USA)</td>
-          </tr>
-          <tr>
-            <td class="border">xxxxx</td>
-            <td class="border">7 & center</td>
-            <td class="border">2.11m (6`11")</td>
-            <td class="border">129kg (284lbs)</td>
-            <td class="border">28세</td>
-            <td class="border">캐나다 (Canada)</td>
-          </tr>
+          {#each Playerroaster as player, ArrayIndex}
+            <tr
+              class="firsttr"
+              on:click={() => {
+                SelectPlayer(ArrayIndex);
+              }}
+            >
+              <td class="playernametd">
+                <img
+                  src="https://cdn.nba.com/headshots/nba/latest/1040x760/{player[6]}.png"
+                  onerror="this.src='https://cdn.nba.com/headshots/nba/latest/1040x760/fallback.png'"
+                  alt="TeamLogo"
+                  class="playerimage"
+                />
+                {player[0]}
+              </td>
+              {#if player[1] === null}
+                <td>--</td>
+              {:else}
+                <td>{player[1]}</td>
+              {/if}
+              <td>{player[2]}</td>
+              <td>{player[3]}</td>
+              <td
+                >{(parseFloat(player[4].replace("-", ".")) * 0.3048).toFixed(2)}
+                m</td
+              >
+              <td>{(player[5] * 0.453592).toFixed(0)} kg</td>
+            </tr>
+          {/each}
         </table>
+      </div>
     </div>
-  </div>
+  {/if}
 
-  <div class="groupbox3">
-    <div class="name">Stephen Curry</div>
-    <div class="image">
-      <img src="https://cdn.nba.com/headshots/nba/latest/1040x760/201939.png" alt="Player Headshot">
+  {#if Mainplayer.length > 0}
+    <div id="section" class="groupbox3">
+      <div class="name">{MainplayerSeason}년도 {Mainplayer[1]}</div>
+      <div class="image">
+        <img
+          src="https://cdn.nba.com/headshots/nba/latest/1040x760/{Mainplayer[0]}.png"
+          onerror="this.src='https://cdn.nba.com/headshots/nba/latest/1040x760/fallback.png'"
+          alt="Player Headshot"
+        />
+      </div>
+
+      <table class="table">
+        <tr class="th">
+          <th class="border">경기 당 평균 출전시간</th>
+          <th class="border">경기 당 평균 득점</th>
+          <th class="border">경기 당 평균 리바운드</th>
+          <th class="border">경기 당 평균 어시스트</th>
+        </tr>
+        <tr>
+          <td class="border">{parseFloat(Mainplayerstats[0]).toFixed(1)!==undefined?Mainplayerstats[0]:"--"}</td>
+          <td class="border">{parseFloat(Mainplayerstats[1]).toFixed(1)!==undefined?Mainplayerstats[1]:"--"}</td>
+          <td class="border">{parseFloat(Mainplayerstats[2]).toFixed(1)!==undefined?Mainplayerstats[2]:"--"}</td>
+          <td class="border">{parseFloat(Mainplayerstats[3]).toFixed(1)!==undefined?Mainplayerstats[3]:"--"}</td>
+        </tr>
+      </table>
+
+      <table class="table">
+        <tr class="th">
+          <th class="border">키</th>
+          <th class="border">몸무게</th>
+          <th class="border">국적</th>
+          <th class="border">등번호 & 포지션</th>
+        </tr>
+        <tr>
+          <td class="border">{((parseFloat(Mainplayer[2].replace("-", ".")))* 0.3048).toFixed(2)}m</td>
+          <td class="border">{((Mainplayer[3])* 0.453592).toFixed(0)}kg</td>
+          <td class="border">{Mainplayer[5]}</td>
+          <td class="border">
+            {#if Mainplayer[6] === ""}
+              --번
+            {:else}
+              {Mainplayer[6]}번
+            {/if}
+            & {#if Mainplayer[7] === "Guard"}
+              가드
+            {:else if Mainplayer[7] === "Forward"}
+              포워드
+            {:else if Mainplayer[7] === "Center"}
+              센터
+            {:else if Mainplayer[7] === "Guard-Forward"}
+              가드 - 포워드
+            {:else if Mainplayer[7] === "Forward-Center"}
+              포워드 - 센터
+            {/if}
+          </td>
+        </tr>
+        <tr class="th">
+          <th class="border">나이</th>
+          <th class="border">생년원일</th>
+          <th class="border">판타지 포인트</th>
+          <th class="border">경력</th>
+        </tr>
+        <tr>
+          <td class="border">
+              {parseFloat(SelectedSeason.slice(0,5)) - (Mainplayer[4].slice(0,4)) +1}세
+          </td>
+          <td class="border"
+            >{Mainplayer[4]
+              .replace("-", "년 ")
+              .replace("-", "월 ")
+              .replace("T00:00:00", "일 ")}</td
+          >
+          <td class="border">{Mainplayerstats[4]!==undefined?Mainplayerstats[4]:"--"}</td>
+          <td class="border">{Mainplayer[8]}년차</td>
+        </tr>
+      </table>
     </div>
-  
-    <table class="table">
-      <tr class="th">
-        <th class="border">경기 당 평균 출전시간</th>
-        <th class="border">경기 당 평균 득점</th>
-        <th class="border">경기 당 평균 리바운드</th>
-        <th class="border">경기 당 평균 어시스트</th>        
-      </tr>
-      <tr>
-        <td class="border">34.7</td>
-        <td class="border">29.4</td>
-        <td class="border">6.1</td>
-        <td class="border">6.3</td>
-      </tr>
-    </table>
-
-    <table class="table">
-      <tr class="th">
-        <th class="border">키</th>
-        <th class="border">몸무게</th>
-        <th class="border">국적</th>
-        <th class="border">등번호 & 포지션</th>
-      </tr>
-      <tr>
-        <td class="border">1.88m (6'2")</td>
-        <td class="border">84kg (185lb)</td>
-        <td class="border">미국 (USA)</td>
-        <td class="border">30 & guard</td>
-      </tr>
-      <tr class="th">
-        <th class="border">나이</th>
-        <th class="border">생년원일</th>
-        <th class="border">판타지 포인트</th>
-        <th class="border">경력</th>
-      </tr>
-      <tr>
-        <td class="border">35세</td>
-        <td class="border">1988년 7월 8일</td>
-        <td class="border">46.8</td>
-        <td class="border">14년차</td>
-      </tr>
-    </table>
-    
-  </div>
- 
+  {:else}
+    <div id="section" class="airbox"></div>
+  {/if}
 </div>
 
 <style>
@@ -171,6 +508,25 @@
     overflow: auto;
   }
 
+  th {
+    border: 1px solid black;
+    background-color: rgb(229, 231, 235);
+  }
+
+  td {
+    border: 1px solid black;
+    text-align: center;
+  }
+
+  .firsttr {
+    background-color: white;
+  }
+
+  .firsttr:hover {
+    cursor: pointer;
+    background-color: #d0e3ed;
+  }
+
   .search {
     font-size: 15px;
     background-color: rgb(121 207 159);
@@ -181,6 +537,17 @@
     border: 1px solid black;
     margin-top: 21px;
     margin-left: 30px;
+  }
+
+  .playernametd {
+    text-align: left;
+  }
+
+  .playerimage {
+    display: inline;
+    width: 75px;
+    height: 60px;
+    margin-right: 10px;
   }
 
   .option {
@@ -205,7 +572,7 @@
     background-color: rgb(233, 196, 240);
     margin: 0 auto;
     padding-top: 30px;
-    padding-bottom: 30px  ;
+    padding-bottom: 30px;
   }
 
   .table {
@@ -234,7 +601,7 @@
   }
 
   .name {
-    font-size: 40px;
+    font-size: 35px;
     font-weight: bold;
     text-align: center;
     margin-bottom: 20px;
@@ -273,6 +640,11 @@
     background-color: white;
     border-radius: 20px;
     margin-bottom: 50px;
+  }
+
+  .airbox{
+    width: 1115px;
+    height: 1030px;
   }
 
   .selectinformation {
