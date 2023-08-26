@@ -403,9 +403,9 @@
               </td>
               <td>{player[1]}세</td>
               <td>{player[2]}</td>
-              <td>{player[3]}</td>
-              <td>{player[4]}</td>
-              <td>{player[5]}</td>
+              <td>{player[3].toFixed(1)}</td>
+              <td>{player[4].toFixed(1)}</td>
+              <td>{player[5].toFixed(1)}</td>
             </tr>
           {/each}
         </table>
