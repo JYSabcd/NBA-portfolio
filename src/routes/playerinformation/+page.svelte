@@ -381,7 +381,7 @@
                 <img
                   src="https://cdn.nba.com/headshots/nba/latest/1040x760/{player[6]}.png"
                   onerror="this.src='https://cdn.nba.com/headshots/nba/latest/1040x760/fallback.png'"
-                  alt="TeamLogo"
+                  alt="playerimg"
                   class="playerimage"
                 />
                 {player[0]}
@@ -424,10 +424,10 @@
           <th class="border">경기 당 평균 어시스트</th>
         </tr>
         <tr>
-          <td class="border">{parseFloat(Mainplayerstats[0]).toFixed(1)!==undefined?Mainplayerstats[0]:"--"}</td>
-          <td class="border">{parseFloat(Mainplayerstats[1]).toFixed(1)!==undefined?Mainplayerstats[1]:"--"}</td>
-          <td class="border">{parseFloat(Mainplayerstats[2]).toFixed(1)!==undefined?Mainplayerstats[2]:"--"}</td>
-          <td class="border">{parseFloat(Mainplayerstats[3]).toFixed(1)!==undefined?Mainplayerstats[3]:"--"}</td>
+          <td class="border">{Mainplayerstats[0]!==undefined?parseFloat(Mainplayerstats[0]).toFixed(1):"--"}</td>
+          <td class="border">{Mainplayerstats[1]!==undefined?parseFloat(Mainplayerstats[1]).toFixed(1):"--"}</td>
+          <td class="border">{Mainplayerstats[2]!==undefined?parseFloat(Mainplayerstats[2]).toFixed(1):"--"}</td>
+          <td class="border">{Mainplayerstats[3]!==undefined?parseFloat(Mainplayerstats[3]).toFixed(1):"--"}</td>
         </tr>
       </table>
 
@@ -477,7 +477,7 @@
               .replace("-", "월 ")
               .replace("T00:00:00", "일 ")}</td
           >
-          <td class="border">{Mainplayerstats[4]!==undefined?Mainplayerstats[4]:"--"}</td>
+          <td class="border">{Mainplayerstats[4]!==undefined?parseFloat(Mainplayerstats[4]).toFixed(1):"--"}</td>
           <td class="border">{Mainplayer[8]}년차</td>
         </tr>
       </table>
