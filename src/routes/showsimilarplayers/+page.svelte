@@ -395,7 +395,8 @@
               <td class="playernametd">
                 <img
                   src="https://cdn.nba.com/headshots/nba/latest/1040x760/{player[6]}.png"
-                  alt="TeamLogo"
+                  onerror="this.src='https://cdn.nba.com/headshots/nba/latest/1040x760/fallback.png'"
+                  alt="playerimg"
                   class="playerimage"
                 />
                 {player[0]}
