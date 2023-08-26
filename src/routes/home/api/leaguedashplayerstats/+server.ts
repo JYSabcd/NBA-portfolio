@@ -42,9 +42,21 @@ const arrHeader = ['PLAYER_ID','PLAYER_NAME','TEAM_ID','TEAM_ABBREVIATION',
 export async function GET({url}) {
 	
     //console.log(url);
-    //console.log(url.searchParams.get('Conference'));
 
-    let URL = "https://stats.nba.com/stats/leaguedashplayerstats?LastNGames=0&LeagueID=00&MeasureType=Base&Month=0&OpponentTeamID=0&Period=0&PerMode=PerGame&PlusMinus=N&Season=2022-23"
+    /** @type {string} */
+    let FromDate = url.searchParams.get('DateFrom');    //  'YYYY-MM-DD'
+    let nYear = parseInt(FromDate?.slice(0,4)); //  YYYY
+    let nMonth = parseInt(FromDate?.slice(5,7)); //  MM
+
+    let strSeason = ""; //  "2022-23"
+    if(nMonth <= 6){
+        strSeason = `${nYear-1}-${nYear%100}`;
+    }else{
+        strSeason = `${nYear}-${(nYear+1)%100}`;
+    }
+
+    let URL = "https://stats.nba.com/stats/leaguedashplayerstats?LastNGames=0&LeagueID=00&MeasureType=Base&Month=0&OpponentTeamID=0&Period=0&PerMode=PerGame&PlusMinus=N"
+        + "&Season=" + strSeason
         + "&DateFrom=" + url.searchParams.get('DateFrom')
         + "&DateTo=" + url.searchParams.get('DateTo');
 
