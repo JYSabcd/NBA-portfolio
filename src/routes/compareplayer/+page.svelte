@@ -7,6 +7,7 @@
     let PlayerCT2 = PlayerCT_PlusButton; //  Player Container Type 2
 
     let IsAverageMode = false;  //  false : 평균값 사용 안함, true : 평균값 사용 (Player2 정보에 평균값 표시)
+    let IsSelectedSeason1Mode = false
 
     const SeasonArray = [
         "2022-23",
@@ -312,6 +313,7 @@
         const response1 = await fetch(
             `compareplayer/api/playerrosters?Season=${SelectedSeason1}&TeamID=${TeamID1}`
         );
+        IsSelectedSeason1Mode = true;
         playerrosters1 = await response1.json();
     }
 
@@ -335,7 +337,6 @@
             `compareplayer/api/playerstats?Season=${SelectedSeason1}&PlayerID=${SelectedPlayerInfo1[1]}`
         );
         PlayerData1 = await response3.json();
-        console.log("PlayerDataLoading1", PlayerData1);
     }
 
     async function PlayerDataLoading2() {
@@ -343,7 +344,6 @@
             `compareplayer/api/playerstats?Season=${SelectedSeason2}&PlayerID=${SelectedPlayerInfo2[1]}`
         );
         PlayerData2 = await response4.json();
-        console.log("PlayerDataLoading2", PlayerData2);
     }
     
     async function Averagebutton() {
@@ -359,8 +359,6 @@
         );
         IsAverageMode = true;
         Average = await response5.json();
-
-        console.log("Averagebutton", Average);
     }
 
     function Selecting1() {
@@ -397,6 +395,7 @@
         Average = [];
 
         SelectedSeason1 = "";
+        IsSelectedSeason1Mode = false;
         SelectedTeamname1 = "";
         SelectedPlayerInfo1 = [];
         SelectedSeason2 = "";
@@ -415,6 +414,10 @@
         SelectedSeason1 = "";
         SelectedTeamname1 = "";
         SelectedPlayerInfo1 = [];
+
+        if(IsAverageMode === true){
+            Reset2();
+        }
     }
 
     function Reset2() {
@@ -567,82 +570,101 @@
             </div>
 
             <div class="player-container">
-                <div class="text">선수2 이름 : {SelectedPlayerInfo2[0]?SelectedPlayerInfo2[0]:"---"}</div>
+                
+                    {#if IsAverageMode === true}
+                        {#if SelectedSeason1 !== ""}
+                            <div class="text">선수2 이름 : {SelectedSeason1}년도 평균 기록 (규정경기 수 O)</div>
+                            <img
+                                src="/NBA-Average-Logo.png"
+                                alt="NBA logo"
+                            />
 
-                {#if PlayerCT2 === PlayerCT_PlusButton}
-                    <div class="comparebox firstp2" on:click={Selecting2}>
-                        +
-                    </div>
-                {:else if PlayerCT2 === PlayerCT_Selecting}
-                    <div class="comparebox secondp2">
-                        <div class="distance">
-                            <div>시즌연도</div>
-                            <select
-                                bind:value={SelectedSeason2}
-                                on:change={ChangeRoster2}
-                            >
-                                <option value="" hidden selected
-                                    >연도를 선택해주세요</option
-                                >
-                                {#each SeasonArray as Season}
-                                    <option class="option" value={Season}>
-                                        {Season}
-                                    </option>
-                                {/each}
-                            </select>
-                        </div>
-                        <div class="distance">
-                            <div>팀이름</div>
-                            <select
-                                bind:value={SelectedTeamname2}
-                                on:change={ChangeRoster2}
-                            >
-                                <option value="" hidden selected>
-                                    팀을 선택해주세요
-                                </option>
-                                {#each TeamnameArray as teamname}
-                                    <option class="option" value={teamname}>
-                                        {teamname}
-                                    </option>
-                                {/each}
-                            </select>
-                        </div>
-                        <div class="distance">
-                            <div>선수 로스터</div>
-                            <select bind:value={SelectedPlayerInfo2}>
-                                <option value="" hidden selected>
-                                    팀 연도를 먼저 선택해주세요.
-                                </option>
-                                {#each playerrosters2 as playerinfo}
-                                    <option class="option" value={playerinfo}>
-                                        {playerinfo[0]}
-                                    </option>
-                                {/each}
-                            </select>
-                        </div>
-                        {#if SelectedSeason2 !== "" && SelectedTeamname2 !== "" && SelectedPlayerInfo2[0] !== ""}
-                            <button
-                                class="NBAAverage distance"
-                                on:click={Selected2}
-                                >조회하기
-                            </button>
+                            <div class="reset center" on:click={Reset2}>
+                                선수2 초기화
+                            </div>
                         {:else}
-                            <button class="NBAAverage distance">
-                                조회하기
-                            </button>
+                            <div class="text">선수2 이름 : {SelectedPlayerInfo2[0]?SelectedPlayerInfo2[0]:"---"}</div>
+                            <div class="comparebox firstp2" on:click={Selecting2}>
+                                +
+                            </div>
                         {/if}
-                    </div>
-                {:else if PlayerCT2 === PlayerCT_Selected}
-                    <img
-                        src="https://cdn.nba.com/headshots/nba/latest/1040x760/{SelectedPlayerInfo2[1]}.png"
-                        alt="Player Headshot"
-                    />
+                    {:else}
+                        <div class="text">선수2 이름 : {SelectedPlayerInfo2[0]?SelectedPlayerInfo2[0]:"---"}</div>
+                        {#if PlayerCT2 === PlayerCT_PlusButton}
+                        <div class="comparebox firstp2" on:click={Selecting2}>
+                            +
+                        </div>
+                        {:else if PlayerCT2 === PlayerCT_Selecting}
+                            <div class="comparebox secondp2">
+                                <div class="distance">
+                                    <div>시즌연도</div>
+                                    <select
+                                        bind:value={SelectedSeason2}
+                                        on:change={ChangeRoster2}
+                                    >
+                                        <option value="" hidden selected
+                                            >연도를 선택해주세요</option
+                                        >
+                                        {#each SeasonArray as Season}
+                                            <option class="option" value={Season}>
+                                                {Season}
+                                            </option>
+                                        {/each}
+                                    </select>
+                                </div>
+                                <div class="distance">
+                                    <div>팀이름</div>
+                                    <select
+                                        bind:value={SelectedTeamname2}
+                                        on:change={ChangeRoster2}
+                                    >
+                                        <option value="" hidden selected>
+                                            팀을 선택해주세요
+                                        </option>
+                                        {#each TeamnameArray as teamname}
+                                            <option class="option" value={teamname}>
+                                                {teamname}
+                                            </option>
+                                        {/each}
+                                    </select>
+                                </div>
+                                <div class="distance">
+                                    <div>선수 로스터</div>
+                                    <select bind:value={SelectedPlayerInfo2}>
+                                        <option value="" hidden selected>
+                                            팀 연도를 먼저 선택해주세요.
+                                        </option>
+                                        {#each playerrosters2 as playerinfo}
+                                            <option class="option" value={playerinfo}>
+                                                {playerinfo[0]}
+                                            </option>
+                                        {/each}
+                                    </select>
+                                </div>
+                            {#if SelectedSeason2 !== "" && SelectedTeamname2 !== "" && SelectedPlayerInfo2[0] !== ""}
+                                <button
+                                    class="NBAAverage distance"
+                                    on:click={Selected2}
+                                    >조회하기
+                                </button>
+                            {:else}
+                                <button class="NBAAverage distance">
+                                    조회하기
+                                </button>
+                            {/if}
+                        </div>
+                    {:else if PlayerCT2 === PlayerCT_Selected}
+                        <img
+                            src="https://cdn.nba.com/headshots/nba/latest/1040x760/{SelectedPlayerInfo2[1]}.png"
+                            alt="Player Headshot"
+                        />
 
-                    <div class="reset center" on:click={Reset2}>
-                        선수2 초기화
-                    </div>
+                        <div class="reset center" on:click={Reset2}>
+                            선수2 초기화
+                        </div>
+                    {/if}
                 {/if}
-            </div>           
+            </div>
         </div>
     </div>
 </div>
@@ -763,6 +785,10 @@
         background-color: #57bd85;
         border-radius: 50px;
         border: 1px solid black;
+    }
+
+    img{
+        aspect-ratio: 1.3/1;
     }
 
     .space {
