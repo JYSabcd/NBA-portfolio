@@ -12,7 +12,7 @@
             <a href="teamranking">
                 <DropdownItem>팀순위</DropdownItem>
             </a>
-            <a href="personalranking">
+            <a href="playerranking">
                 <DropdownItem>개인순위</DropdownItem>
             </a>
         </Dropdown>
