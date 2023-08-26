@@ -8,7 +8,7 @@
 
     let IsAverageMode = false;  //  false : 평균값 사용 안함, true : 평균값 사용 (Player2 정보에 평균값 표시)
     let IsSelectedSeason1Mode = false
-
+    
     const SeasonArray = [
         "2022-23",
         "2021-22",
