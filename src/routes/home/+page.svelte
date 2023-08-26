@@ -73,12 +73,12 @@
 
     let RankAPIData: (number | string)[][];
 
-    let RankArray_PTS = [];
-    let RankArray_REB = [];
-    let RankArray_AST = [];
-    let RankArray_BLK = [];
-    let RankArray_STL = [];
-    let RankArray_FANTASY_PTS = [];
+    let RankArray_PTS: (number | string)[] = [];
+    let RankArray_REB: (number | string)[] = [];
+    let RankArray_AST: (number | string)[] = [];
+    let RankArray_BLK: (number | string)[] = [];
+    let RankArray_STL: (number | string)[] = [];
+    let RankArray_FANTASY_PTS: (number | string)[] = [];
 
     function CompareDescending(a: (number | string)[], b: (number | string)[]) {
         if (a[0] < b[0]) {
