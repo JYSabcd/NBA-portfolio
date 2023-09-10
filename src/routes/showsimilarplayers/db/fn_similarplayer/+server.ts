@@ -1,5 +1,6 @@
 import { json } from '@sveltejs/kit';
-import { Pool } from "pg";
+import pkg from 'pg';
+const { Pool } = pkg;
 
 const config = {
     host: 'localhost',
