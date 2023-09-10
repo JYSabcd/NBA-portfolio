@@ -33,7 +33,8 @@
 
 
 import { json } from '@sveltejs/kit';
-import { Pool } from "pg";
+import pg from "pg";
+const { Pool } = pg;
 //import { native as pg } from 'pg';
 
 const config = {
