@@ -463,7 +463,7 @@
         </tr>
         <tr class="th">
           <th class="border">나이</th>
-          <th class="border">생년원일</th>
+          <th class="border">생년월일</th>
           <th class="border">판타지 포인트</th>
           <th class="border">경력</th>
         </tr>
