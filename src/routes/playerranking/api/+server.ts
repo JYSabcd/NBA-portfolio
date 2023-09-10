@@ -1,5 +1,4 @@
 import { json } from '@sveltejs/kit';
-import { ALL } from 'dns';
 
 const headersList = {
     'Host': 'stats.nba.com',
@@ -33,58 +32,6 @@ const options = {
 // 경기 수 & 출전 시간 & 득점 & 리바운드 & 어시스트 & 스틸 & 블록 & 야투 성공률(%) & 3점 성공률(%) & 자유투 성공률(%)
 const arrHeader = ['PLAYER_NAME','GP','MIN','PTS','REB','AST','STL','BLK','FG_PCT','FG3_PCT','FT_PCT','TEAM_ID','PLAYER_ID'];
 
-export interface Main {
-    resource:   string;
-    parameters: Parameters;
-    resultSets: ResultSet[];
-}
-
-export interface Parameters {
-    MeasureType:      string;
-    PerMode:          string;
-    PlusMinus:        string;
-    PaceAdjust:       string;
-    Rank:             string;
-    LeagueID:         string;
-    Season:           string;
-    SeasonType:       string;
-    PORound:          number;
-    Outcome:          null;
-    Location:         null;
-    Month:            number;
-    SeasonSegment:    null;
-    DateFrom:         null;
-    DateTo:           null;
-    OpponentTeamID:   number;
-    VsConference:     null;
-    VsDivision:       null;
-    TeamID:           number;
-    Conference:       null;
-    Division:         null;
-    GameSegment:      null;
-    Period:           number;
-    ShotClockRange:   null;
-    LastNGames:       number;
-    GameScope:        null;
-    PlayerExperience: null;
-    PlayerPosition:   null;
-    StarterBench:     null;
-    DraftYear:        null;
-    DraftPick:        null;
-    College:          null;
-    Country:          null;
-    Height:           null;
-    Weight:           null;
-    TwoWay:           number;
-    GameSubtype:      null;
-    ActiveRoster:     null;
-}
-
-export interface ResultSet {
-    name:    string;
-    headers: string[];
-    rowSet:  Array<Array<number | string>>;
-}
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({url}) {
