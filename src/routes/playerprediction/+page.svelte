@@ -427,25 +427,17 @@
       <table class="table2">
         <tr class="th">
           <th class="thwidth">나이</th>
-          <th class="thwidth">경기 수</th>
-          <th class="thwidth">평균 출전 시간</th>
           <th class="thwidth">평균 득점</th>
           <th class="thwidth">평균 리바운드</th>
           <th class="thwidth">평균 어시스트</th>
+          <th class="thwidth">경기 수</th>
+          <th class="thwidth">평균 출전 시간</th>
         </tr>
         <tr>
           <td class="center"
             >{parseFloat(SelectedSeason.slice(0, 5)) -
               Mainplayer[2].slice(0, 4) +
               1}세</td
-          >
-          <td class="center"
-            >{Mainplayerstats[0] !== undefined ? Mainplayerstats[0] : "--"}</td
-          >
-          <td class="center"
-            >{Mainplayerstats[1] !== undefined
-              ? parseFloat(Mainplayerstats[1]).toFixed(1)
-              : "--"}</td
           >
           <td class="center"
             >{Mainplayerstats[2] !== undefined
@@ -462,35 +454,21 @@
               ? parseFloat(Mainplayerstats[4]).toFixed(1)
               : "--"}</td
           >
+          <td class="center"
+          >{Mainplayerstats[0] !== undefined ? Mainplayerstats[0] : "--"}</td
+          >
+          <td class="center"
+            >{Mainplayerstats[1] !== undefined
+              ? parseFloat(Mainplayerstats[1]).toFixed(1)
+              : "--"}</td
+          >
         </tr>
       </table>
 
       <img src="/Arrow/Arrow.png" alt="Arrow" class="arrow" />
-
+      
       <table class="table2">
         <tr class="th">
-          <th>나이</th>
-          <th>경기 수</th>
-          <th>평균 출전 시간</th>
-          <th>평균 득점</th>
-          <th>평균 리바운드</th>
-          <th>평균 어시스트</th>
-        </tr>
-        <tr>
-          <td>
-            {parseFloat(SelectedSeason.slice(0, 5)) - Mainplayer[2].slice(0, 4) + 2}세
-          </td>
-          <td>67</td>
-          <td>15.3</td>
-          <td>5.8</td>
-          <td>2.5</td>
-          <td>3.4</td>
-        </tr>
-      </table>
-
-      <table class="table2">
-        <tr class="th">
-          <th>선수 이름</th>
           <th>시즌</th>
           <th>나이</th>
           <th>평균 득점</th>
@@ -501,17 +479,6 @@
         </tr>
         {#each PredictionArray as Prediction}
           <tr>
-            <td class="playernametd">
-              <img
-                class="playerimage"
-                src="https://cdn.nba.com/headshots/nba/latest/1040x760/{Prediction[
-                  'player_id'
-                ]}.png"
-                onerror="this.src='https://cdn.nba.com/headshots/nba/latest/1040x760/fallback.png'"
-                alt="Player Headshot"
-              />
-              {Prediction["player_name"]}
-            </td>
             <td>{Prediction["season"]}</td>
             <td>{Prediction["age"]}세</td>
             <td>{parseFloat(Prediction["pts"]).toFixed(1)}</td>
