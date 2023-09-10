@@ -135,6 +135,8 @@
                                 {/if}
                                 <span>{data[ColIndex]}</span>
                             </td>
+                        {:else if ColIndex === 4}
+                            <td>{Number(data[ColIndex]).toFixed(3)}</td>
                         {:else if ColIndex == 5 || ColIndex == 6 || ColIndex == 7}
                             <td>{(Number(data[ColIndex])*100).toFixed(1)}</td>
                         {:else}
