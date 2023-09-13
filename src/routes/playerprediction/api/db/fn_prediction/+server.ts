@@ -2,14 +2,22 @@ import { json } from '@sveltejs/kit';
 import pkg from 'pg';
 const { Pool } = pkg;
 
+import {env} from '$env/dynamic/private';
+const {
+    DBconfig_host,
+    DBconfig_user,
+    DBconfig_password,
+    DBconfig_database,
+    DBconfig_port
+} = env;
+
+
 const config = {
-    host: 'localhost',
-    // Do not hard code your username and password.
-    // Consider using Node environment variables.
-    user: 'postgres',
-    password: 'sqlpass1!',
-    database: 'NBADB',
-    port: 5432,
+    host: DBconfig_host,
+    user: DBconfig_user,
+    password: DBconfig_password,
+    database: DBconfig_database,
+    port: DBconfig_port,
     ssl: false
 };
 
