@@ -41,6 +41,8 @@
         GetRankFromAPI();
     }
 
+    //  Schedule 컬럼
+    //  game_date,game_id,home_teamid,home_teamabbreviation,home_teamcityname,home_teamname,home_gamescore,away_teamid,away_teamabbreviation,away_teamcityname,away_teamname,away_gamescore
     let schedulearray = [];
 
     async function GetSchedule() {
