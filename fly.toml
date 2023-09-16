@@ -15,3 +15,9 @@ primary_region = "nrt"
   auto_start_machines = true
   min_machines_running = 0
   processes = ["app"]
+[env]
+  DBconfig_host = "nba-project.kro.kr"
+  DBconfig_user = "jys0521"
+  DBconfig_password = "abcdxyz"
+  DBconfig_database = "nbadb"
+  DBconfig_port = 5432
