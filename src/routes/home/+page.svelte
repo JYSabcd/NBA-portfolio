@@ -38,7 +38,7 @@
     $: {
         selecteddate = dayjs($store?.selected).format(format);
         GetSchedule();
-        GetRankFromAPI();
+        // GetRankFromAPI();
     }
 
     //  Schedule 컬럼
@@ -46,20 +46,6 @@
     let schedulearray = [];
 
     async function GetSchedule() {
-        // As I load the data initially with PageServerLoad (https://kit.svelte.dev/docs/load#page-data), I for my part do not need to do a fetch in a svelte component while it is rendered server side. But I do need to do a fetch later on, which will only be on client side. My solution was to wrap it with the browser environment variable from sveltekit.
-
-        // import { browser } from "$app/environment";
-
-        // if (browser) {
-        // const res = await fetch(
-        //     // url
-        // );
-        // data = await res.json();
-        // }
-        // With this I did not get the error "Cannot use relative URL (...) with global fetch".
-
-        // Just writing it as this may help some others reading this.
-
         if (!browser) {
             return;
         }
@@ -67,10 +53,12 @@
         const response = await fetch(
             `home/db/getschedule?SelectedDate=${selecteddate}`
         );
-        //const response = await fetch(`teamranking/api?Conference=${'East'}&Season=${'2022-23'}&SeasonType=${'Regular Season'}`);
+
         schedulearray = await response.json();
 
         console.log(schedulearray);
+
+        GetRankFromAPI();
     }
 
     let RankAPIData: (number | string)[][];

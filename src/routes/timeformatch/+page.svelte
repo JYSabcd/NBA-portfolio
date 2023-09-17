@@ -14,6 +14,9 @@
     let PlaybyPlayArray = [];
     let PlayerStatArray = [];
 
+    let CurrentScore_Home = 0;
+    let CurrentScore_Away = 0;
+
     async function GetScheduleByTeam() {
         let TeamID = TeamObj[SelectedTeamname]["TeamID"];
         const response = await fetch(
@@ -24,10 +27,14 @@
     }
 
     async function GetPlaybyPlay(GameID) {
+        //console.log(`SelectGame(${GameID})`);
+
         const response = await fetch(
             `timeformatch/api/playbyplay?GameID=${GameID}`
         );
         PlaybyPlayArray = await response.json();
+
+        console.log(PlaybyPlayArray);
     }
 
     async function GetBoxScoreTraditional(GameID) {
@@ -36,15 +43,22 @@
         );
         PlayerStatArray = await response.json();
 
-        console.log(PlayerStatArray);
+        //console.log(PlayerStatArray);
     }
 
     function SelectGame(ArrayIndex) {
-        console.log(`SelectGame(${ArrayIndex})`);
+        //console.log(`SelectGame(${ArrayIndex})`);
         SelectedGame = ScheduleArray[ArrayIndex];
+
+        CurrentScore_Home = 0;
+        CurrentScore_Away = 0;
 
         GetPlaybyPlay(SelectedGame["game_id"]);
         GetBoxScoreTraditional(SelectedGame["game_id"]);
+    }
+
+    function SelectAction(ArrayIndex) {
+        console.log(`SelectAction(${ArrayIndex})`);
     }
 </script>
 
@@ -123,45 +137,116 @@
         {/each}
     </div>
 
-    <div>
+    <div class="selectedgame_title">
         {#if SelectedGame["game_date"] === undefined}
             <div class="title">경기를 선택해 주세요.</div>
         {:else}
             <div class="title">{SelectedGame["game_date"].slice(0, 10)}</div>
-            <div class="imagecenter">
+            <div>
                 <img
                     src="/TeamLogo/{SelectedGame['home_teamid']}.svg"
                     alt="HomeTeamLogo"
-                    class="image"
+                    class="TeamLogoImage"
                 />
-                <div class="title inlineblock">
-                    {SelectedGame["home_gamescore"]} VS {SelectedGame[
-                        "away_gamescore"
-                    ]}
+                <div class="selectedgame_score">
+                    {SelectedGame["home_gamescore"]}
+                </div>
+                <div class="selectedgame_vs">VS</div>
+                <div class="selectedgame_score">
+                    {SelectedGame["away_gamescore"]}
                 </div>
                 <img
                     src="/TeamLogo/{SelectedGame['away_teamid']}.svg"
                     alt="AwayTeamLogo"
-                    class="image"
+                    class="TeamLogoImage"
                 />
             </div>
         {/if}
-
-        <img
-            src="/basketballcourt.jpg"
-            alt="basketballcourt.jpg"
-            class="court"
-        />
     </div>
 
-    <input class="center" type="range" min="0" max="48" list="tickmarks" />
+    <div class="PbyPContainer">
+        <div class="PbyP_ActionContainer">
+            {#each PlaybyPlayArray as PbyPAction, ArrayIndex}
+                {#if ArrayIndex === 0}
+                <div class="PbyP_Action_Common PbyP_Action_Home">
+                    <div class="PbyP_Action_JumpBall">
+                        <div class="PbyP_Action_Time">
+                            <span class="PbyP_Text_Big">Q{PbyPAction['period']}</span><br>
+                            <!-- PT01M17.00S -> 01:17 -->
+                            <span class="PbyP_Text_Small">{PbyPAction['clock'].replace('PT','').replace('M',':').slice(0,5)}</span>
+                        </div>
+                        <img
+                            src="/TeamLogo/{SelectedGame['home_teamid']}.svg"
+                            alt="TeamLogo"
+                            class="PbyP_Action_Image"
+                        />
+                        <div class="PbyP_Action_Desc_JumpBall">
+                            <span class="PbyP_Text_JumpBall">Game Start - Jump Ball</span><br>
+                            <span class="PbyP_Text_Small">{PbyPAction['description']}</span>
+                        </div>
+                        <img
+                            src="/TeamLogo/{SelectedGame['away_teamid']}.svg"
+                            alt="TeamLogo"
+                            class="PbyP_Action_Image"
+                        />
+                    </div>
+                </div>
+                {:else}
+                <div
+                    class={PbyPAction["location"] === "h"
+                        ? "PbyP_Action_Common PbyP_Action_Home"
+                        : "PbyP_Action_Common PbyP_Action_Away"}
+                    on:click={() => {
+                        SelectAction(ArrayIndex);
+                    }}
+                >
+                    <div class="PbyP_Action">
+                        <div class="PbyP_Action_Time">
+                            <span class="PbyP_Text_Big">Q{PbyPAction['period']}</span><br>
+                            <!-- PT01M17.00S -> 01:17 -->
+                            <span class="PbyP_Text_Small">{PbyPAction['clock'].replace('PT','').replace('M',':').slice(0,5)}</span>
+                        </div>
+                        <img
+                            src="/TeamLogo/{PbyPAction['teamId']}.svg"
+                            alt="TeamLogo"
+                            class="PbyP_Action_Image"
+                        />
+                        <img
+                            src="https://cdn.nba.com/headshots/nba/latest/1040x760/{PbyPAction[
+                                'personId'
+                            ]}.png"
+                            onerror="this.src='https://cdn.nba.com/headshots/nba/latest/1040x760/fallback.png'"
+                            alt="PlayerHeadShot"
+                            class="PbyP_Action_Image"
+                        />
+                        <div class="PbyP_Action_Desc">
+                            {#if PbyPAction['pointsTotal'] === 0}
+                                <span class="PbyP_Text_Miss">Missed</span><span class="PbyP_Text_Big">&nbsp;&nbsp;&nbsp;[{PbyPAction['scoreHome']} vs {PbyPAction['scoreAway']}]</span><br>
+                                <span class="PbyP_Text_Small">{PbyPAction['subType']}</span>
+                            {:else}
+                                <span class="PbyP_Text_Made">{PbyPAction['pointsTotal']} Points</span><span class="PbyP_Text_Big">&nbsp;&nbsp;&nbsp;[{PbyPAction['scoreHome']} vs {PbyPAction['scoreAway']}]</span><br>
+                                <span class="PbyP_Text_Small">{PbyPAction['subType']}</span>
+                            {/if}
+                        </div>
+                    </div>
+                </div>
+                {/if}
+            {/each}
+        </div>
+
+        <div class="PbyP_Court">
+
+        </div>
+    </div>
+
+    <!-- <input class="center" type="range" min="0" max="48" list="tickmarks" />
     <datalist id="tickmarks">
         <option value="0">시작</option>
         <option value="12">1Q 끝</option>
         <option value="24">2Q 끝</option>
         <option value="36">3Q 끝</option>
         <option value="48">4Q 끝</option>
-    </datalist>
+    </datalist> -->
 
     <div class="tposition">
         {#if SelectedGame["game_id"] !== undefined && PlayerStatArray.length > 0}
@@ -169,8 +254,9 @@
                 홈팀 : <img
                     src="/TeamLogo/{SelectedGame['home_teamid']}.svg"
                     alt="AwayTeamLogo"
-                    class="image"
+                    class="TeamLogoImage"
                 />
+                {SelectedGame["home_teamcityname"]}
                 {SelectedGame["home_teamname"]}
             </div>
             <table>
@@ -198,16 +284,28 @@
                                 {PlayerStat[2]}
                             </td>
                             {#if PlayerStat[4] === null}
-                                <td colspan='8'>{PlayerStat[3]}</td>
+                                <td colspan="8">{PlayerStat[3]}</td>
                             {:else}
-                                <td>{parseInt(PlayerStat[4])}{PlayerStat[4].slice(-3)}</td>
+                                <td
+                                    >{parseInt(
+                                        PlayerStat[4]
+                                    )}{PlayerStat[4].slice(-3)}</td
+                                >
                                 <td>{PlayerStat[5]}</td>
                                 <td>{PlayerStat[6]}</td>
                                 <td>{PlayerStat[7]}</td>
                                 <td>{PlayerStat[8]}</td>
                                 <td>{PlayerStat[9]}</td>
-                                <td>{(Number(PlayerStat[10])*100).toFixed(1)}</td>
-                                <td>{(Number(PlayerStat[11])*100).toFixed(1)}</td>
+                                <td
+                                    >{(Number(PlayerStat[10]) * 100).toFixed(
+                                        1
+                                    )}</td
+                                >
+                                <td
+                                    >{(Number(PlayerStat[11]) * 100).toFixed(
+                                        1
+                                    )}</td
+                                >
                             {/if}
                         </tr>
                     {/if}
@@ -221,8 +319,9 @@
                 어웨이팀 : <img
                     src="/TeamLogo/{SelectedGame['away_teamid']}.svg"
                     alt="AwayTeamLogo"
-                    class="image"
+                    class="TeamLogoImage"
                 />
+                {SelectedGame["away_teamcityname"]}
                 {SelectedGame["away_teamname"]}
             </div>
             <table>
@@ -250,16 +349,28 @@
                                 {PlayerStat[2]}
                             </td>
                             {#if PlayerStat[4] === null}
-                                <td colspan='8'>{PlayerStat[3]}</td>
+                                <td colspan="8">{PlayerStat[3]}</td>
                             {:else}
-                                <td>{parseInt(PlayerStat[4])}{PlayerStat[4].slice(-3)}</td>
+                                <td
+                                    >{parseInt(
+                                        PlayerStat[4]
+                                    )}{PlayerStat[4].slice(-3)}</td
+                                >
                                 <td>{PlayerStat[5]}</td>
                                 <td>{PlayerStat[6]}</td>
                                 <td>{PlayerStat[7]}</td>
                                 <td>{PlayerStat[8]}</td>
                                 <td>{PlayerStat[9]}</td>
-                                <td>{(Number(PlayerStat[10])*100).toFixed(1)}</td>
-                                <td>{(Number(PlayerStat[11])*100).toFixed(1)}</td>
+                                <td
+                                    >{(Number(PlayerStat[10]) * 100).toFixed(
+                                        1
+                                    )}</td
+                                >
+                                <td
+                                    >{(Number(PlayerStat[11]) * 100).toFixed(
+                                        1
+                                    )}</td
+                                >
                             {/if}
                         </tr>
                     {/if}
@@ -412,7 +523,7 @@
         margin: auto 3px;
     }
 
-    .playername{
+    .playername {
         width: 250px;
         text-align: left;
     }
@@ -431,9 +542,37 @@
         text-align: center;
     }
 
+    .selectedgame_title {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 50px;
+    }
+
     .title {
-        font-weight: bold;
+        text-align: center;
         font-size: 20px;
+        font-weight: bold;
+    }
+
+    .selectedgame_score {
+        display: inline-block;
+        width: 100px;
+        text-align: center;
+        font-size: 50px;
+        font-weight: bold;
+        line-height: 100px;
+    }
+
+    .selectedgame_vs {
+        display: inline-block;
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 
     .center {
@@ -441,29 +580,126 @@
         width: 100%;
     }
 
-    .imagecenter {
-        display: inline-block;
-        margin-left: 480px;
+    .PbyPContainer {
+        display: flex;
+        width: 100%;
+        margin: 50px auto;
     }
 
-    .title {
+    .PbyP_ActionContainer {
+        width: 500px;
+        height: 500px;
+        margin-left: 30px;
+        margin-right: 30px;
+        overflow-y: scroll;
+        border: 1px solid black;
+        border-radius: 5px;
+        /* background-color: burlywood; */
+    }
+
+    .PbyP_Action_Common {
+        width: 468px;
+        height: 54px;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        margin: 2px;
+    }
+
+    .PbyP_Action_Home {
+        align-items: start;
+        /* background-color: blue; */
+    }
+
+    .PbyP_Action_Away {
+        align-items: end;
+        /* background-color: red; */
+    }
+
+    .PbyP_Action {
+        width: 360px;
+        height: 100%;
+        display: flex;
+        border: 1px solid black;
+        /* background-color: cornflowerblue; */
+    }
+
+    .PbyP_Action_JumpBall {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        border: 1px solid black;
+        /* background-color: cornflowerblue; */
+    }
+
+    .PbyP_Action_Image {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+    }
+
+    .PbyP_Action_Time {
+        width: 60px;
+        height: 50px;
         text-align: center;
-        font-size: 20px;
-        font-weight: bold;
-        margin-top: 20px;
     }
 
-    .inlineblock {
-        display: inline-block;
+    .PbyP_Action_Desc {
+        width: 200px;
+        height: 50px;
+        text-align: center;
     }
 
-    .court {
+    .PbyP_Action_Desc_JumpBall {
+        width: 300px;
+        height: 50px;
+        text-align: center;
+    }
+
+    .PbyP_Text_JumpBall {
+        width: 80px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: bolder;
+    }
+
+    .PbyP_Text_Made {
+        width: 80px;
+        color: green;
+        text-align: center;
+        font-size: 18px;
+        font-weight: bolder;
+    }
+
+    .PbyP_Text_Miss {
+        width: 80px;
+        color: red;
+        text-align: center;
+        font-size: 18px;
+        font-weight: bolder;
+    }
+
+    .PbyP_Text_Big {
+        width: 80px;
+        color: black;
+        text-align: center;
+        font-size: 18px;
+    }
+
+    .PbyP_Text_Small {
+        width: 80px;
+        color: black;
+        text-align: center;
+        font-size: 13px;
+    }
+
+    .PbyP_Court {
+        width: 700px;
+        background-image: url("/basketballcourt.jpg");
         display: inline-block;
-        width: 70%;
-        height: 10%;
-        margin-left: 200px;
-        margin-top: 30px;
-        margin-bottom: 30px;
+        border: 1px solid black;
+        background-repeat: no-repeat;
+        background-size : contain;
     }
 
     .center {
@@ -484,7 +720,7 @@
         margin: 50px auto;
     }
 
-    .image {
+    .TeamLogoImage {
         display: inline-block;
         width: 100px;
         height: 100px;

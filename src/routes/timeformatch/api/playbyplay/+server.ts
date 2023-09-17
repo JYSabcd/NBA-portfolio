@@ -19,55 +19,74 @@ const options = {
     headers: headersList
 };
 
-// 반환된 전체 헤더
-// ["GAME_ID","TEAM_ID","TEAM_ABBREVIATION","TEAM_CITY","PLAYER_ID","PLAYER_NAME","NICKNAME","START_POSITION","COMMENT",
-// "MIN","FGM","FGA","FG_PCT","FG3M","FG3A","FG3_PCT","FTM","FTA","FT_PCT","OREB","DREB","REB","AST","STL","BLK","TO",
-// "PF","PTS","PLUS_MINUS"]
-
-/** @type {string[]} */
-const arrHeader = ['PLAYER_NAME','MIN','PTS','REB','AST','STL','BLK','FG_PCT','FG3_PCT','PLAYER_ID'];
-
+// {
+//     "actionNumber": 2,
+//     "clock": "PT11M44.00S",
+//     "period": 1,
+//     "teamId": 1610612744,
+//     "teamTricode": "GSW",
+//     "personId": 201142,
+//     "playerName": "Durant",
+//     "playerNameI": "K. Durant",
+//     "xLegacy": 166,
+//     "yLegacy": 100,
+//     "shotDistance": 19,
+//     "shotResult": "Missed",
+//     "isFieldGoal": 1,
+//     "scoreHome": "0",
+//     "scoreAway": "0",
+//     "pointsTotal": 0,
+//     "location": "v",
+//     "description": "MISS Durant 19' Step Back Jump Shot",
+//     "actionType": "Missed Shot",
+//     "subType": "Step Back Jump shot",
+//     "videoAvailable": 0,
+//     "actionId": 3
+//   },
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({url}) {
 
-    let URL = "https://stats.nba.com/stats/boxscoretraditionalv2"
-        + "?GameID=" + url.searchParams.get('GameID');
+    let URL = "https://stats.nba.com/stats/playbyplayv3?EndPeriod=10&EndRange=55800&RangeType=2&StartPeriod=1&StartRange=0"
+        + "&GameID=" + url.searchParams.get('GameID');
+
     const res = await fetch(URL, options);
     const ResJson = await res.json();
 
-    /** @type {number[]} */
-    let arrHeaderIndex: number[] = [];
-    /** @type {(number|string)[][]} */
-    let TableData: (number|string)[][] = [];
+    /** @type {{}[]} */
+    let TableData: {}[] = [];
 
-    /** @type {string[]} */
-    let headers = [];
-    headers = ResJson.resultSets[0].headers;
+    /** @type {{}[]} */
+    let actions = ResJson.game.actions;
 
-    for(let i = 0; i < arrHeader.length; i++){
-        let index = headers.indexOf(arrHeader[i]);
+    let CurrentScore_Home =  0;
+    let CurrentScore_Away =  0;
 
-        if(index === -1){
-            console.error("헤더 이름을 찾지 못했다.", arrHeader[i]);
-            index = 0;  //  배열 인덱스에 -1 이 들어가면 에러가 발생하므로 0으로 바꿔주자.. 하지만 잘못된 값을 참조할것이다.
-        }
-
-        arrHeaderIndex[i] = index;
-    }
-
-    /** @type {(number|string)[][]} */
-    let rowSet = ResJson.resultSets[0].rowSet;
-
-    for(let i = 0; i < rowSet.length; i++){
-        /** @type {(number|string)[]} */
-        let rowData = [];
-
-        for(let j = 0; j < arrHeaderIndex.length; j++){
-            rowData.push(rowSet[i][arrHeaderIndex[j]]);
+    for(let i = 0; i < actions.length; i++){
+        if(actions[i]["actionType"] !== "Made Shot" 
+        && actions[i]["actionType"] !== "Missed Shot"
+        && actions[i]["actionType"] !== "Free Throw"
+        && actions[i]["actionType"] !== "Jump Ball"
+        ){
+            continue;
         }
         
-        TableData.push(rowData);
+        if(actions[i]["pointsTotal"] === 0){
+            //  미스샷일때도 scoreHome, scoreAway 값을 현재 스코어로 넣는다.
+            actions[i]["scoreHome"] = CurrentScore_Home.toString();
+            actions[i]["scoreAway"] = CurrentScore_Away.toString();
+        } else{
+            //  pointsTotal을 현재 득점한 값으로 바꾼다.
+            if(actions[i]["location"] === "h"){
+                actions[i]["pointsTotal"] = actions[i]["pointsTotal"] - CurrentScore_Home - CurrentScore_Away;
+                CurrentScore_Home = CurrentScore_Home + actions[i]["pointsTotal"];
+            }else{
+                actions[i]["pointsTotal"] = actions[i]["pointsTotal"] - CurrentScore_Home - CurrentScore_Away;
+                CurrentScore_Away = CurrentScore_Away + actions[i]["pointsTotal"];
+            }
+        }        
+        
+        TableData.push(actions[i]);
     }
 
     return json(TableData);

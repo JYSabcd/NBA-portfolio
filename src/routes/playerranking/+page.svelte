@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { SeasonArray, SeasonTypeArray } from "../data.js";
+
     /** @type {(string)[]} */
     let TableHeader = ['선수이름','게임 수','출전 시간','득점','리바운드','어시스트','스틸','블록','야투 성공률(%)', '3점 성공률(%)', '자유투 성공률(%)'];
     /** @type {number} */
@@ -7,10 +9,6 @@
     let SortIndex = DefaultSortIndex;  // 정렬할 TableHeader 배열 인덱스
     let SortMethod = DefaultSortMethod;  // 1 : 오름차순, -1 : 내림차순
 
-    const SeasonArray = ['2022-23','2021-22','2020-21','2019-20','2018-19','2017-18','2016-17','2015-16','2014-15'
-    ,'2013-14','2012-13','2011-12','2010-11','2009-10','2008-09','2007-08', '2006-07','2005-06','2004-05','2003-04'
-    ,'2002-03','2001-02','2000-01','1999-00','1998-99','1997-98','1996-97'];
-    const SeasonTypeArray = ['Regular Season', 'Playoffs', 'All Star']; 
     let SelectedSeasonType = 'Regular Season' 
     let SelectedSeason = '2022-23';
 
