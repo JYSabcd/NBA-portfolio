@@ -192,6 +192,7 @@
         </tr>
       </table>
 
+      <div class="listname">{MainplayerSeason}년도 {Mainplayer[1]}과 비슷한 선수</div>
       <table class="table2">
         <tr class="th">
           <th>선수 이름</th>
@@ -363,6 +364,13 @@
 
   .name {
     font-size: 35px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .listname {
+    font-size: 25px;
     font-weight: bold;
     text-align: center;
     margin-bottom: 20px;
