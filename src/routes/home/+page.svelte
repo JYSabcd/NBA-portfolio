@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { browser } from "$app/environment";
+    import { browser } from "$app/environment"; // browser가 열리기 전에 데이터들이 먼저 받아와져 작동 오류가 생기는 부분을 보완하기 위함이다. 아래 browser참고
     import { Datepicker } from "svelte-calendar";
     import dayjs from "dayjs";
 
@@ -35,6 +35,7 @@
     let store;
     let selecteddate;
 
+    // 이 반응성 코드는 날짜가 변하는 걸 캐치해서 받아와 GetSchedule을 한번 더 돌리는 것이다.
     $: {
         selecteddate = dayjs($store?.selected).format(format);
         GetSchedule();
