@@ -10,7 +10,7 @@
     let SortMethod = DefaultSortMethod;  // 1 : 오름차순, -1 : 내림차순
 
     const ConferenceArray = ['East', 'West','All']; 
-    let SelectedSeasonType = 'Regular Season' 
+    let SelectedSeasonType = 'Regular Season'; 
     let SelectedConference = 'East';
     let SelectedSeason = '2022-23';
 
