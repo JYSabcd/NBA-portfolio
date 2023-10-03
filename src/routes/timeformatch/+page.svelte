@@ -12,11 +12,112 @@
     let SelectedGame = {};
 
     let PlaybyPlayArray = [];
-    let SelectedAction = [];
+    let SelectedActionArray = [];
+    let ImageBall;  //  img #Ball 태그
+
     let PlayerStatArray = [];
 
     let CurrentScore_Home = 0;
     let CurrentScore_Away = 0;
+
+    //////////////////////////////////////////////////
+    // canvas 에 농구공 그리기
+    var canvas;
+    var ctx;
+    var x;
+    var y;
+    var dx;
+    var dy;
+
+    /*
+    Q: What x/y vertices define action areas in the x/y coordinate graph?
+
+    A: A list of areas is included below. Note that these vertices are for the left side of the court. For the right side, we use the following calculation, where length=1128 and width=600:
+
+    right-court-point = (length - x, width - y)
+    left_basket=[63, 300]
+    right_basket=[1065, 300]
+    */
+
+    // 왼쪽 골대 위치 (홈팀이 넣어야 하는 골대)
+    const pos_lefthoop = {x:39, y:186} //  x:63, y:300
+    // 오른쪽 골대 위치 (어웨이팀이 넣어야 하는 골대)
+    const pos_righthoop = {x:660, y:186} //  x:1065, y:300
+
+    const size_court_x = 700;
+    const size_court_y = 373;
+
+    const size_ball = 8;
+
+    const delay_draw = 20;  //  ms
+    const time_ballmove = 1300;  //  ms
+
+    let interval = null;
+    let sumdelay = 0;
+
+    function drawBall(sumdelay) {
+        ctx.beginPath();
+        const timehalf = time_ballmove / 2;
+        const sizeup_ratio = (timehalf - Math.abs(timehalf - sumdelay))/timehalf;
+        const sizeup = size_ball * 0.5 * sizeup_ratio;
+        ctx.arc(x, y, size_ball+sizeup, 0, Math.PI*2);
+        ctx.fillStyle = "#F58237";
+        ctx.fill();
+
+        ctx.closePath();
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        sumdelay += delay_draw;
+        drawBall(sumdelay);
+
+        // 그리기 시간이 초과됐거나, 코드를 벗어났으면 이동(interval) 종료.
+        if(sumdelay > time_ballmove || x < 0 || y < 0 || x > size_court_x || y > size_court_y){
+            clearInterval(interval);
+        }
+
+        x += dx;
+        y += dy;
+
+        const timehalf = time_ballmove / 2;
+        const sizeup_ratio = (timehalf - Math.abs(timehalf - sumdelay))/timehalf;
+        let BallScale = 1 + (0.5 * sizeup_ratio);
+
+        ImageBall.style = `left: ${x-10}px; top: ${y-10}px; scale:${BallScale};`;
+        console.log(ImageBall);
+        console.log(BallScale, sizeup_ratio);
+    }
+
+    // API 에서 넘어온 좌표를 canvas에 맞는 좌표로 변환한다.
+    function ConvertPos(IsHome, API_x, API_y) {
+        //  API_x, API_y 는 골대 기준 상대 좌표이며, x 가 골대 좌우, y가 골대 앞뒤 이다.
+        //  즉, 지금 코트 모양에서는 API_x 를 y(height)랑 계산하고, API_y 를 x(width)랑 계산해야한다. 
+        
+        const API_pos_hoop_home = {x:63, y:300};
+        const API_pos_hoop_away = {x:1065, y:300};
+
+        //  농구코트 이미지의 문제인지 정확하진 않지만 NBA 사이트의 슛 위치보다 짧게 계산된다
+        //  그래서 거리가 길어지도록 보정값을 넣어본다.
+        //  3점슛인데 라인보다 안쪽이면 보기 안좋다.
+        const CorrectionValue = 1.2;
+        API_x = API_x * CorrectionValue;
+        API_y = API_y * CorrectionValue;
+
+        let Relative_Pos = {};
+        if(IsHome === true){
+            // API 좌표는 width 1128, height 600 기준
+            Relative_Pos["x"] = (API_pos_hoop_home.x + API_y) * (size_court_x / 1128);
+            Relative_Pos["y"] = (API_pos_hoop_home.y - API_x) * (size_court_y / 600);
+        } else {
+            // API 좌표는 width 1128, height 600 기준
+            Relative_Pos["x"] = (API_pos_hoop_away.x - API_y) * (size_court_x / 1128);
+            Relative_Pos["y"] = (API_pos_hoop_away.y + API_x) * (size_court_y / 600);
+        }
+
+        return Relative_Pos;
+    }
+    //////////////////////////////////////////////////
 
     async function GetScheduleByTeam() {
         let TeamID = TeamObj[SelectedTeamname]["TeamID"];
@@ -24,7 +125,7 @@
             `timeformatch/db/GetScheduleByTeam?ScheduleYYYYMM=${SelectedScheduleYYYYMM}&TeamID=${TeamID}`
         );
         ScheduleArray = await response.json();
-        console.log(ScheduleArray);
+        //console.log(ScheduleArray);
     }
 
     async function GetPlaybyPlay(GameID) {
@@ -35,7 +136,7 @@
         );
         PlaybyPlayArray = await response.json();
 
-        console.log(PlaybyPlayArray);
+        //console.log(PlaybyPlayArray);
     }
 
     async function GetBoxScoreTraditional(GameID) {
@@ -54,14 +155,66 @@
         CurrentScore_Home = 0;
         CurrentScore_Away = 0;
 
+        PlaybyPlayArray = [];
+        SelectedActionArray = [];
+
+        PlayerStatArray = [];
+
         GetPlaybyPlay(SelectedGame["game_id"]);
         GetBoxScoreTraditional(SelectedGame["game_id"]);
+
+        //////////////////////////////////////////////////
+        // canvas 에 농구공 그리기
+        canvas = document.getElementById("PbyP_Court");
+        console.log("canvas : ", canvas);
+
+        ctx = canvas.getContext("2d");
+        console.log("ctx : ", ctx);
     }
 
     function SelectAction(ArrayIndex) {
-        console.log(`SelectAction(${ArrayIndex})`);
+        //console.log(`SelectAction(${ArrayIndex})`);
 
-        SelectedAction = [PlaybyPlayArray[ArrayIndex]];
+        let Action = PlaybyPlayArray[ArrayIndex];
+
+        //////////////////////////////////////////////////
+        // canvas 에 농구공 그리기
+        if(interval !== null){
+            clearInterval(interval);
+        }
+
+        sumdelay = 0;
+
+        let IsHome = Action["location"] === "h" ? true : false;
+
+        let Relative_Pos = ConvertPos(IsHome, Action["xLegacy"],Action["yLegacy"]);
+        x = Relative_Pos.x;
+        y = Relative_Pos.y;
+        Action["PosX"] = Relative_Pos.x;
+        Action["PosY"] = Relative_Pos.y;
+
+        // x = Math.random() * size_court_x;
+        // y = Math.random() * size_court_y;
+
+        let pos_hoop;
+        if(IsHome === true){
+            pos_hoop = pos_lefthoop;
+        } else{
+            pos_hoop = pos_righthoop;
+        }
+        dx = (pos_hoop.x - x)/(time_ballmove/delay_draw);
+        dy = (pos_hoop.y - y)/(time_ballmove/delay_draw);
+
+        // 49, 181  왼쪽 골대
+        // 136, 181 왼쪽 자유투
+        // 564, 361 코드 이미지 크기
+
+        console.log(x,y,dx,dy);
+
+        interval = setInterval(draw, delay_draw);
+
+        //  [순서 중요] 위에서 Action["PosX"], Action["PosY"]가 설정된 이후에 배열에 넣는다.
+        SelectedActionArray = [Action];
     }
 </script>
 
@@ -237,39 +390,25 @@
             {/each}
         </div>
 
-        <!-- Q: What x/y vertices define action areas in the x/y coordinate graph?
-
-        A: A list of areas is included below. Note that these vertices are for the left side of the court. For the right side, we use the following calculation, where length=1128 and width=600:
-
-        right-court-point = (length - x, width - y)
-        left_basket=[63, 300]
-        right_basket=[1065, 300]
-        Areas:
-
-        underbasket: [ 48, 252 ], [ 77, 258 ], [ 111, 300 ], [ 77, 342 ], [ 48, 348 ]
-        inthepaint: [ 0, 204 ], [ 228, 204 ], [ 228, 396 ], [ 0, 396 ]
-        insiderightwing: [ 0, 36 ], [ 115, 36 ], [ 77, 204 ], [ 0, 204 ]
-        insideright: [ 115, 36 ], [ 225, 87 ], [ 294, 161 ], [ 225, 204 ], [ 77, 204 ]
-        insidecenter: [ 225, 204 ], [ 294, 161 ], [ 324, 218 ], [ 337, 300 ], [ 324, 382 ], [ 294, 439 ], [ 225, 396 ]
-        insideleft: [ 115, 564 ], [ 225, 513 ], [ 294, 439 ], [ 225, 396 ], [ 77, 396 ]
-        insideleftwing: [ 0, 564 ], [ 115, 564 ], [ 77, 396 ], [ 0, 396 ]
-        outsiderightwing: [ 0, 0 ], [ 122, 0 ], [ 115, 36 ], [ 0, 36 ]
-        outsideright: [ 122, 0 ], [ 492, 0 ], [ 492, 69 ], [ 324, 218 ], [ 294, 161 ], [ 225, 87 ], [ 115, 36 ]
-        outsidecenter: [ 324, 216 ], [ 492, 69 ], [ 492, 531 ], [ 324, 382 ], [ 337, 300 ]
-        outsideleft: [ 122, 600 ], [ 492, 600 ], [ 492, 531 ], [ 324, 382 ], [ 294, 439 ], [ 225, 513 ], [ 115, 564 ]
-        outsideleftwing: [ 0, 600 ], [ 122, 600 ], [ 115, 564 ], [ 0, 564 ]
-        backcourt: [ 492, 0 ], [ 564, 0 ], [ 564, 600 ], [ 492, 600 ] -->
-
-        <div class="PbyP_Court">
-            {#each SelectedAction as Action}
+        <div class="PbyP_Court_Container">
+            <canvas id="PbyP_Court" width="{size_court_x}" height="{size_court_y}"></canvas>
+            {#each SelectedActionArray as Action}
                 <img
                 src="https://cdn.nba.com/headshots/nba/latest/1040x760/{Action['personId']}.png"
                 onerror="this.src='https://cdn.nba.com/headshots/nba/latest/1040x760/fallback.png'"
                 alt="PlayerHeadShot"
                 class="Shooter"
-                style="top: 200px"
+                style="left: {Action["PosX"]-20}px; top: {Action["PosY"]-20}px;"
                 />
-            {/each}            
+                <img
+                bind:this={ImageBall}
+                src="Ball.jpg"
+                alt="Ball"
+                id="Ball"
+                style="left: {Action["PosX"]-10}px; top: {Action["PosY"]-10}px;"
+                />
+                
+            {/each}
         </div>
     </div>
 
@@ -727,26 +866,43 @@
         font-size: 13px;
     }
 
-    .PbyP_Court {
+    .PbyP_Court_Container{
+        position: relative;
+    }
+
+    #PbyP_Court {
         width: 700px;
+        height: 373px;
         background-image: url("/NBACourt03.jpg");
         display: inline-block;
         border: 1px solid black;
         background-repeat: no-repeat;
-        background-size : contain;
-
-        position: relative;
+        background-size : contain;        
     }
 
     .Shooter {
         position: absolute;
         width: 40px;
         height: 40px;
-        left: 100px;
-        top: 100px;
+        left: -100px;
+        top: 0px;
         border-radius: 100%;
         border: 1px solid black;
         background-color: green;
+
+        z-index: 1;
+    }
+
+    #Ball {
+        position: absolute;
+        background-image: url("/ball.jpg");
+        width: 20px;
+        height: 20px;
+        left: -100px;
+        top: 0px;
+        border-radius: 100%;
+
+        z-index: 2;
     }
 
     .center {

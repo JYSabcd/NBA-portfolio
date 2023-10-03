@@ -70,6 +70,11 @@ export async function GET({url}) {
         ){
             continue;
         }
+
+        if(actions[i]["actionType"] === "Free Throw"){
+            actions[i]["xLegacy"] = 0;
+            actions[i]["yLegacy"] = 167;    //  200이 원래 위치인데 .svelte 에서 보정값을 곱해주는 관계로 167
+        } 
         
         if(actions[i]["pointsTotal"] === 0){
             //  미스샷일때도 scoreHome, scoreAway 값을 현재 스코어로 넣는다.
