@@ -1,8 +1,7 @@
 <script lang="ts">
-    import { P } from "flowbite-svelte";
     import { ScheduleYYYYMMArray, TeamnameArray, TeamObj } from "../data.js";
 
-    let SelectedScheduleYYYYMM = "2016-10";
+    let SelectedScheduleYYYYMM = "2023-01";
 
     let SelectedTeamname = "Atlanta Hawks";
 
@@ -12,22 +11,17 @@
     let SelectedGame = {};
 
     let PlaybyPlayArray = [];
-    let SelectedActionArray = [];
-    let ImageBall;  //  img #Ball 태그
+    let ActionDivs = [];
+    let ActionContainerDiv = null;
+    let LastestActionIndex = null;
+    let SelectedAction = null;
+
+    let AutoProgress = true;    //  PlayByPlay 자동 진행
 
     let PlayerStatArray = [];
 
     let CurrentScore_Home = 0;
     let CurrentScore_Away = 0;
-
-    //////////////////////////////////////////////////
-    // canvas 에 농구공 그리기
-    var canvas;
-    var ctx;
-    var x;
-    var y;
-    var dx;
-    var dy;
 
     /*
     Q: What x/y vertices define action areas in the x/y coordinate graph?
@@ -38,64 +32,91 @@
     left_basket=[63, 300]
     right_basket=[1065, 300]
     */
+    //////////////////////////////////////////////////
+    // 농구공 그리기
+    let ImageBall; //  img #Ball 태그
+    let ImageShooter; //  img .Shooter 태그
+    let Ball_x; //  Ball 위치 x (left)
+    let Ball_y; //  Ball 위치 y (top)
+    let Ball_dx; //  그리기 Delay 당 Ball 이동거리 x
+    let Ball_dy; //  그리기 Delay 당 Ball 이동거리 y
+    let IsShootSuccess = false;
 
     // 왼쪽 골대 위치 (홈팀이 넣어야 하는 골대)
-    const pos_lefthoop = {x:39, y:186} //  x:63, y:300
+    const pos_lefthoop = { x: 39, y: 186 }; //  이미지 위치 기준 / API 위치 기준 x:63, y:300
     // 오른쪽 골대 위치 (어웨이팀이 넣어야 하는 골대)
-    const pos_righthoop = {x:660, y:186} //  x:1065, y:300
+    const pos_righthoop = { x: 660, y: 186 }; //  이미지 위치 기준 / API 위치 기준 x:1065, y:300
 
-    const size_court_x = 700;
-    const size_court_y = 373;
+    const size_court_x = 700; //  코트 이미지 크기
+    const size_court_y = 373; //  코트 이미지 크기
 
-    const size_ball = 8;
+    const draw_time_delay = 20; //  ms
+    const draw_time_shooting = 1300; //  ms
+    const draw_time_result = 500; //  ms
+    const draw_time_total = draw_time_shooting + draw_time_result; //  ms
 
-    const delay_draw = 20;  //  ms
-    const time_ballmove = 1300;  //  ms
-
-    let interval = null;
-    let sumdelay = 0;
-
-    function drawBall(sumdelay) {
-        ctx.beginPath();
-        const timehalf = time_ballmove / 2;
-        const sizeup_ratio = (timehalf - Math.abs(timehalf - sumdelay))/timehalf;
-        const sizeup = size_ball * 0.5 * sizeup_ratio;
-        ctx.arc(x, y, size_ball+sizeup, 0, Math.PI*2);
-        ctx.fillStyle = "#F58237";
-        ctx.fill();
-
-        ctx.closePath();
-    }
+    let interval_ball = null;
+    let delay_sum = 0;
 
     function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        sumdelay += delay_draw;
-        drawBall(sumdelay);
+        delay_sum += draw_time_delay;
 
-        // 그리기 시간이 초과됐거나, 코드를 벗어났으면 이동(interval) 종료.
-        if(sumdelay > time_ballmove || x < 0 || y < 0 || x > size_court_x || y > size_court_y){
-            clearInterval(interval);
+        Ball_x += Ball_dx;
+        Ball_y += Ball_dy;
+
+        const timehalf = draw_time_shooting / 2;
+        const sizeup_ratio =
+            (timehalf - Math.abs(timehalf - delay_sum)) / timehalf;
+        let BallScale = 1;
+
+        if (delay_sum <= draw_time_shooting) {
+            BallScale = 1 + 0.5 * sizeup_ratio;
+        }
+        // 슛 성공여부에 대한 처리
+        else if (delay_sum <= draw_time_total) {
+            if (IsShootSuccess === true) {
+                BallScale = 1;
+                Ball_dx = 0;
+                Ball_dy = 0;
+            } else {
+                BallScale = 1 + ((delay_sum - draw_time_shooting) / draw_time_delay) * 0.08;
+            }
+        }
+        // 그리기 시간이 초과됐으면 이동(Interval) 종료.
+        else {
+            clearInterval(interval_ball);
+
+            if(LastestActionIndex !== null){
+                ActionDivs[LastestActionIndex].style = "border: 1px solid black;";
+
+                if(AutoProgress === true && LastestActionIndex < (PlaybyPlayArray.length - 1)){
+                    SelectAction(LastestActionIndex + 1);
+                } else {
+                    LastestActionIndex = null;
+                }
+            }
+
+            ImageBall.style = "scale:0;";
+            ImageShooter.style = "scale:0;";
+
+            return;
         }
 
-        x += dx;
-        y += dy;
+        //  볼 이미지 크기가 20px, 20px 이어서 가운데 위치시키기 위해 -10 을 해준다.
+        ImageBall.style = `left: ${Ball_x - 10}px; top: ${Ball_y - 10}px; scale:${BallScale};`;
+        ImageShooter.style = `left: ${SelectedAction['PosX'] - 20}px; top: ${SelectedAction['PosY'] - 20}px; scale:1; background-color: ${SelectedAction['pointsTotal'] === 0 ? 'red' : 'green'}`;
 
-        const timehalf = time_ballmove / 2;
-        const sizeup_ratio = (timehalf - Math.abs(timehalf - sumdelay))/timehalf;
-        let BallScale = 1 + (0.5 * sizeup_ratio);
-
-        ImageBall.style = `left: ${x-10}px; top: ${y-10}px; scale:${BallScale};`;
-        console.log(ImageBall);
-        console.log(BallScale, sizeup_ratio);
+        // console.log(ImageBall);
+        // console.log(BallScale, sizeup_ratio);
     }
 
-    // API 에서 넘어온 좌표를 canvas에 맞는 좌표로 변환한다.
+    // API 에서 넘어온 좌표를 코트 이미지에 맞는 좌표로 변환한다.
     function ConvertPos(IsHome, API_x, API_y) {
         //  API_x, API_y 는 골대 기준 상대 좌표이며, x 가 골대 좌우, y가 골대 앞뒤 이다.
-        //  즉, 지금 코트 모양에서는 API_x 를 y(height)랑 계산하고, API_y 를 x(width)랑 계산해야한다. 
-        
-        const API_pos_hoop_home = {x:63, y:300};
-        const API_pos_hoop_away = {x:1065, y:300};
+        //  즉, 지금 코트 모양에서는 API_x 를 y(height)랑 계산하고, API_y 를 x(width)랑 계산해야한다.
+
+        const API_pos_hoop_home = { x: 63, y: 300 };
+        const API_pos_hoop_away = { x: 1065, y: 300 };
 
         //  농구코트 이미지의 문제인지 정확하진 않지만 NBA 사이트의 슛 위치보다 짧게 계산된다
         //  그래서 거리가 길어지도록 보정값을 넣어본다.
@@ -105,14 +126,18 @@
         API_y = API_y * CorrectionValue;
 
         let Relative_Pos = {};
-        if(IsHome === true){
+        if (IsHome === true) {
             // API 좌표는 width 1128, height 600 기준
-            Relative_Pos["x"] = (API_pos_hoop_home.x + API_y) * (size_court_x / 1128);
-            Relative_Pos["y"] = (API_pos_hoop_home.y - API_x) * (size_court_y / 600);
+            Relative_Pos["x"] =
+                (API_pos_hoop_home.x + API_y) * (size_court_x / 1128);
+            Relative_Pos["y"] =
+                (API_pos_hoop_home.y - API_x) * (size_court_y / 600);
         } else {
             // API 좌표는 width 1128, height 600 기준
-            Relative_Pos["x"] = (API_pos_hoop_away.x - API_y) * (size_court_x / 1128);
-            Relative_Pos["y"] = (API_pos_hoop_away.y + API_x) * (size_court_y / 600);
+            Relative_Pos["x"] =
+                (API_pos_hoop_away.x - API_y) * (size_court_x / 1128);
+            Relative_Pos["y"] =
+                (API_pos_hoop_away.y + API_x) * (size_court_y / 600);
         }
 
         return Relative_Pos;
@@ -156,65 +181,67 @@
         CurrentScore_Away = 0;
 
         PlaybyPlayArray = [];
-        SelectedActionArray = [];
+        SelectedAction = null;
 
         PlayerStatArray = [];
 
         GetPlaybyPlay(SelectedGame["game_id"]);
         GetBoxScoreTraditional(SelectedGame["game_id"]);
-
-        //////////////////////////////////////////////////
-        // canvas 에 농구공 그리기
-        canvas = document.getElementById("PbyP_Court");
-        console.log("canvas : ", canvas);
-
-        ctx = canvas.getContext("2d");
-        console.log("ctx : ", ctx);
     }
 
     function SelectAction(ArrayIndex) {
         //console.log(`SelectAction(${ArrayIndex})`);
+        if(LastestActionIndex !== null){
+            ActionDivs[LastestActionIndex].style = "border: 1px solid black;";
+        }
+        LastestActionIndex = ArrayIndex;
+        ActionDivs[ArrayIndex].style = "border: 2px solid blue;";
+        ActionContainerDiv.scrollTop = (ActionDivs[ArrayIndex].clientHeight + (2+4)) * ArrayIndex;
+        
+        console.log(ActionDivs[ArrayIndex].clientHeight);
+        console.log(ActionContainerDiv.scrollTop);
+        // ActionDivs[ArrayIndex].scrollIntoView(true, {behavior: "smooth",block: "nearest", inline: "nearest"});
 
         let Action = PlaybyPlayArray[ArrayIndex];
 
         //////////////////////////////////////////////////
-        // canvas 에 농구공 그리기
-        if(interval !== null){
-            clearInterval(interval);
+        //  농구공 그리기
+        if (interval_ball !== null) {
+            clearInterval(interval_ball);
+            interval_ball = null;
+            delay_sum = 0;
         }
-
-        sumdelay = 0;
 
         let IsHome = Action["location"] === "h" ? true : false;
 
-        let Relative_Pos = ConvertPos(IsHome, Action["xLegacy"],Action["yLegacy"]);
-        x = Relative_Pos.x;
-        y = Relative_Pos.y;
+        let Relative_Pos = ConvertPos(
+            IsHome,
+            Action["xLegacy"],
+            Action["yLegacy"]
+        );
+        Ball_x = Relative_Pos.x;
+        Ball_y = Relative_Pos.y;
         Action["PosX"] = Relative_Pos.x;
         Action["PosY"] = Relative_Pos.y;
 
-        // x = Math.random() * size_court_x;
-        // y = Math.random() * size_court_y;
-
         let pos_hoop;
-        if(IsHome === true){
+        if (IsHome === true) {
             pos_hoop = pos_lefthoop;
-        } else{
+        } else {
             pos_hoop = pos_righthoop;
         }
-        dx = (pos_hoop.x - x)/(time_ballmove/delay_draw);
-        dy = (pos_hoop.y - y)/(time_ballmove/delay_draw);
+        Ball_dx =
+            (pos_hoop.x - Ball_x) / (draw_time_shooting / draw_time_delay);
+        Ball_dy =
+            (pos_hoop.y - Ball_y) / (draw_time_shooting / draw_time_delay);
+        IsShootSuccess = Action["pointsTotal"] === 0 ? false : true;
 
-        // 49, 181  왼쪽 골대
-        // 136, 181 왼쪽 자유투
-        // 564, 361 코드 이미지 크기
+        //console.log(Ball_x,Ball_y,Ball_dx,Ball_dy);
 
-        console.log(x,y,dx,dy);
-
-        interval = setInterval(draw, delay_draw);
+        interval_ball = setInterval(draw, draw_time_delay);
 
         //  [순서 중요] 위에서 Action["PosX"], Action["PosY"]가 설정된 이후에 배열에 넣는다.
-        SelectedActionArray = [Action];
+        SelectedAction = Action;
     }
 </script>
 
@@ -321,105 +348,143 @@
     </div>
 
     <div class="PbyPContainer">
-        <div class="PbyP_ActionContainer">
+        <div bind:this = {ActionContainerDiv} class="PbyP_ActionContainer">
             {#each PlaybyPlayArray as PbyPAction, ArrayIndex}
                 {#if ArrayIndex === 0}
-                <div class="PbyP_Action_Common PbyP_Action_Home">
-                    <div class="PbyP_Action_JumpBall">
-                        <div class="PbyP_Action_Time">
-                            <span class="PbyP_Text_Big">Q{PbyPAction['period']}</span><br>
-                            <!-- PT01M17.00S -> 01:17 -->
-                            <span class="PbyP_Text_Small">{PbyPAction['clock'].replace('PT','').replace('M',':').slice(0,5)}</span>
+                    <div
+                        bind:this={ActionDivs[ArrayIndex]}
+                        class="PbyP_Action_Common PbyP_Action_Home"
+                    >
+                        <div class="PbyP_Action_JumpBall">
+                            <div class="PbyP_Action_Time">
+                                <span class="PbyP_Text_Big"
+                                    >Q{PbyPAction["period"]}</span
+                                ><br />
+                                <!-- PT01M17.00S -> 01:17 -->
+                                <span class="PbyP_Text_Small"
+                                    >{PbyPAction["clock"]
+                                        .replace("PT", "")
+                                        .replace("M", ":")
+                                        .slice(0, 5)}</span
+                                >
+                            </div>
+                            <img
+                                src="/TeamLogo/{SelectedGame[
+                                    'home_teamid'
+                                ]}.svg"
+                                alt="TeamLogo"
+                                class="PbyP_Action_Image"
+                            />
+                            <div class="PbyP_Action_Desc_JumpBall">
+                                <span class="PbyP_Text_JumpBall"
+                                    >Game Start - Jump Ball</span
+                                ><br />
+                                <span class="PbyP_Text_Small"
+                                    >{PbyPAction["description"]}</span
+                                >
+                            </div>
+                            <img
+                                src="/TeamLogo/{SelectedGame[
+                                    'away_teamid'
+                                ]}.svg"
+                                alt="TeamLogo"
+                                class="PbyP_Action_Image"
+                            />
                         </div>
-                        <img
-                            src="/TeamLogo/{SelectedGame['home_teamid']}.svg"
-                            alt="TeamLogo"
-                            class="PbyP_Action_Image"
-                        />
-                        <div class="PbyP_Action_Desc_JumpBall">
-                            <span class="PbyP_Text_JumpBall">Game Start - Jump Ball</span><br>
-                            <span class="PbyP_Text_Small">{PbyPAction['description']}</span>
-                        </div>
-                        <img
-                            src="/TeamLogo/{SelectedGame['away_teamid']}.svg"
-                            alt="TeamLogo"
-                            class="PbyP_Action_Image"
-                        />
                     </div>
-                </div>
                 {:else}
-                <div
-                    class={PbyPAction["location"] === "h"
-                        ? "PbyP_Action_Common PbyP_Action_Home"
-                        : "PbyP_Action_Common PbyP_Action_Away"}
-                    on:click={() => {
-                        SelectAction(ArrayIndex);
-                    }}
-                >
-                    <div class="PbyP_Action">
-                        <div class="PbyP_Action_Time">
-                            <span class="PbyP_Text_Big">Q{PbyPAction['period']}</span><br>
-                            <!-- PT01M17.00S -> 01:17 -->
-                            <span class="PbyP_Text_Small">{PbyPAction['clock'].replace('PT','').replace('M',':').slice(0,5)}</span>
-                        </div>
-                        <img
-                            src="/TeamLogo/{PbyPAction['teamId']}.svg"
-                            alt="TeamLogo"
-                            class="PbyP_Action_Image"
-                        />
-                        <img
-                            src="https://cdn.nba.com/headshots/nba/latest/1040x760/{PbyPAction[
-                                'personId'
-                            ]}.png"
-                            onerror="this.src='https://cdn.nba.com/headshots/nba/latest/1040x760/fallback.png'"
-                            alt="PlayerHeadShot"
-                            class="PbyP_Action_Image"
-                        />
-                        <div class="PbyP_Action_Desc">
-                            {#if PbyPAction['pointsTotal'] === 0}
-                                <span class="PbyP_Text_Miss">Missed</span><span class="PbyP_Text_Big">&nbsp;&nbsp;&nbsp;[{PbyPAction['scoreHome']} vs {PbyPAction['scoreAway']}]</span><br>
-                                <span class="PbyP_Text_Small">{PbyPAction['subType']}({PbyPAction['xLegacy']},{PbyPAction['yLegacy']})</span>
-                            {:else}
-                                <span class="PbyP_Text_Made">{PbyPAction['pointsTotal']} Points</span><span class="PbyP_Text_Big">&nbsp;&nbsp;&nbsp;[{PbyPAction['scoreHome']} vs {PbyPAction['scoreAway']}]</span><br>
-                                <span class="PbyP_Text_Small">{PbyPAction['subType']}({PbyPAction['xLegacy']},{PbyPAction['yLegacy']})</span>
-                            {/if}
+                    <div
+                        class={PbyPAction["location"] === "h"
+                            ? "PbyP_Action_Common PbyP_Action_Home"
+                            : "PbyP_Action_Common PbyP_Action_Away"}
+                    >
+                        <div
+                            bind:this={ActionDivs[ArrayIndex]}
+                            class="PbyP_Action"
+                            on:click={() => {
+                                SelectAction(ArrayIndex);
+                            }}
+                        >
+                            <div class="PbyP_Action_Time">
+                                <span class="PbyP_Text_Big"
+                                    >Q{PbyPAction["period"]}</span
+                                ><br />
+                                <!-- PT01M17.00S -> 01:17 -->
+                                <span class="PbyP_Text_Small"
+                                    >{PbyPAction["clock"]
+                                        .replace("PT", "")
+                                        .replace("M", ":")
+                                        .slice(0, 5)}</span
+                                >
+                            </div>
+                            <img
+                                src="/TeamLogo/{PbyPAction['teamId']}.svg"
+                                alt="TeamLogo"
+                                class="PbyP_Action_Image"
+                            />
+                            <img
+                                src="https://cdn.nba.com/headshots/nba/latest/1040x760/{PbyPAction[
+                                    'personId'
+                                ]}.png"
+                                onerror="this.src='https://cdn.nba.com/headshots/nba/latest/1040x760/fallback.png'"
+                                alt="PlayerHeadShot"
+                                class="PbyP_Action_Image"
+                            />
+                            <div class="PbyP_Action_Desc">
+                                {#if PbyPAction["pointsTotal"] === 0}
+                                    <span class="PbyP_Text_Miss">Missed</span
+                                    ><span class="PbyP_Text_Big"
+                                        >&nbsp;&nbsp;&nbsp;[{PbyPAction[
+                                            "scoreHome"
+                                        ]} vs {PbyPAction["scoreAway"]}]</span
+                                    ><br />
+                                    <span class="PbyP_Text_Small"
+                                        >{PbyPAction["subType"]}</span
+                                    >
+                                {:else}
+                                    <span class="PbyP_Text_Made"
+                                        >{PbyPAction["pointsTotal"]} Points</span
+                                    ><span class="PbyP_Text_Big"
+                                        >&nbsp;&nbsp;&nbsp;[{PbyPAction[
+                                            "scoreHome"
+                                        ]} vs {PbyPAction["scoreAway"]}]</span
+                                    ><br />
+                                    <span class="PbyP_Text_Small"
+                                        >{PbyPAction["subType"]}</span
+                                    >
+                                {/if}
+                            </div>
                         </div>
                     </div>
-                </div>
                 {/if}
             {/each}
         </div>
 
         <div class="PbyP_Court_Container">
-            <canvas id="PbyP_Court" width="{size_court_x}" height="{size_court_y}"></canvas>
-            {#each SelectedActionArray as Action}
+            <div id="PbyP_Court" width={size_court_x} height={size_court_y} />
+            {#if SelectedAction !== null}
                 <img
-                src="https://cdn.nba.com/headshots/nba/latest/1040x760/{Action['personId']}.png"
-                onerror="this.src='https://cdn.nba.com/headshots/nba/latest/1040x760/fallback.png'"
-                alt="PlayerHeadShot"
-                class="Shooter"
-                style="left: {Action["PosX"]-20}px; top: {Action["PosY"]-20}px;"
+                    bind:this={ImageShooter}
+                    src="https://cdn.nba.com/headshots/nba/latest/1040x760/{SelectedAction['personId']}.png"
+                    onerror="this.src='https://cdn.nba.com/headshots/nba/latest/1040x760/fallback.png'"
+                    alt="PlayerHeadShot"
+                    class="Shooter"
+                    style="left: {SelectedAction['PosX'] - 20}px; top: {SelectedAction['PosY'] - 20}px; background-color: {SelectedAction['pointsTotal'] === 0 ? 'red' : 'green'};"
                 />
                 <img
-                bind:this={ImageBall}
-                src="Ball.jpg"
-                alt="Ball"
-                id="Ball"
-                style="left: {Action["PosX"]-10}px; top: {Action["PosY"]-10}px;"
+                    bind:this={ImageBall}
+                    src="Ball.jpg"
+                    alt="Ball"
+                    id="Ball"
+                    style="left: {SelectedAction['PosX'] - 10}px; top: {SelectedAction['PosY'] - 10}px;"
                 />
-                
-            {/each}
+            {/if}
+            <label class="AutoProgress">
+                <input type="checkbox" bind:checked={AutoProgress} />
+                Play By Play 자동 진행
+            </label>
         </div>
     </div>
-
-    <!-- <input class="center" type="range" min="0" max="48" list="tickmarks" />
-    <datalist id="tickmarks">
-        <option value="0">시작</option>
-        <option value="12">1Q 끝</option>
-        <option value="24">2Q 끝</option>
-        <option value="36">3Q 끝</option>
-        <option value="48">4Q 끝</option>
-    </datalist> -->
 
     <div class="tposition">
         {#if SelectedGame["game_id"] !== undefined && PlayerStatArray.length > 0}
@@ -708,13 +773,6 @@
         margin-right: 10px;
     }
 
-    datalist {
-        display: grid;
-        grid-auto-flow: column;
-        width: 100%;
-        text-align: center;
-    }
-
     .selectedgame_title {
         width: 100%;
         display: flex;
@@ -746,11 +804,6 @@
         font-weight: bold;
         padding-left: 10px;
         padding-right: 10px;
-    }
-
-    .center {
-        margin: 0 auto;
-        width: 100%;
     }
 
     .PbyPContainer {
@@ -866,7 +919,7 @@
         font-size: 13px;
     }
 
-    .PbyP_Court_Container{
+    .PbyP_Court_Container {
         position: relative;
     }
 
@@ -877,7 +930,7 @@
         display: inline-block;
         border: 1px solid black;
         background-repeat: no-repeat;
-        background-size : contain;        
+        background-size: contain;
     }
 
     .Shooter {
@@ -905,10 +958,13 @@
         z-index: 2;
     }
 
-    .center {
-        display: flex;
-        left: 50%;
-        width: 90%;
+    .AutoProgress{
+        display: block;
+        font-size: 20px;
+        font-weight: bolder;
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid black;
     }
 
     table {
