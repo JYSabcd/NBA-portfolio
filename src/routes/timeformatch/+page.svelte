@@ -12,6 +12,7 @@
     let SelectedGame = {};
 
     let PlaybyPlayArray = [];
+    let SelectedAction = [];
     let PlayerStatArray = [];
 
     let CurrentScore_Home = 0;
@@ -59,6 +60,8 @@
 
     function SelectAction(ArrayIndex) {
         console.log(`SelectAction(${ArrayIndex})`);
+
+        SelectedAction = [PlaybyPlayArray[ArrayIndex]];
     }
 </script>
 
@@ -222,10 +225,10 @@
                         <div class="PbyP_Action_Desc">
                             {#if PbyPAction['pointsTotal'] === 0}
                                 <span class="PbyP_Text_Miss">Missed</span><span class="PbyP_Text_Big">&nbsp;&nbsp;&nbsp;[{PbyPAction['scoreHome']} vs {PbyPAction['scoreAway']}]</span><br>
-                                <span class="PbyP_Text_Small">{PbyPAction['subType']}</span>
+                                <span class="PbyP_Text_Small">{PbyPAction['subType']}({PbyPAction['xLegacy']},{PbyPAction['yLegacy']})</span>
                             {:else}
                                 <span class="PbyP_Text_Made">{PbyPAction['pointsTotal']} Points</span><span class="PbyP_Text_Big">&nbsp;&nbsp;&nbsp;[{PbyPAction['scoreHome']} vs {PbyPAction['scoreAway']}]</span><br>
-                                <span class="PbyP_Text_Small">{PbyPAction['subType']}</span>
+                                <span class="PbyP_Text_Small">{PbyPAction['subType']}({PbyPAction['xLegacy']},{PbyPAction['yLegacy']})</span>
                             {/if}
                         </div>
                     </div>
@@ -234,8 +237,39 @@
             {/each}
         </div>
 
-        <div class="PbyP_Court">
+        <!-- Q: What x/y vertices define action areas in the x/y coordinate graph?
 
+        A: A list of areas is included below. Note that these vertices are for the left side of the court. For the right side, we use the following calculation, where length=1128 and width=600:
+
+        right-court-point = (length - x, width - y)
+        left_basket=[63, 300]
+        right_basket=[1065, 300]
+        Areas:
+
+        underbasket: [ 48, 252 ], [ 77, 258 ], [ 111, 300 ], [ 77, 342 ], [ 48, 348 ]
+        inthepaint: [ 0, 204 ], [ 228, 204 ], [ 228, 396 ], [ 0, 396 ]
+        insiderightwing: [ 0, 36 ], [ 115, 36 ], [ 77, 204 ], [ 0, 204 ]
+        insideright: [ 115, 36 ], [ 225, 87 ], [ 294, 161 ], [ 225, 204 ], [ 77, 204 ]
+        insidecenter: [ 225, 204 ], [ 294, 161 ], [ 324, 218 ], [ 337, 300 ], [ 324, 382 ], [ 294, 439 ], [ 225, 396 ]
+        insideleft: [ 115, 564 ], [ 225, 513 ], [ 294, 439 ], [ 225, 396 ], [ 77, 396 ]
+        insideleftwing: [ 0, 564 ], [ 115, 564 ], [ 77, 396 ], [ 0, 396 ]
+        outsiderightwing: [ 0, 0 ], [ 122, 0 ], [ 115, 36 ], [ 0, 36 ]
+        outsideright: [ 122, 0 ], [ 492, 0 ], [ 492, 69 ], [ 324, 218 ], [ 294, 161 ], [ 225, 87 ], [ 115, 36 ]
+        outsidecenter: [ 324, 216 ], [ 492, 69 ], [ 492, 531 ], [ 324, 382 ], [ 337, 300 ]
+        outsideleft: [ 122, 600 ], [ 492, 600 ], [ 492, 531 ], [ 324, 382 ], [ 294, 439 ], [ 225, 513 ], [ 115, 564 ]
+        outsideleftwing: [ 0, 600 ], [ 122, 600 ], [ 115, 564 ], [ 0, 564 ]
+        backcourt: [ 492, 0 ], [ 564, 0 ], [ 564, 600 ], [ 492, 600 ] -->
+
+        <div class="PbyP_Court">
+            {#each SelectedAction as Action}
+                <img
+                src="https://cdn.nba.com/headshots/nba/latest/1040x760/{Action['personId']}.png"
+                onerror="this.src='https://cdn.nba.com/headshots/nba/latest/1040x760/fallback.png'"
+                alt="PlayerHeadShot"
+                class="Shooter"
+                style="top: 200px"
+                />
+            {/each}            
         </div>
     </div>
 
@@ -695,11 +729,24 @@
 
     .PbyP_Court {
         width: 700px;
-        background-image: url("/basketballcourt.jpg");
+        background-image: url("/NBACourt03.jpg");
         display: inline-block;
         border: 1px solid black;
         background-repeat: no-repeat;
         background-size : contain;
+
+        position: relative;
+    }
+
+    .Shooter {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        left: 100px;
+        top: 100px;
+        border-radius: 100%;
+        border: 1px solid black;
+        background-color: green;
     }
 
     .center {
