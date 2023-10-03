@@ -196,7 +196,7 @@
         </tr>
         <tr>
           <td class="border">
-              {parseFloat(SelectedSeason.slice(0,5)) - (Mainplayer[4].slice(0,4)) +1}세
+              {parseFloat(SelectedSeason.slice(0,5)) - (Mainplayer[4].slice(0,4))}세
           </td>
           <td class="border"
             >{Mainplayer[4]

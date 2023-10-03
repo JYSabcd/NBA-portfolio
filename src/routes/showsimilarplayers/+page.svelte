@@ -163,8 +163,7 @@
         <tr>
           <td class="border"
             >{parseFloat(SelectedSeason.slice(0, 5)) -
-              Mainplayer[2].slice(0, 4) +
-              1}세</td
+              Mainplayer[2].slice(0, 4)}세</td
           >
           <td class="border"
             >{Mainplayerstats[2] !== undefined
