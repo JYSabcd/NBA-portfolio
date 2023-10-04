@@ -71,11 +71,12 @@
     text-decoration: none;
   }
   main {
-    width: 100%;
-    background-color: rgba(197, 253, 253, 0.61);
+    overflow: auto;
+    width: 100vw;
+    /* background-color: rgba(197, 253, 253, 0.61); */
+    background-color: white;
   }
   #container {
-    overflow: hidden;
     margin: auto;
     width: 100%;
     max-width: 1300px;

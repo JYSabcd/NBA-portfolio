@@ -161,7 +161,7 @@
     }
 </script>
 
-<div class="body">
+<body>
     <div class="white">
         <div class="button">
             <div class="NBAAverage space" on:click={Averagebutton}>NBA 평균</div>
@@ -393,12 +393,12 @@
             </div>
         </div>
     </div>
-</div>
+</body>
 
 <style>
-    .body {
-        overflow: auto;
-        height: calc(100vh - 50px);
+    body {
+        overflow: hidden;
+        width: 100%;
         background-color: rgb(246, 246, 246);
     }
 

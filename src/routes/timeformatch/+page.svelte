@@ -245,7 +245,7 @@
     }
 </script>
 
-<body class="body">
+<body>
     <div class="groupbox1">
         <div>
             <div class="selectinformation">경기 년월(YYYY-MM)</div>
@@ -619,6 +619,12 @@
 </body>
 
 <style>
+    body {
+        overflow: hidden;
+        width: 100%;
+        background-color: rgb(246, 246, 246);
+    }
+
     .groupbox1 {
         margin: 0px auto;
         margin-top: 30px;
@@ -983,11 +989,6 @@
         display: inline-block;
         width: 100px;
         height: 100px;
-    }
-
-    .body {
-        overflow: auto;
-        height: calc(100vh - 50px);
     }
 
     tr {

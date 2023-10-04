@@ -60,8 +60,7 @@
     }
 </script>
 
-<body class="body">
-    
+<body>    
     <div class="groupbox1">
         <div>
             <div class="text">시즌연도</div>
@@ -134,11 +133,11 @@
 </body>
 
 <style>
-    body{
+    body {
+        overflow: hidden;
         width: 100%;
-        height: 100%;
         padding-top: 20px;
-        background-color: rgb(246, 246, 246)
+        background-color: rgb(246, 246, 246);
     }
     
     .groupbox1{
@@ -255,11 +254,6 @@
         margin-left: 10px;
         margin-bottom: 5px;
         font-weight: bold;
-    }
-
-    .body{
-        overflow: auto;
-        height: calc(100vh - 50px);
     }
     
 </style>

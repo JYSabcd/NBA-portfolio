@@ -73,7 +73,7 @@
   }
 </script>
 
-<div class="body">
+<body>
   <div class="groupbox1">
     <div>
       <div class="selectinformation">시즌연도</div>
@@ -219,9 +219,15 @@
   {:else}
     <div id="section" class="airbox" />
   {/if}
-</div>
+  </body>
 
 <style>
+  body {
+    overflow: hidden;
+    width: 100%;
+    background-color: rgb(246, 246, 246);
+  }
+
   .text {
     text-align: center;
     margin-top: 20px;
@@ -342,12 +348,6 @@
 
   .th {
     background-color: rgb(229, 231, 235);
-  }
-
-  .body {
-    overflow: auto;
-    height: calc(100vh - 50px);
-    background-color: rgb(246, 246, 246);
   }
 
   .name {
