@@ -1,6 +1,8 @@
 <script lang="ts">
-  import { SeasonArray, TeamnameArray, TeamObj } from "../data.js";
-  
+  import {
+    SeasonArray, TeamnameArray, TeamObj, NBAAVG, NBAAGE, NBAMIN, NBAPTS, NBAREB, NBAAST
+  } from "../data.js";
+
   const TableHeaders = [
     "이름",
     "나이",
@@ -49,20 +51,11 @@
     Mainplayerstats = await response3.json();
     MainplayerSeason = SelectedSeason;
   }
-
-  async function GETPrediction(PlayerID) {
-    const response3 = await fetch(
-      `showsimiliarplayers/db/fn_similarplayer?Season=${SelectedSeason}&PlayerID=${PlayerID}`
-    );
-    PredictionArray = await response3.json();
-  }
-
   function SelectPlayer(ArrayIndex) {
     const PlayerID = Playerroaster[ArrayIndex][6];
 
     GETMainPlayer(PlayerID);
     GETMainplayerstats(PlayerID);
-    GETPrediction(PlayerID)
 
     // 선수 정보창으로 스크롤 이동.
     const el = document.querySelector("#section");
@@ -157,7 +150,6 @@
           <th class="thwidth">평균 득점</th>
           <th class="thwidth">평균 리바운드</th>
           <th class="thwidth">평균 어시스트</th>
-          <th class="thwidth">경기 수</th>
           <th class="thwidth">평균 출전 시간</th>
         </tr>
         <tr>
@@ -181,9 +173,6 @@
               : "--"}</td
           >
           <td class="center"
-          >{Mainplayerstats[0] !== undefined ? Mainplayerstats[0] : "--"}</td
-          >
-          <td class="center"
             >{Mainplayerstats[1] !== undefined
               ? parseFloat(Mainplayerstats[1]).toFixed(1)
               : "--"}</td
@@ -192,34 +181,154 @@
       </table>
 
       <img src="/Arrow/Arrow.png" alt="Arrow" class="arrow" />
-      
+
+      <div class="name2">
+        {parseFloat(SelectedSeason.slice(0, 5)) + 1} -
+        {#if parseFloat(SelectedSeason.slice(5)) + 1 === 100}
+          00
+        {:else if parseFloat(SelectedSeason.slice(5)) + 1 < 10}
+          0{parseFloat(SelectedSeason.slice(5)) + 1}
+        {:else if parseFloat(SelectedSeason.slice(5)) + 1 >= 10}
+          {parseFloat(SelectedSeason.slice(5)) + 1}
+        {/if}년도 {Mainplayer[1]} 기록 예측
+      </div>
       <table class="table2">
         <tr class="th">
-          <th>시즌</th>
           <th>나이</th>
           <th>평균 득점</th>
           <th>평균 리바운드</th>
           <th>평균 어시스트</th>
-          <th>경기 수</th>
           <th>평균 출전 시간</th>
         </tr>
-        {#each PredictionArray as Prediction}
-          <tr>
-            <td>{Prediction["season"]}</td>
-            <td>{Prediction["age"]}세</td>
-            <td>{parseFloat(Prediction["pts"]).toFixed(1)}</td>
-            <td>{parseFloat(Prediction["reb"]).toFixed(1)}</td>
-            <td>{parseFloat(Prediction["ast"]).toFixed(1)}</td>
-            <td>{Prediction["gp"]}</td>
-            <td>{parseFloat(Prediction["min"]).toFixed(1)}</td>
-          </tr>
-        {/each}
+        <tr>
+          <td
+            >{parseFloat(SelectedSeason.slice(0, 5)) -
+              Mainplayer[2].slice(0, 4) +
+              1}세</td
+          >
+          <td
+            >{Mainplayerstats[2] !== undefined
+              ? (
+                  parseFloat(Mainplayerstats[2]) *
+                  (parseFloat(
+                    NBAAVG[
+                      parseFloat(SelectedSeason.slice(0, 5)) -
+                        Mainplayer[2].slice(0, 4) +
+                        1
+                    ].PTS
+                  ) /
+                    parseFloat(
+                      NBAAVG[
+                        parseFloat(SelectedSeason.slice(0, 5)) -
+                          Mainplayer[2].slice(0, 4)
+                      ].PTS
+                    ))
+                ).toFixed(1)
+              : "--"}</td
+          >
+          <td
+            >{Mainplayerstats[3] !== undefined
+              ? (
+                  parseFloat(Mainplayerstats[3]) *
+                  (parseFloat(
+                    NBAAVG[
+                      parseFloat(SelectedSeason.slice(0, 5)) -
+                        Mainplayer[2].slice(0, 4) +
+                        1
+                    ].REB
+                  ) /
+                    parseFloat(
+                      NBAAVG[
+                        parseFloat(SelectedSeason.slice(0, 5)) -
+                          Mainplayer[2].slice(0, 4)
+                      ].REB
+                    ))
+                ).toFixed(1)
+              : "--"}</td
+          >
+          <td
+            >{Mainplayerstats[4] !== undefined
+              ? (
+                  parseFloat(Mainplayerstats[4]) *
+                  (parseFloat(
+                    NBAAVG[
+                      parseFloat(SelectedSeason.slice(0, 5)) -
+                        Mainplayer[2].slice(0, 4) +
+                        1
+                    ].AST
+                  ) /
+                    parseFloat(
+                      NBAAVG[
+                        parseFloat(SelectedSeason.slice(0, 5)) -
+                          Mainplayer[2].slice(0, 4)
+                      ].AST
+                    ))
+                ).toFixed(1)
+              : "--"}</td
+          >
+          <td
+            >{Mainplayerstats[1] !== undefined
+              ? (
+                  parseFloat(Mainplayerstats[1]) *
+                  (parseFloat(
+                    NBAAVG[
+                      parseFloat(SelectedSeason.slice(0, 5)) -
+                        Mainplayer[2].slice(0, 4) +
+                        1
+                    ].MIN
+                  ) /
+                    parseFloat(
+                      NBAAVG[
+                        parseFloat(SelectedSeason.slice(0, 5)) -
+                          Mainplayer[2].slice(0, 4)
+                      ].MIN
+                    ))
+                ).toFixed(1)
+              : "--"}</td
+          >
+        </tr>
       </table>
+      <img class="grape" src="/NBAavggrape.png" alt="Grape">
+      <div class="nbastat-container">
+        <table class="nbastat">
+            <tr>
+              <td class="nbatable">나이</td>
+              {#each NBAAGE as age}
+                <td class="nbatable2">{age}</td>
+              {/each}
+            </tr>
+            <tr>
+              <td class="nbatable">출전시간</td>
+              {#each NBAMIN as min}
+                <td class="nbatable2">{min}</td>
+              {/each}
+            </tr>
+            <tr>
+              <td class="nbatable">득점</td>
+              {#each NBAPTS as pts}
+                <td class="nbatable2">{pts}</td>
+              {/each}
+            </tr>
+            <tr>
+              <td class="nbatable">리바운드</td>
+              {#each NBAREB as reb}
+                <td class="nbatable2">{reb}</td>
+              {/each}
+            </tr>
+            <tr>
+              <td class="nbatable">어시스트</td>
+              {#each NBAAST as ast}
+                <td class="nbatable2">{ast}</td>
+              {/each}
+            </tr>
+        </table>
+      </div>
+      <div class="explain"><strong>선수 예측 방법</strong> : 1996-97시즌부터 2022-23시즌까지의 선수들의 기록을 각 나이별로 출전시간, 득점, 리바운드, 어시스트의 각 나이별 평균 기록을 구했다. 그리고 최댓값을 1로 정하고 나머지들을 최댓값을 기준으로 환산하여 일정한 비율로 구했다. 그 다음 각 나이별 상승세 또는 하락세를 구해서 그 선수의 기록에 곱해주어 다음 시즌을 예측하였다</div>
     </div>
   {:else}
     <div id="section" class="airbox" />
   {/if}
-  </body>
+</body>
 
 <style>
   body {
@@ -356,6 +465,12 @@
     text-align: center;
   }
 
+  .name2 {
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+  }
+
   .groupbox1 {
     margin: 0px auto;
     margin-top: 30px;
@@ -406,5 +521,32 @@
   .arrow {
     width: 80px;
     margin: 0 auto;
+  }
+
+  .grape{
+    width: 900px;
+    height: 550px;
+    margin: 0 auto;
+  }
+
+  .nbastat{
+    margin: 20px auto;
+  }
+  .nbastat-container{
+    overflow-x: auto;
+  }
+
+  .nbatable{
+    width: 58px;
+    background-color: rgb(229, 231, 235);
+    font-weight: bold;
+  }
+
+  .nbatable2{
+    width: 58px;
+  }
+
+  .explain{
+    margin: 20px auto;
   }
 </style>

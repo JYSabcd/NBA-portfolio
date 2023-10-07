@@ -23,6 +23,40 @@ export const TeamnameArray = ["Atlanta Hawks", "Boston Celtics", "Brooklyn Nets"
 "Oklahoma City Thunder", "Orlando Magic", "Philadelphia 76ers", "Phoenix Suns", "Portland Trail Blazers", "Sacramento Kings", "San Antonio Spurs",
 "Toronto Raptors", "Utah Jazz", "Washington Wizards"];
 
+export const NBAAGE = [19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39];
+export const NBAMIN = [23.75, 24.40, 25.04, 25.37, 25.01, 25.30, 26.05, 26.09, 26.82, 26.87, 26.36, 26.37, 26.46, 26.12, 26.32, 25.55, 25.39, 24.55, 23.86, 23.17, 20.66];
+export const NBAPTS = [9.65, 10.44, 10.94, 11.08, 10.94, 11.07, 11.48, 11.51, 11.70, 11.80, 11.20, 10.98, 10.81, 10.57, 10.66, 10.12, 9.43, 9.14, 9.15, 8.58, 8.11];
+export const NBAREB = [4.55, 4.52, 4.56, 4.69, 4.47, 4.47, 4.70, 4.55, 4.69, 4.79, 4.57, 4.52, 4.48, 4.50, 4.52, 4.34, 4.43, 4.28, 4.19, 3.84, 3.37];
+export const NBAAST = [1.53, 2.17, 2.15, 2.19, 2.25, 2.29, 2.32, 2.43, 2.58, 2.52, 2.54, 2.53, 2.58, 2.60, 2.68, 2.58, 2.61, 2.47, 2.55, 2.76, 2.24];
+
+export const NBAAVG = {
+
+    19 : {PTS: 0.722, AST: 0.622, REB: 0.834, MIN: 0.769},
+    20 : {PTS: 0.798, AST: 0.74, REB: 0.842, MIN: 0.813},
+    21 : {PTS: 0.844, AST: 0.774, REB: 0.886, MIN: 0.849},
+    22 : {PTS: 0.857, AST: 0.77, REB: 0.873, MIN: 0.851},
+    23 : {PTS: 0.792, AST: 0.731, REB: 0.814, MIN: 0.804},
+    24 : {PTS: 0.839, AST: 0.792, REB: 0.858, MIN: 0.851},
+    25 : {PTS: 0.904, AST: 0.845, REB: 0.917, MIN: 0.904},
+    26 : {PTS: 0.97, AST: 0.927, REB: 0.957, MIN: 0.957},
+    27 : {PTS: 0.992, AST: 0.973, REB: 0.99, MIN: 0.984},
+    28 : {PTS: 1.000, AST: 1.000, REB: 1.000, MIN: 1.000},
+    29 : {PTS: 0.981, AST: 0.978, REB: 0.981, MIN: 0.993},
+    30 : {PTS: 0.958, AST: 0.989, REB: 0.967, MIN: 0.986},
+    31 : {PTS: 0.911, AST: 0.991, REB: 0.937, MIN: 0.972},
+    32 : {PTS: 0.876, AST: 0.99, REB: 0.909, MIN: 0.942},
+    33 : {PTS: 0.839, AST: 0.96, REB: 0.889, MIN: 0.921},
+    34 : {PTS: 0.816, AST: 0.967, REB: 0.901, MIN: 0.915},
+    35 : {PTS: 0.794, AST: 0.953, REB: 0.903, MIN: 0.921},
+    36 : {PTS: 0.754, AST: 0.921, REB: 0.88, MIN: 0.886},
+    37 : {PTS: 0.708, AST: 0.904, REB: 0.83, MIN: 0.831},
+    38 : {PTS: 0.623, AST: 0.81, REB: 0.799, MIN: 0.767},
+    39 : {PTS: 0.65, AST: 0.828, REB: 0.82, MIN: 0.776}
+
+}
+
+
+
 export const TeamObj = {
     "Atlanta Hawks": {
         TeamID: 1610612737,
