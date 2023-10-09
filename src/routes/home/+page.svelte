@@ -12,7 +12,7 @@
             shadow: "0px 0px 5px rgba(0, 0, 0, 0.25)",
             colors: {
                 background: {
-                    highlight: "purple",
+                    highlight: "rgb(243,139,43)",
                 },
             },
             font: {
@@ -24,7 +24,7 @@
 
     let format = "YYYY-MM-DD";
 
-    const DefaultSelectedDate = new Date(2023, 5, 12); // 월은 0부터 시작
+    const DefaultSelectedDate = new Date(2023, 0, 1); // 월은 0부터 시작
     const DateOptions = {
         weekday: "long",
         year: "numeric",
@@ -33,7 +33,7 @@
     };
 
     let store;
-    let selecteddate;
+    let selecteddate = DefaultSelectedDate;
 
     // 이 반응성 코드는 날짜가 변하는 걸 캐치해서 받아와 GetSchedule을 한번 더 돌리는 것이다.
     $: {
@@ -170,19 +170,18 @@
 <body>
     <img src="/home_image01.jpg" alt="homeimage01" class="homeimage01" />
 
+    <!-- <div class="description_calendar">&#60;조회하고 싶은 경기의 날짜로 변경해주세요.&#62;</div> -->
+    <!-- <div class="description_calendar">조회하고 싶은 경기의 날짜로 변경해주세요.</div> -->
+
     <div class="datepickercontainer">
-        <Datepicker
-            bind:store
-            selected={DefaultSelectedDate}
-            {theme}
-            {format}
-        />
-        <!-- 
-        - 달력이 Datepicker 아랫쪽에서 나오게 변경
-        - 달력의 날짜칸에 경기 수가 함께 표시되게 수정
-        - 가능하다면 경기 수가 0인 날짜는 클릭 안되게 처리
-        -->
+        <Datepicker bind:store let:key let:send let:receive selected={DefaultSelectedDate} {theme} {format}>
+            <button class="button_calendar" in:receive|local={{ key }} out:send|local={{ key }}>
+                {dayjs(selecteddate).format(format)}
+            </button>
+        </Datepicker>
     </div>
+
+    <div class="description_calendar2">※ 조회하고 싶은 경기의 날짜로 변경해주세요.</div>
 
     <div class="gameboardcontainer">
         {#if schedulearray.length === 0}
@@ -214,11 +213,11 @@
     </div>
 
     <div class="mvptitle">
-        {$store?.selected.toLocaleDateString(undefined, DateOptions)}의 MVP
+        {$store?.selected.toLocaleDateString(undefined, DateOptions)} TOP 5
     </div>
 
     <div class="line">
-        <div class="box mvpPT">
+        <div class="box">
             <div class="title">득점</div>
             <table class="ranktable">
                 {#each RankArray_PTS as Rank}
@@ -231,7 +230,7 @@
                 {/each}
             </table>
         </div>
-        <div class="box mvpREB">
+        <div class="box">
             <div class="title">리바운드</div>
             <table class="ranktable">
                 {#each RankArray_REB as Rank}
@@ -244,7 +243,7 @@
                 {/each}
             </table>
         </div>
-        <div class="box mvpAST">
+        <div class="box">
             <div class="title">어시스트</div>
             <table class="ranktable">
                 {#each RankArray_AST as Rank}
@@ -260,7 +259,7 @@
     </div>
 
     <div class="line">
-        <div class="box mvpBLK">
+        <div class="box">
             <div class="title">블록</div>
             <table class="ranktable">
                 {#each RankArray_BLK as Rank}
@@ -273,7 +272,7 @@
                 {/each}
             </table>
         </div>
-        <div class="box mvpSTL">
+        <div class="box">
             <div class="title">스틸</div>
             <table class="ranktable">
                 {#each RankArray_STL as Rank}
@@ -286,7 +285,7 @@
                 {/each}
             </table>
         </div>
-        <div class="box mvpFTP">
+        <div class="box">
             <div class="title">판타지 포인트</div>
             <table class="ranktable">
                 {#each RankArray_FANTASY_PTS as Rank}
@@ -313,19 +312,62 @@
         width: 100%;
     }
 
+    .description_calendar{
+        width: 650px;
+        height: 80px;
+        line-height: 70px;
+        border-radius: 20px;
+        margin: 0 auto;
+        text-align: center;
+        font-size: 25px;
+        font-weight: bold;
+        margin-top: 30px;
+        margin-bottom: 20px;
+        /* border: 4px solid rgb(255, 201, 14, 80%); */
+        border: 5px solid rgb(243,139,43);
+        color: black;
+    }
+
+    .description_calendar2{
+        margin: 0 auto;
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        /* border: 4px solid rgb(255, 201, 14, 80%); */
+        /* border: 5px solid rgb(243,139,43); */
+        color: black;
+    }
+
     .datepickercontainer {
         display: grid;
-        /* 달력이 Datepicker를 중심으로 커져서 윗쪽에 여유가 없으면 짤려서 표시된다.*/
-        /* layout 뒤에 가려지지 않고 달력이 body 영역 안에서만 나오게 처리할수 있으면 좋겠다*/
-        /* padding-top: 250px; */
-        padding: 30px;
+        padding-top: 30px;
         justify-content: center;
+    }
+    
+    .button_calendar {
+        /* background-color: black; */
+        background-color: rgb(243,139,43);
+		color: white;
+        font-weight: bold;
+		border: 0;
+		padding: 18px 30px;
+		font-size: 25px;
+		border-radius: 6px;
+        /* border: 2px solid black; */
+		cursor: pointer;
+        width: 300px;
+        border-radius: 20px;
+	}
+
+    .button_calendar:hover {
+        background-color: rgb(201, 115, 34);
     }
 
     .gameboardcontainer {
         display: flex;
-        border: 1px solid black;
-        border-radius: 5px;
+        border: 3px solid rgb(243,139,43);
+        border-radius: 20px;
         flex-wrap: wrap;
         justify-content: space-between;
         margin: 0px 100px;
@@ -346,8 +388,7 @@
         height: 150px;
         border: 1px solid black;
         border-radius: 10px;
-        margin: 3%;
-
+        margin: 2% 3% 1% 3%;
         display: flex;
         justify-content: space-around;
     }
@@ -355,9 +396,7 @@
     .gameteam {
         width: 25%;
         height: 90%;
-        /* border: 1px solid blue; */
         margin: auto 0px;
-
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -391,62 +430,38 @@
     }
 
     .title {
-        font-size: 22px;
+        font-size: 25px;
         font-weight: bold;
-        padding-top: 5px;
-        padding-bottom: 5px;
     }
 
     .box {
-        width: 350px;
-        height: 200px;
-        margin: 30px auto;
+        width: 400px;
+        height: 210px;
+        margin: 20px auto;
+        padding-bottom: 10px;
         text-align: center;
-        border-radius: 30px;
         border-radius: 50px;
+        border: 4px solid rgb(255, 201, 14);
         font-size: 18px;
     }
 
     .mvptitle {
         margin: 20px auto;
-        width: 400px;
+        margin-top: 40px;
+        width: 600px;
         height: 100px;
         line-height: 100px;
         font-family: "Inter";
         font-weight: bold;
         text-align: center;
         justify-content: center;
-        font-size: 25px;
-        background-color: #fccee2;
+        font-size: 30px;
+        background-color: black;
+        color: white;
         border-radius: 20px;
     }
-
-    .mvpPT {
-        background: #fdb7ba;
-    }
-
-    .mvpREB {
-        background: #f3cdad;
-    }
-
-    .mvpAST {
-        background: #fcffb0;
-    }
-
-    .mvpBLK {
-        background: #afffba;
-    }
-
-    .mvpSTL {
-        background: #98bbeb;
-    }
-
-    .mvpFTP {
-        background: #e2b9ff;
-    }
-
     .ranktable {
-        width: 90%;
-        margin: 5px 5%;
+        width: 80%;
+        margin: 5px auto;
     }
 </style>

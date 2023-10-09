@@ -54,7 +54,9 @@ export async function GET({ url }) {
 
     let query = "select * from public.game_schedule where game_date = '" + url.searchParams.get("SelectedDate") + "';";
 
-    const res = await connectToDB.query(query)
+    const res = await connectToDB.query(query);
+
+    connectToDB.release();
     
     return json(res.rows);
 }
