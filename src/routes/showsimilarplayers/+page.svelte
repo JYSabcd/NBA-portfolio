@@ -97,7 +97,7 @@
       </select>
     </div>
 
-    <button class="search" on:click={PlayerRoaster}> 조회하기 </button>
+    <button class="button" on:click={PlayerRoaster}> 조회하기 </button>
   </div>
 
   {#if Playerroaster.length > 0}
@@ -193,7 +193,7 @@
 
       <div class="listname">{MainplayerSeason}년도 {Mainplayer[1]}과 비슷한 선수</div>
       <table class="table2">
-        <tr class="th">
+        <tr>
           <th>선수 이름</th>
           <th>시즌</th>
           <th>나이</th>
@@ -261,7 +261,7 @@
 
   th {
     border: 1px solid black;
-    background-color: rgb(229, 231, 235);
+    background-color: rgb(255, 201, 14);
     min-width: 80px;
   }
 
@@ -277,19 +277,24 @@
 
   .firsttr:hover {
     cursor: pointer;
-    background-color: #d0e3ed;
+    background-color: rgb(229, 231, 235);
   }
 
-  .search {
-    font-size: 15px;
-    background-color: rgb(121 207 159);
-    min-width: 90px;
+  .button{
+    background-color: rgb(243,139,43);
+    width: 150px;
     height: 60px;
-    padding: 10px;
-    border-radius: 15px;
-    border: 1px solid black;
-    margin-top: 21px;
-    margin-left: 30px;
+    margin-top: 20px;
+    margin-left: 50px;
+    padding: 10px 30px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+  }
+
+  .button:hover {
+      background-color: rgb(201, 115, 34);
   }
 
   .playernametd {
@@ -306,7 +311,7 @@
   .option {
     border: 1px solid black;
     cursor: pointer;
-    background-color: rgb(229, 231, 235);
+    background-color: rgb(255, 201, 14);
   }
 
   .selectbox {
@@ -349,16 +354,13 @@
   }
 
   .thwidth {
+    background-color: rgb(255, 201, 14);
     min-width: 100px;
   }
 
   .border {
     border: 1px solid black;
     text-align: center;
-  }
-
-  .th {
-    background-color: rgb(229, 231, 235);
   }
 
   .name {

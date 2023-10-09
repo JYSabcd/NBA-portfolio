@@ -262,7 +262,7 @@
         </div>
 
         <div>
-            <div class="selectinformation">팀이름</div>
+            <div class="selectinformation">팀 이름</div>
             <select class="overflow selectbox" bind:value={SelectedTeamname}>
                 {#each TeamnameArray as teamname}
                     <option class="option" value={teamname}>
@@ -272,12 +272,12 @@
             </select>
         </div>
 
-        <button class="search" on:click={GetScheduleByTeam}> 조회하기 </button>
+        <button class="button" on:click={GetScheduleByTeam}> 조회하기 </button>
     </div>
 
     <div class="gameboardcontainer">
         {#if ScheduleArray.length === 0}
-            <div class="nogame">해당 일자에 경기가 없습니다.</div>
+            <div class="nogame">원하는 "경기 년월", "팀 이름" 을 선택하고 "조회하기"를 눌러주세요.</div>
         {/if}
         {#each ScheduleArray as schedule, ArrayIndex}
             <div
@@ -642,6 +642,7 @@
         margin-bottom: 5px;
         margin-left: 20px;
         font-weight: bold;
+        text-align: center;
     }
 
     .overflow {
@@ -667,22 +668,27 @@
         border-radius: 20px;
     }
 
-    .search {
-        font-size: 15px;
-        background-color: rgb(121 207 159);
-        min-width: 90px;
+    .button{
+        background-color: rgb(243,139,43);
+        width: 150px;
         height: 60px;
-        padding: 10px;
-        border-radius: 15px;
-        border: 1px solid black;
-        margin-top: 21px;
-        margin-left: 30px;
+        margin-top: 20px;
+        margin-left: 50px;
+        padding: 10px 30px;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 20px;
+        color: white;
+    }
+
+    .button:hover {
+        background-color: rgb(201, 115, 34);
     }
 
     .gameboardcontainer {
         display: flex;
-        border: 1px solid black;
-        border-radius: 5px;
+        border: 3px solid rgb(243,139,43);
+        border-radius: 20px;
         flex-wrap: wrap;
         justify-content: left;
         margin: 0px 100px;
@@ -780,12 +786,17 @@
     }
 
     .selectedgame_title {
-        width: 100%;
+        width: 50%;
+        height: 170px;
+        margin: 0 auto;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        border-radius: 20px;
         margin-top: 50px;
+        background-color: white;
+        border: 3px solid rgb(243, 139, 43);
     }
 
     .title {
@@ -996,12 +1007,12 @@
     }
 
     tr:hover {
-        background-color: #d0e3ed;
+        background-color: rgb(229, 231, 235);
         cursor: pointer;
     }
 
     th {
-        background-color: rgb(229, 231, 235);
+        background-color: rgb(255, 201, 14);
     }
 
     td {
@@ -1012,9 +1023,5 @@
     th {
         border: 1px solid black;
         min-width: 100px;
-    }
-
-    th:hover {
-        background-color: #d0e3ed;
     }
 </style>

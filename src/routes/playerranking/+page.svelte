@@ -2,7 +2,7 @@
     import { SeasonArray, SeasonTypeArray } from "../data.js";
 
     /** @type {(string)[]} */
-    let TableHeader = ['선수이름','게임 수','출전 시간','득점','리바운드','어시스트','스틸','블록','야투 성공률(%)', '3점 성공률(%)', '자유투 성공률(%)'];
+    let TableHeader = ['선수이름','게임 수','출전 시간','득점','리바운드','어시스트','스틸','블록','야투(%)', '3점(%)', '자유투(%)'];
     /** @type {number} */
     const DefaultSortIndex = 3;  // '득점', TableHeader 배열 인덱스
     const DefaultSortMethod = -1;  // 내림차순
@@ -171,12 +171,21 @@
     }
 
     tr:hover{
-        background-color: #D0E3ED;
+        background-color: rgb(229,231,235);
         cursor:pointer;
     }
 
+    th {
+        border: 1px solid black;
+        height: 40px;
+        font-size: 15px;
+        font-weight: bold;
+        text-align: center;
+        min-width: 60px;
+        transition: 0.3s;
+    }
 
-    th, td {
+    td {
         border: 1px solid black;
         text-align: center;
         min-width: 60px;
@@ -184,11 +193,12 @@
     }
 
     th:hover{
-        background-color: #D0E3ED;
+        background-color: rgb(190, 151, 9);
+        cursor: pointer;
     }
 
     .thcolor{
-        background-color: rgb(229,231,235);
+        background-color: rgb(255, 201, 14);
     }
 
     .thcolor:hover{
@@ -199,17 +209,23 @@
         cursor: pointer;
     }
 
+
     .button{
-        background-color: rgb(121 207 159);
-        width: 130px;
-        height: 50px;
+        background-color: rgb(243,139,43);
+        width: 150px;
+        height: 60px;
         margin-top: 20px;
         margin-left: 50px;
-        padding: 10px;
-        padding-left: 30px;
-        padding-right: 30px;
-        border-radius: 15px;
-        border: 1px solid black;
+        padding: 10px 30px;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 20px;
+        /* border: 1px solid black; */
+        color: white;
+    }
+
+    .button:hover {
+        background-color: rgb(201, 115, 34);
     }
 
     select:hover{
@@ -224,7 +240,6 @@
         display: inline;
         width: 40px;
         height: 40px;
-        /* margin-right: 10px; */
         margin-left: 5px;
     }
 
@@ -251,7 +266,7 @@
     }
 
     .text{
-        margin-left: 10px;
+        margin-left: 20px;
         margin-bottom: 5px;
         font-weight: bold;
     }

@@ -189,12 +189,22 @@
     }
 
     tr:hover{
-        background-color: #D0E3ED;
+        background-color: rgb(229,231,235);
         cursor:pointer;
     }
 
 
-    th, td {
+    th {
+        border: 1px solid black;
+        height: 40px;
+        font-size: 15px;
+        font-weight: bold;
+        text-align: center;
+        min-width: 60px;
+        transition: 0.3s;
+    }
+
+    td {
         border: 1px solid black;
         text-align: center;
         min-width: 60px;
@@ -202,11 +212,12 @@
     }
 
     th:hover{
-        background-color: #D0E3ED;
+        background-color: rgb(190, 151, 9);
+        cursor: pointer;
     }
 
     .thcolor{
-        background-color: rgb(229,231,235);
+        background-color: rgb(255, 201, 14);
     }
 
     .thcolor:hover{
@@ -218,17 +229,23 @@
     }
 
     .button{
-        background-color: rgb(121 207 159);
-        width: 130px;
-        height: 50px;
+        background-color: rgb(243,139,43);
+        width: 150px;
+        height: 60px;
         margin-top: 20px;
         margin-left: 50px;
-        padding: 10px;
-        padding-left: 30px;
-        padding-right: 30px;
-        border-radius: 15px;
-        border: 1px solid black;
+        padding: 10px 30px;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 20px;
+        /* border: 1px solid black; */
+        color: white;
     }
+
+    .button:hover {
+        background-color: rgb(201, 115, 34);
+    }
+
 
     select:hover{
         cursor: pointer;
@@ -247,7 +264,6 @@
     }
 
     .teamname{
-        /* width: 500px; */
         width: 250px;
         text-align: left;
     }
@@ -263,7 +279,7 @@
     }
 
     .text{
-        margin-left: 10px;
+        margin-left: 20px;
         margin-bottom: 5px;
         font-weight: bold;
     }

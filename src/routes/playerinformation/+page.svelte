@@ -1,7 +1,7 @@
 <script lang="ts">
   import { SeasonArray, TeamnameArray, TeamObj } from "../data.js";
 
-  const TableHeaders = ["이름", "등번호", "포지션", "나이", "키", "몸무게"];
+  const TableHeaders = ["선수 이름", "등번호", "포지션", "나이", "키", "몸무게"];
 
   let SelectedSeason = "2022-23";
 
@@ -82,7 +82,7 @@
       </select>
     </div>
 
-    <button class="search" on:click={PlayerRoaster}> 조회하기 </button>
+    <button class="button" on:click={PlayerRoaster}> 조회하기 </button>
   </div>
 
   {#if Playerroaster.length > 0}
@@ -90,7 +90,7 @@
       <div>
         <div class="text">{tablename} 선수들</div>
         <table class="table">
-          <tr class="th">
+          <tr>
             {#each TableHeaders as header}
               <th class="option">
                 {header}
@@ -144,7 +144,7 @@
       </div>
 
       <table class="table">
-        <tr class="th">
+        <tr>
           <th class="border">경기 당 평균 출전시간</th>
           <th class="border">경기 당 평균 득점</th>
           <th class="border">경기 당 평균 리바운드</th>
@@ -159,7 +159,7 @@
       </table>
 
       <table class="table">
-        <tr class="th">
+        <tr>
           <th class="border">키</th>
           <th class="border">몸무게</th>
           <th class="border">국적</th>
@@ -188,7 +188,7 @@
             {/if}
           </td>
         </tr>
-        <tr class="th">
+        <tr>
           <th class="border">나이</th>
           <th class="border">생년월일</th>
           <th class="border">판타지 포인트</th>
@@ -229,12 +229,6 @@
     font-weight: bold;
   }
 
-  .selectinformation {
-    margin-bottom: 5px;
-    font-weight: bold;
-    text-align: center;
-  }
-
   .overflow {
     height: 200px;
     width: 200px;
@@ -243,7 +237,9 @@
 
   th {
     border: 1px solid black;
-    background-color: rgb(229, 231, 235);
+    font-weight: bold;
+    font-size: 17px;
+    background-color: rgb(255, 201, 14);
   }
 
   td {
@@ -257,20 +253,25 @@
 
   .firsttr:hover {
     cursor: pointer;
-    background-color: #d0e3ed;
+    background-color: rgb(229, 231, 235);
   }
 
-  .search {
-    font-size: 15px;
-    background-color: rgb(121 207 159);
-    min-width: 90px;
-    height: 60px;
-    padding: 10px;
-    border-radius: 15px;
-    border: 1px solid black;
-    margin-top: 21px;
-    margin-left: 30px;
-  }
+  .button{
+        background-color: rgb(243,139,43);
+        width: 150px;
+        height: 60px;
+        margin-top: 20px;
+        margin-left: 50px;
+        padding: 10px 30px;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 20px;
+        color: white;
+    }
+
+    .button:hover {
+        background-color: rgb(201, 115, 34);
+    }
 
   .playernametd {
     text-align: left;
@@ -285,8 +286,9 @@
 
   .option {
     border: 1px solid black;
+    font-size: 17px;
     cursor: pointer;
-    background-color: rgb(229, 231, 235);
+    background-color: rgb(255, 201, 14);
   }
 
   .selectbox {
@@ -321,10 +323,6 @@
   .border {
     border: 1px solid black;
     text-align: center;
-  }
-
-  .th {
-    background-color: rgb(229, 231, 235);
   }
 
   .name {
@@ -375,9 +373,8 @@
   }
 
   .selectinformation {
-    margin-left: 10px;
+    margin-left: 30px;
     margin-bottom: 5px;
-    margin-left: 20px;
     font-weight: bold;
   }
 </style>
