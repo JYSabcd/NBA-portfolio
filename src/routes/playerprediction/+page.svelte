@@ -1,6 +1,14 @@
 <script lang="ts">
   import {
-    SeasonArray, TeamnameArray, TeamObj, NBAAVG, NBAAGE, NBAMIN, NBAPTS, NBAREB, NBAAST
+    SeasonArray,
+    TeamnameArray,
+    TeamObj,
+    NBAAVG,
+    NBAAGE,
+    NBAMIN,
+    NBAPTS,
+    NBAREB,
+    NBAAST,
   } from "../data.js";
 
   const TableHeaders = [
@@ -67,6 +75,22 @@
 </script>
 
 <body>
+  <div class="pagenamecontainer">
+      <div class="pagename">다음 시즌 예측하기</div>
+      <div class="BMW_container">
+          <img class="BMWimg" src="/Site_Logo.png" alt="BMWimg" />
+
+          <div>
+              <span class="BMW_BMW">B</span>
+              <span class="BMW_normal">asketball</span>
+              <span class="BMW_BMW">M</span>
+              <span class="BMW_normal">ania</span>
+              <span class="BMW_BMW">W</span>
+              <span class="BMW_normal">ebsite</span>
+          </div>       
+      </div>
+  </div>
+
   <div class="groupbox1">
     <div>
       <div class="selectinformation">시즌연도</div>
@@ -95,41 +119,39 @@
 
   {#if Playerroaster.length > 0}
     <div class="groupbox2">
-      <div>
-        <div class="text">{tablename} 선수들</div>
-        <table class="table1">
-          <tr class="th">
-            {#each TableHeaders as header}
-              <th class="option">
-                {header}
-              </th>
-            {/each}
-          </tr>
-          {#each Playerroaster as player, ArrayIndex}
-            <tr
-              class="firsttr"
-              on:click={() => {
-                SelectPlayer(ArrayIndex);
-              }}
-            >
-              <td class="playernametd">
-                <img
-                  src="https://cdn.nba.com/headshots/nba/latest/1040x760/{player[6]}.png"
-                  onerror="this.src='https://cdn.nba.com/headshots/nba/latest/1040x760/fallback.png'"
-                  alt="playerimg"
-                  class="playerimage"
-                />
-                {player[0]}
-              </td>
-              <td>{player[1]}세</td>
-              <td>{player[2]}</td>
-              <td>{player[3]}</td>
-              <td>{player[4]}</td>
-              <td>{player[5]}</td>
-            </tr>
+      <div class="text">{tablename} 선수들</div>
+      <table class="table1">
+        <tr class="th">
+          {#each TableHeaders as header}
+            <th class="option">
+              {header}
+            </th>
           {/each}
-        </table>
-      </div>
+        </tr>
+        {#each Playerroaster as player, ArrayIndex}
+          <tr
+            class="firsttr"
+            on:click={() => {
+              SelectPlayer(ArrayIndex);
+            }}
+          >
+            <td class="playernametd">
+              <img
+                src="https://cdn.nba.com/headshots/nba/latest/1040x760/{player[6]}.png"
+                onerror="this.src='https://cdn.nba.com/headshots/nba/latest/1040x760/fallback.png'"
+                alt="playerimg"
+                class="playerimage"
+              />
+              {player[0]}
+            </td>
+            <td>{player[1]}</td>
+            <td>{player[2]}</td>
+            <td>{player[3]}</td>
+            <td>{player[4]}</td>
+            <td>{player[5]}</td>
+          </tr>
+        {/each}
+      </table>
     </div>
   {/if}
 
@@ -288,42 +310,48 @@
           >
         </tr>
       </table>
-      <img class="grape" src="/NBAavggrape.png" alt="Grape">
+      <img class="grape" src="/NBAavggrape.png" alt="Grape" />
       <div class="nbastat-container">
         <table class="nbastat">
-            <tr>
-              <td class="nbatable">나이</td>
-              {#each NBAAGE as age}
-                <td class="nbatable2">{age}</td>
-              {/each}
-            </tr>
-            <tr>
-              <td class="nbatable">출전시간</td>
-              {#each NBAMIN as min}
-                <td class="nbatable2">{min}</td>
-              {/each}
-            </tr>
-            <tr>
-              <td class="nbatable">득점</td>
-              {#each NBAPTS as pts}
-                <td class="nbatable2">{pts}</td>
-              {/each}
-            </tr>
-            <tr>
-              <td class="nbatable">리바운드</td>
-              {#each NBAREB as reb}
-                <td class="nbatable2">{reb}</td>
-              {/each}
-            </tr>
-            <tr>
-              <td class="nbatable">어시스트</td>
-              {#each NBAAST as ast}
-                <td class="nbatable2">{ast}</td>
-              {/each}
-            </tr>
+          <tr>
+            <td class="nbatable">나이</td>
+            {#each NBAAGE as age}
+              <td class="nbatable2">{age}</td>
+            {/each}
+          </tr>
+          <tr>
+            <td class="nbatable">출전시간</td>
+            {#each NBAMIN as min}
+              <td class="nbatable2">{min}</td>
+            {/each}
+          </tr>
+          <tr>
+            <td class="nbatable">득점</td>
+            {#each NBAPTS as pts}
+              <td class="nbatable2">{pts}</td>
+            {/each}
+          </tr>
+          <tr>
+            <td class="nbatable">리바운드</td>
+            {#each NBAREB as reb}
+              <td class="nbatable2">{reb}</td>
+            {/each}
+          </tr>
+          <tr>
+            <td class="nbatable">어시스트</td>
+            {#each NBAAST as ast}
+              <td class="nbatable2">{ast}</td>
+            {/each}
+          </tr>
         </table>
       </div>
-      <div class="explain"><strong>선수 예측 방법</strong> : 1996-97시즌부터 2022-23시즌까지의 선수들의 기록을 각 나이별로 출전시간, 득점, 리바운드, 어시스트의 각 나이별 평균 기록을 구했다. 그리고 최댓값을 1로 정하고 나머지들을 최댓값을 기준으로 환산하여 일정한 비율로 구했다. 그 다음 각 나이별 상승세 또는 하락세를 구해서 그 선수의 기록에 곱해주어 다음 시즌을 예측하였다</div>
+      <div class="explain">
+        <strong>선수 예측 방법</strong> : 1996-97시즌부터 2022-23시즌까지의 선수들의
+        기록을 각 나이별로 출전시간, 득점, 리바운드, 어시스트의 각 나이별 평균 기록을
+        구했다. 그리고 최댓값을 1로 정하고 나머지들을 최댓값을 기준으로 환산하여
+        일정한 비율로 구했다. 그 다음 각 나이별 상승세 또는 하락세를 구해서 그 선수의
+        기록에 곱해주어 다음 시즌을 예측하였다
+      </div>
     </div>
   {:else}
     <div id="section" class="airbox" />
@@ -337,18 +365,63 @@
     background-color: rgb(246, 246, 246);
   }
 
+  .pagenamecontainer {
+        padding: 10px 65px;
+        width: 100%;
+        background-color: rgb(97, 0, 97);
+
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .pagename {
+        font-size: 30px;
+        font-weight: bold;
+        color: white;
+    }
+
+    .BMW_container {
+        display: flex;
+    }
+
+    .BMW_normal {
+        font-size: 15px;
+        font-weight: bold;
+        color: white;
+        /* color: rgb(243, 139, 43); */
+
+        font-style:italic;
+    }
+    .BMW_BMW {
+        padding-left: 5px;
+        font-size: 30px;
+        font-weight: bold;
+        color: rgb(255, 201, 14);
+
+        font-style:italic;
+        -webkit-text-stroke: 1px white;
+        text-shadow: 2px 2px 4px gray;
+    }
+    .BMWimg {
+        width: 40px;
+        height: 40px;
+        margin-left: 20px;
+        margin-right: 20px;
+        border-radius: 5px;
+    }
+
   .text {
     text-align: center;
     margin-top: 20px;
     margin-bottom: 5px;
-    font-size: 20px;
+    font-size: 23px;
     font-weight: bold;
   }
 
   .selectinformation {
     margin-bottom: 5px;
+    margin-left: 30px;
     font-weight: bold;
-    text-align: center;
   }
 
   .overflow {
@@ -365,6 +438,7 @@
   }
 
   td {
+    min-width: 150px;
     border: 1px solid black;
     text-align: center;
   }
@@ -382,8 +456,8 @@
     background-color: rgb(229, 231, 235);
   }
 
-  .button{
-    background-color: rgb(243,139,43);
+  .button {
+    background-color: rgb(243, 139, 43);
     width: 150px;
     height: 60px;
     margin-top: 20px;
@@ -396,22 +470,24 @@
   }
 
   .button:hover {
-      background-color: rgb(201, 115, 34);
+    background-color: rgb(201, 115, 34);
   }
 
   .playernametd {
     text-align: left;
+    min-width: 240px;
   }
 
   .playerimage {
     display: inline;
-    width: 75px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
     margin-right: 10px;
   }
 
   .option {
     border: 1px solid black;
+    font-size: 18px;
     cursor: pointer;
     background-color: rgb(255, 201, 14);
   }
@@ -435,12 +511,14 @@
     padding-bottom: 30px;
   }
 
+  table {
+    width: calc(100% - 40px);
+  }
+
   .table1 {
     border-collapse: collapse;
     border: 1px solid black;
     margin: 30px auto;
-    margin-bottom: 100px;
-    width: 800px;
     height: 40px;
     line-height: 40px;
   }
@@ -449,8 +527,6 @@
     border-collapse: collapse;
     border: 1px solid black;
     margin: 30px auto;
-    margin-bottom: 100px;
-    width: 1050px;
     height: 40px;
     line-height: 40px;
   }
@@ -490,6 +566,7 @@
     padding: 20px 20px;
     width: 90%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     background-color: white;
     border-radius: 20px;
@@ -512,43 +589,39 @@
     height: 715px;
   }
 
-  .selectinformation {
-    margin-left: 10px;
-    margin-bottom: 5px;
-    margin-left: 20px;
-    font-weight: bold;
-  }
-
   .arrow {
     width: 80px;
     margin: 0 auto;
   }
 
-  .grape{
+  .grape {
     width: 900px;
     height: 550px;
     margin: 0 auto;
   }
 
-  .nbastat{
+  .nbastat {
     margin: 20px auto;
   }
-  .nbastat-container{
+  .nbastat-container {
     overflow-x: auto;
   }
 
-  .nbatable{
+  .nbatable {
+    min-width: 0px;
     width: 58px;
     background-color: rgb(229, 231, 235);
     background-color: rgb(255, 201, 14);
     font-weight: bold;
+    font-size: 17px;
   }
 
-  .nbatable2{
+  .nbatable2 {
     width: 58px;
+    min-width: 0px;
   }
 
-  .explain{
+  .explain {
     margin: 20px auto;
   }
 </style>

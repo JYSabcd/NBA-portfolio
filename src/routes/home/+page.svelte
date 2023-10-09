@@ -170,9 +170,6 @@
 <body>
     <img src="/home_image01.jpg" alt="homeimage01" class="homeimage01" />
 
-    <!-- <div class="description_calendar">&#60;조회하고 싶은 경기의 날짜로 변경해주세요.&#62;</div> -->
-    <!-- <div class="description_calendar">조회하고 싶은 경기의 날짜로 변경해주세요.</div> -->
-
     <div class="datepickercontainer">
         <Datepicker bind:store let:key let:send let:receive selected={DefaultSelectedDate} {theme} {format}>
             <button class="button_calendar" in:receive|local={{ key }} out:send|local={{ key }}>
@@ -181,7 +178,7 @@
         </Datepicker>
     </div>
 
-    <div class="description_calendar2">※ 조회하고 싶은 경기의 날짜로 변경해주세요.</div>
+    <div class="description_calendar">※ 조회하고 싶은 경기의 날짜로 변경해주세요.</div>
 
     <div class="gameboardcontainer">
         {#if schedulearray.length === 0}
@@ -313,23 +310,7 @@
     }
 
     .description_calendar{
-        width: 650px;
-        height: 80px;
-        line-height: 70px;
-        border-radius: 20px;
-        margin: 0 auto;
-        text-align: center;
-        font-size: 25px;
-        font-weight: bold;
-        margin-top: 30px;
-        margin-bottom: 20px;
-        /* border: 4px solid rgb(255, 201, 14, 80%); */
-        border: 5px solid rgb(243,139,43);
-        color: black;
-    }
-
-    .description_calendar2{
-        margin: 0 auto;
+        margin: 10px auto;
         text-align: center;
         font-size: 20px;
         font-weight: bold;
@@ -346,15 +327,13 @@
     }
     
     .button_calendar {
-        /* background-color: black; */
         background-color: rgb(243,139,43);
 		color: white;
-        font-weight: bold;
+        font-weight: bolder;
 		border: 0;
 		padding: 18px 30px;
 		font-size: 25px;
 		border-radius: 6px;
-        /* border: 2px solid black; */
 		cursor: pointer;
         width: 300px;
         border-radius: 20px;
@@ -449,8 +428,8 @@
         margin: 20px auto;
         margin-top: 40px;
         width: 600px;
-        height: 100px;
-        line-height: 100px;
+        height: 70px;
+        line-height: 70px;
         font-family: "Inter";
         font-weight: bold;
         text-align: center;

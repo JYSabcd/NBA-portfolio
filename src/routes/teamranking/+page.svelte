@@ -63,7 +63,26 @@
 </script>
 
 <body>
+    <div class="pagenamecontainer">
+        <div class="pagename">팀 순위</div>
+        <div class="BMW_container">
+            <img class="BMWimg" src="/Site_Logo.png" alt="BMWimg" />
     
+            <div>
+                <span class="BMW_BMW">B</span>
+                <span class="BMW_normal">asketball</span>
+                <span class="BMW_BMW">M</span>
+                <span class="BMW_normal">ania</span>
+                <span class="BMW_BMW">W</span>
+                <span class="BMW_normal">ebsite</span>
+            </div>
+            <!-- <img class="ballimg" src="/ball_monster.png" alt="BMW ball" /> -->
+            <!-- <img class="BMWimg" src="/Site_Logo.png" alt="BMWimg" /> -->
+            <!-- <img class="ballimg" src="/fireball.jpg" alt="BMW ball" /> -->
+            
+        </div>
+    </div>
+
     <div class="groupbox1">
         <div>
             <div class="text">시즌연도</div>
@@ -154,12 +173,56 @@
     body {
         overflow: hidden;
         width: 100%;
-        padding-top: 20px;
         background-color: rgb(246, 246, 246);
+    }
+
+    .pagenamecontainer {
+        padding: 10px 65px;
+        width: 100%;
+        background-color: rgb(97, 0, 97);
+
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .pagename {
+        font-size: 30px;
+        font-weight: bold;
+        color: white;
+    }
+
+    .BMW_container {
+        display: flex;
+    }
+
+    .BMW_normal {
+        font-size: 15px;
+        font-weight: bold;
+        color: white;
+        /* color: rgb(243, 139, 43); */
+
+        font-style:italic;
+    }
+    .BMW_BMW {
+        padding-left: 5px;
+        font-size: 30px;
+        font-weight: bold;
+        color: rgb(255, 201, 14);
+
+        font-style:italic;
+        -webkit-text-stroke: 1px white;
+        text-shadow: 2px 2px 4px gray;
+    }
+    .BMWimg {
+        width: 40px;
+        height: 40px;
+        margin-left: 20px;
+        margin-right: 20px;
+        border-radius: 5px;
     }
     
     .groupbox1{
-        margin: 0px auto;
+        margin: 20px auto;
         padding: 20px 20px;
         width: 90%;
         display: flex;
@@ -218,6 +281,7 @@
 
     .thcolor{
         background-color: rgb(255, 201, 14);
+        font-size: 18px;
     }
 
     .thcolor:hover{

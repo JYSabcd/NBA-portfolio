@@ -204,6 +204,10 @@
 
         let Action = PlaybyPlayArray[ArrayIndex];
 
+        CurrentScore_Home = Action["scoreHome"];
+        CurrentScore_Away = Action["scoreAway"];
+
+
         //////////////////////////////////////////////////
         //  농구공 그리기
         if (interval_ball !== null) {
@@ -246,6 +250,26 @@
 </script>
 
 <body>
+    <div class="pagenamecontainer">
+        <div class="pagename">경기 기록보기</div>
+        <div class="BMW_container">
+            <img class="BMWimg" src="/Site_Logo.png" alt="BMWimg" />
+    
+            <div>
+                <span class="BMW_BMW">B</span>
+                <span class="BMW_normal">asketball</span>
+                <span class="BMW_BMW">M</span>
+                <span class="BMW_normal">ania</span>
+                <span class="BMW_BMW">W</span>
+                <span class="BMW_normal">ebsite</span>
+            </div>
+            <!-- <img class="ballimg" src="/ball_monster.png" alt="BMW ball" /> -->
+            <!-- <img class="BMWimg" src="/Site_Logo.png" alt="BMWimg" /> -->
+            <!-- <img class="ballimg" src="/fireball.jpg" alt="BMW ball" /> -->
+            
+        </div>
+    </div>
+
     <div class="groupbox1">
         <div>
             <div class="selectinformation">경기 년월(YYYY-MM)</div>
@@ -275,9 +299,10 @@
         <button class="button" on:click={GetScheduleByTeam}> 조회하기 </button>
     </div>
 
+    {#if ScheduleArray.length > 0}
     <div class="gameboardcontainer">
         {#if ScheduleArray.length === 0}
-            <div class="nogame">원하는 "경기 년월", "팀 이름" 을 선택하고 "조회하기"를 눌러주세요.</div>
+            <div class="nogame">※ 원하는 "경기 년월", "팀 이름" 을 선택하고 "조회하기"를 눌러주세요.</div>
         {/if}
         {#each ScheduleArray as schedule, ArrayIndex}
             <div
@@ -322,7 +347,7 @@
 
     <div class="selectedgame_title">
         {#if SelectedGame["game_date"] === undefined}
-            <div class="title">경기를 선택해 주세요.</div>
+            <div class="title">※ 경기를 선택해 주세요.</div>
         {:else}
             <div class="title">{SelectedGame["game_date"].slice(0, 10)}</div>
             <div>
@@ -461,7 +486,30 @@
         </div>
 
         <div class="PbyP_Court_Container">
-            <div id="PbyP_Court" width={size_court_x} height={size_court_y} />
+            <div class="CS_Board">
+                <div>
+                    <img
+                        src="/TeamLogo/{SelectedGame['home_teamid']}.svg"
+                        alt="HomeTeamLogo"
+                        class="CS_TeamLogoImage"
+                    />
+                    <div class="CS_Board_Real">
+                        <div class="CS_score">
+                            {CurrentScore_Home}
+                        </div>
+                        <div class="CS_vs">VS</div>
+                        <div class="CS_score">
+                            {CurrentScore_Away}
+                        </div>
+                    </div>
+                    <img
+                        src="/TeamLogo/{SelectedGame['away_teamid']}.svg"
+                        alt="AwayTeamLogo"
+                        class="CS_TeamLogoImage"
+                    />
+                </div>
+            </div>
+            <div id="PbyP_Court">
             {#if SelectedAction !== null}
                 <img
                     bind:this={ImageShooter}
@@ -479,16 +527,18 @@
                     style="left: {SelectedAction['PosX'] - 10}px; top: {SelectedAction['PosY'] - 10}px;"
                 />
             {/if}
+            </div>
             <label class="AutoProgress">
                 <input type="checkbox" bind:checked={AutoProgress} />
                 Play By Play 자동 진행
             </label>
         </div>
     </div>
+    {/if}
 
-    <div class="tposition">
-        {#if SelectedGame["game_id"] !== undefined && PlayerStatArray.length > 0}
-            <div class="title">
+    {#if SelectedGame["game_id"] !== undefined && PlayerStatArray.length > 0}
+        <div class="groupbox2">
+            <div class="playerlist_teamname">
                 홈팀 : <img
                     src="/TeamLogo/{SelectedGame['home_teamid']}.svg"
                     alt="AwayTeamLogo"
@@ -499,15 +549,15 @@
             </div>
             <table>
                 <tr>
-                    <th>선수 이름</th>
-                    <th>출전시간</th>
-                    <th>득점</th>
-                    <th>리바운드</th>
-                    <th>어시스트</th>
-                    <th>스틸</th>
-                    <th>블록</th>
-                    <th>야투율(%)</th>
-                    <th>3점 성공률(%)</th>
+                    <th class="gameresult">선수 이름</th>
+                    <th class="gameresult">출전시간</th>
+                    <th class="gameresult">득점</th>
+                    <th class="gameresult">리바운드</th>
+                    <th class="gameresult">어시스트</th>
+                    <th class="gameresult">스틸</th>
+                    <th class="gameresult">블록</th>
+                    <th class="gameresult">야투율(%)</th>
+                    <th class="gameresult">3점 성공률(%)</th>
                 </tr>
                 {#each PlayerStatArray as PlayerStat}
                     {#if SelectedGame["home_teamid"] === PlayerStat[0]}
@@ -549,11 +599,12 @@
                     {/if}
                 {/each}
             </table>
-        {/if}
-    </div>
-    <div class="tposition">
-        {#if SelectedGame["game_id"] !== undefined && PlayerStatArray.length > 0}
-            <div class="title">
+        </div>
+    {/if}
+    
+    {#if SelectedGame["game_id"] !== undefined && PlayerStatArray.length > 0}
+        <div class="groupbox2">
+            <div class="playerlist_teamname">
                 어웨이팀 : <img
                     src="/TeamLogo/{SelectedGame['away_teamid']}.svg"
                     alt="AwayTeamLogo"
@@ -564,15 +615,15 @@
             </div>
             <table>
                 <tr>
-                    <th>선수 이름</th>
-                    <th>출전시간</th>
-                    <th>득점</th>
-                    <th>리바운드</th>
-                    <th>어시스트</th>
-                    <th>스틸</th>
-                    <th>블록</th>
-                    <th>야투율(%)</th>
-                    <th>3점 성공률(%)</th>
+                    <th class="gameresult">선수 이름</th>
+                    <th class="gameresult">출전시간</th>
+                    <th class="gameresult">득점</th>
+                    <th class="gameresult">리바운드</th>
+                    <th class="gameresult">어시스트</th>
+                    <th class="gameresult">스틸</th>
+                    <th class="gameresult">블록</th>
+                    <th class="gameresult">야투율(%)</th>
+                    <th class="gameresult">3점 성공률(%)</th>
                 </tr>
                 {#each PlayerStatArray as PlayerStat}
                     {#if SelectedGame["away_teamid"] === PlayerStat[0]}
@@ -614,8 +665,8 @@
                     {/if}
                 {/each}
             </table>
-        {/if}
-    </div>
+        </div>
+    {/if}
 </body>
 
 <style>
@@ -625,6 +676,51 @@
         background-color: rgb(246, 246, 246);
     }
 
+    .pagenamecontainer {
+        padding: 10px 65px;
+        width: 100%;
+        background-color: rgb(97, 0, 97);
+
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .pagename {
+        font-size: 30px;
+        font-weight: bold;
+        color: white;
+    }
+
+    .BMW_container {
+        display: flex;
+    }
+
+    .BMW_normal {
+        font-size: 15px;
+        font-weight: bold;
+        color: white;
+        /* color: rgb(243, 139, 43); */
+
+        font-style:italic;
+    }
+    .BMW_BMW {
+        padding-left: 5px;
+        font-size: 30px;
+        font-weight: bold;
+        color: rgb(255, 201, 14);
+
+        font-style:italic;
+        -webkit-text-stroke: 1px white;
+        text-shadow: 2px 2px 4px gray;
+    }
+    .BMWimg {
+        width: 40px;
+        height: 40px;
+        margin-left: 20px;
+        margin-right: 20px;
+        border-radius: 5px;
+    }
+    
     .groupbox1 {
         margin: 0px auto;
         margin-top: 30px;
@@ -698,7 +794,7 @@
     .nogame {
         width: 100%;
         text-align: center;
-        font-size: 30px;
+        font-size: 20px;
         font-weight: bolder;
         padding-top: 30px;
         padding-bottom: 30px;
@@ -773,9 +869,22 @@
         margin: auto 3px;
     }
 
+    .groupbox2 {
+        margin: 0px auto;
+        padding: 20px 20px;
+        width: 90%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background-color: white;
+        border-radius: 20px;
+        margin-bottom: 30px;
+    }
+    
     .playername {
         width: 250px;
         text-align: left;
+        padding-left: 10px;
     }
 
     .playerimage {
@@ -802,6 +911,12 @@
     .title {
         text-align: center;
         font-size: 20px;
+        font-weight: bold;
+    }
+
+    .playerlist_teamname {
+        text-align: center;
+        font-size: 35px;
         font-weight: bold;
     }
 
@@ -937,7 +1052,46 @@
     }
 
     .PbyP_Court_Container {
-        position: relative;
+    }
+
+    .CS_Board {
+        display: flex;
+        justify-content: center;
+    }
+
+    .CS_Board_Real {
+        display: inline-block;
+        background-color: black;
+        padding-left: 10px;
+        padding-right: 10px;
+        color: rgb(14, 209, 14);
+        border-radius: 5px;
+    }
+
+    .CS_TeamLogoImage {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        margin-left: 100px;
+        margin-right: 100px;
+    }
+
+    .CS_score {
+        display: inline-block;
+        width: 50px;
+        text-align: center;
+        font-size: 25px;
+        font-weight: bold;
+        line-height: 50px;
+    }
+
+    .CS_vs {
+        display: inline-block;
+        text-align: center;
+        font-size: 10px;
+        font-weight: bold;
+        padding-left: 5px;
+        padding-right: 5px;
     }
 
     #PbyP_Court {
@@ -948,6 +1102,7 @@
         border: 1px solid black;
         background-repeat: no-repeat;
         background-size: contain;
+        position: relative;
     }
 
     .Shooter {
@@ -975,6 +1130,24 @@
         z-index: 2;
     }
 
+    .Court_Score_Home {
+        position: absolute;
+        left: 300px;
+        top: 20px;
+        width: 80px;
+        height: 30px;
+        font-size: 40px;
+    }
+
+    .Court_Score_Away {
+        position: absolute;
+        left: 400px;
+        top: 20px;
+        width: 80px;
+        height: 30px;
+        font-size: 40px;
+    }
+
     .AutoProgress{
         display: block;
         font-size: 20px;
@@ -991,9 +1164,6 @@
         border: 1px solid black;
         border-collapse: collapse;
         margin: 20px auto;
-    }
-    .tposition {
-        margin: 50px auto;
     }
 
     .TeamLogoImage {
@@ -1023,5 +1193,11 @@
     th {
         border: 1px solid black;
         min-width: 100px;
+    }
+
+    .gameresult{
+        border: 1px solid black;
+        cursor: pointer;
+        font-size: 18px;
     }
 </style>

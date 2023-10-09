@@ -10,10 +10,10 @@
         <Button class="menu"><Chevron><p class="fontsize">순위</p></Chevron></Button>
         <Dropdown headerClass = "line">
             <a href="teamranking">
-                <DropdownItem>팀순위</DropdownItem>
+                <DropdownItem>팀 순위</DropdownItem>
             </a>
             <a href="playerranking">
-                <DropdownItem>개인순위</DropdownItem>
+                <DropdownItem>개인 순위</DropdownItem>
             </a>
         </Dropdown>
     </div>
@@ -67,6 +67,10 @@
     font-size: 18px;
     transition: 0.3s;
   }
+  .menu:hover {
+    cursor: pointer;
+  }
+
   a {
     text-decoration: none;
   }
@@ -83,10 +87,6 @@
     height: calc(100vh - 50px);
     background-color: white;
   }
-  .menu:hover {
-    cursor: pointer;
-  }
-
   .fontsize{
     font-size: 18px;
   }

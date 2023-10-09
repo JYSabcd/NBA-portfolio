@@ -269,11 +269,30 @@
 </script>
 
 <body>
+    <div class="pagenamecontainer">
+        <div class="pagename">선수 비교하기</div>
+        <div class="BMW_container">
+            <img class="BMWimg" src="/Site_Logo.png" alt="BMWimg" />
+
+            <div>
+                <span class="BMW_BMW">B</span>
+                <span class="BMW_normal">asketball</span>
+                <span class="BMW_BMW">M</span>
+                <span class="BMW_normal">ania</span>
+                <span class="BMW_BMW">W</span>
+                <span class="BMW_normal">ebsite</span>
+            </div>
+        </div>
+    </div>
+
     <div class="white">
         <div class="compareboxcontainer">
             <div class="player-container">
-                <div class="text">
-                    선수 이름<br />{SelectedPlayerInfo1[0]
+                <div class="playername">
+                    선수 이름
+                </div>
+                <div class="playername2">
+                    {SelectedPlayerInfo1[0]
                         ? SelectedPlayerInfo1[0]
                         : "---"}
                 </div>
@@ -442,8 +461,11 @@
             <div class="player-container">
                 {#if IsAverageMode === true}
                     {#if SelectedSeason1 !== ""}
-                        <div class="text">
-                            {SelectedSeason1}년도 평균 기록<br />(규정경기 수 O)
+                        <div class="playername">
+                            선수 이름
+                        </div>
+                        <div class="playername3">
+                            {SelectedSeason1}년도 평균 기록
                         </div>
                         
                         <div class="comparebox thirdp2">
@@ -453,8 +475,11 @@
                         </div>
                         
                     {:else}
-                        <div class="text">
-                            선수 이름<br />{SelectedPlayerInfo2[0]
+                        <div class="playername">
+                            선수 이름
+                        </div>
+                        <div class="playername2">
+                            {SelectedPlayerInfo2[0]
                                 ? SelectedPlayerInfo2[0]
                                 : "---"}
                         </div>
@@ -463,8 +488,11 @@
                         </div>
                     {/if}
                 {:else}
-                    <div class="text">
-                        선수 이름<br />{SelectedPlayerInfo2[0]
+                    <div class="playername">
+                        선수 이름
+                    </div>
+                    <div class="playername2">
+                        {SelectedPlayerInfo2[0]
                             ? SelectedPlayerInfo2[0]
                             : "---"}
                     </div>
@@ -566,11 +594,56 @@
         background-color: rgb(246, 246, 246);
     }
 
+    .pagenamecontainer {
+        padding: 10px 65px;
+        width: 100%;
+        background-color: rgb(97, 0, 97);
+
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .pagename {
+        font-size: 30px;
+        font-weight: bold;
+        color: white;
+    }
+
+    .BMW_container {
+        display: flex;
+    }
+
+    .BMW_normal {
+        font-size: 15px;
+        font-weight: bold;
+        color: white;
+        /* color: rgb(243, 139, 43); */
+
+        font-style:italic;
+    }
+    .BMW_BMW {
+        padding-left: 5px;
+        font-size: 30px;
+        font-weight: bold;
+        color: rgb(255, 201, 14);
+
+        font-style:italic;
+        -webkit-text-stroke: 1px white;
+        text-shadow: 2px 2px 4px gray;
+    }
+    .BMWimg {
+        width: 40px;
+        height: 40px;
+        margin-left: 20px;
+        margin-right: 20px;
+        border-radius: 5px;
+    }
+
     .white {
         margin: 30px auto;
-        padding: 20px 20px;
+        padding: 0px 20px;
+        padding-bottom: 50px;
         width: 90%;
-        justify-content: center;
         background-color: white;
         border-radius: 20px;
     }
@@ -580,19 +653,41 @@
         margin: 50px 0px;
     }
 
-    .text {
-        text-align: center;
-        align-items: center;
-        font-size: 20px;
+    .playername{
+        width: 300px;
+        height: 40px;
+        line-height: 40px;
+        background: black;
+        color: white;
+        border-radius: 10px;
         font-weight: bold;
-        margin-top: 20px;
+        text-align: center;
+        font-size: 18px;
+        margin: 20px auto;
+        margin-top: 40px;
+    }
+
+    .playername2 {
+        margin: 0px auto;
         margin-bottom: 20px;
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .playername3 {
+        margin: 0px auto;
+        margin-bottom: 20px;
+        line-height: 42px;
+        text-align: center;
+        font-size: 25px;
+        font-weight: bold;
     }
 
     .table {
         width: 140px;
         margin: 0px auto;
-        margin-top: 100px;
+        margin-top: 150px;
     }
 
     .position {
@@ -692,7 +787,8 @@
         height: 60px;
         line-height: 60px;
         background: black;
-        color: white;
+        color: rgb(255, 201, 14);
+        /* color: white; */
         border-radius: 20px;
         font-weight: bold;
         text-align: center;
