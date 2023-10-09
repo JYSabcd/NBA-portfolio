@@ -36,7 +36,9 @@ export async function GET({ url }) {
     +"and (home_teamid = " + teamid + " or away_teamid = " + teamid + ") "
     +"order by game_date;";
 
-    const res = await connectToDB.query(query)
+    const res = await connectToDB.query(query);
+
+    connectToDB.release();
     
     return json(res.rows);
 }

@@ -35,6 +35,8 @@ export async function GET({ url }) {
     let query = "select * from public.fn_similarplayer(" + url.searchParams.get("PlayerID") + "," + syear + ");";
 
     const res = await connectToDB.query(query);
+
+    connectToDB.release();
     
     return json(res.rows);
 }
