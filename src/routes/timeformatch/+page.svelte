@@ -488,11 +488,13 @@
         <div class="PbyP_Court_Container">
             <div class="CS_Board">
                 <div>
+                    {#if SelectedGame["game_id"] !== undefined}
                     <img
                         src="/TeamLogo/{SelectedGame['home_teamid']}.svg"
                         alt="HomeTeamLogo"
                         class="CS_TeamLogoImage"
                     />
+                    {/if}
                     <div class="CS_Board_Real">
                         <div class="CS_score">
                             {CurrentScore_Home}
@@ -502,11 +504,13 @@
                             {CurrentScore_Away}
                         </div>
                     </div>
+                    {#if SelectedGame["game_id"] !== undefined}
                     <img
                         src="/TeamLogo/{SelectedGame['away_teamid']}.svg"
                         alt="AwayTeamLogo"
                         class="CS_TeamLogoImage"
                     />
+                    {/if}
                 </div>
             </div>
             <div id="PbyP_Court">
@@ -671,9 +675,10 @@
 
 <style>
     body {
-        overflow: hidden;
+        /* overflow: hidden; */
         width: 100%;
         background-color: rgb(246, 246, 246);
+        padding-bottom: 0.1px;
     }
 
     .pagenamecontainer {
@@ -711,7 +716,7 @@
 
         font-style:italic;
         -webkit-text-stroke: 1px white;
-        text-shadow: 2px 2px 4px gray;
+        /* text-shadow: 2px 2px 4px gray; */
     }
     .BMWimg {
         width: 40px;
@@ -719,6 +724,7 @@
         margin-left: 20px;
         margin-right: 20px;
         border-radius: 5px;
+        border: 2px solid white;
     }
     
     .groupbox1 {
@@ -730,7 +736,7 @@
         justify-content: center;
         background-color: white;
         border-radius: 20px;
-        margin-bottom: 50px;
+        margin-bottom: 30px;
     }
 
     .selectinformation {
@@ -738,7 +744,7 @@
         margin-bottom: 5px;
         margin-left: 20px;
         font-weight: bold;
-        text-align: center;
+        /* text-align: center; */
     }
 
     .overflow {
@@ -787,7 +793,7 @@
         border-radius: 20px;
         flex-wrap: wrap;
         justify-content: left;
-        margin: 0px 100px;
+        margin: 50px 100px;
         background-color: white;
     }
 
@@ -940,18 +946,21 @@
 
     .PbyPContainer {
         display: flex;
-        width: 100%;
+        width: 95%;
         margin: 50px auto;
+        border: 3px solid rgb(243, 139, 43);
+        border-radius: 20px;
+        padding: 10px;
     }
 
     .PbyP_ActionContainer {
         width: 500px;
         height: 500px;
-        margin-left: 30px;
-        margin-right: 30px;
+        /* margin-left: 30px; */
+        margin-right: 10px;
         overflow-y: scroll;
         border: 1px solid black;
-        border-radius: 5px;
+        /* border-radius: 5px; */
         /* background-color: burlywood; */
     }
 
@@ -1130,31 +1139,17 @@
         z-index: 2;
     }
 
-    .Court_Score_Home {
-        position: absolute;
-        left: 300px;
-        top: 20px;
-        width: 80px;
-        height: 30px;
-        font-size: 40px;
-    }
-
-    .Court_Score_Away {
-        position: absolute;
-        left: 400px;
-        top: 20px;
-        width: 80px;
-        height: 30px;
-        font-size: 40px;
-    }
-
     .AutoProgress{
         display: block;
-        font-size: 20px;
-        font-weight: bolder;
-        margin-top: 20px;
         padding: 10px;
-        border: 1px solid black;
+        margin-top: 7px;
+        background: black;
+        color: rgb(255, 201, 14);
+        /* color: white; */
+        border-radius: 10px;
+        font-size: 25px;
+        font-weight: bold;
+        text-align: center;
     }
 
     table {

@@ -103,9 +103,9 @@
         <button class="button" on:click={PlayerRankingSearch}>조회하기</button>
     </div>
     
+    {#if TableData !== undefined}
     <div class="groupbox2">
     <table>
-        {#if TableData !== undefined}
         <thead>
             <tr>
                 <th class="thcolor">순위</th>
@@ -143,17 +143,18 @@
                 </tr>
             {/each}
         </tbody>
-        {/if}
     </table>
     </div>
+    {/if}
 </body>
 
 <style>
     body {
-        overflow: hidden;
+        /* overflow: hidden; */
         width: 100%;
         /* padding-top: 20px; */
         background-color: rgb(246, 246, 246);
+        padding-bottom: 0.1px;
     }
 
     .pagenamecontainer {
@@ -191,7 +192,7 @@
 
         font-style:italic;
         -webkit-text-stroke: 1px white;
-        text-shadow: 2px 2px 4px gray;
+        /* text-shadow: 2px 2px 4px gray; */
     }
     .BMWimg {
         width: 40px;
@@ -199,11 +200,11 @@
         margin-left: 20px;
         margin-right: 20px;
         border-radius: 5px;
+        border: 2px solid white;
     }
     
     .groupbox1{
-        margin: 0px auto;
-        margin-top: 20px;
+        margin: 20px auto;
         padding: 20px 20px;
         width: 90%;
         display: flex;

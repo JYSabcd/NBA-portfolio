@@ -300,7 +300,7 @@
 
 <style>
     body {
-        overflow: hidden;
+        /* overflow: hidden; */
         width: 100%;
         background-color: rgb(246, 246, 246);
     }

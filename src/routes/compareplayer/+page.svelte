@@ -589,7 +589,7 @@
 
 <style>
     body {
-        overflow: hidden;
+        /* overflow: hidden; */
         width: 100%;
         background-color: rgb(246, 246, 246);
     }
@@ -629,7 +629,7 @@
 
         font-style:italic;
         -webkit-text-stroke: 1px white;
-        text-shadow: 2px 2px 4px gray;
+        /* text-shadow: 2px 2px 4px gray; */
     }
     .BMWimg {
         width: 40px;
@@ -637,6 +637,7 @@
         margin-left: 20px;
         margin-right: 20px;
         border-radius: 5px;
+        border: 2px solid white;
     }
 
     .white {

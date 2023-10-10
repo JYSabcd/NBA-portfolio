@@ -360,55 +360,56 @@
 
 <style>
   body {
-    overflow: hidden;
+    /* overflow: hidden; */
     width: 100%;
     background-color: rgb(246, 246, 246);
   }
 
   .pagenamecontainer {
-        padding: 10px 65px;
-        width: 100%;
-        background-color: rgb(97, 0, 97);
+      padding: 10px 65px;
+      width: 100%;
+      background-color: rgb(97, 0, 97);
 
-        display: flex;
-        justify-content: space-between;
-    }
+      display: flex;
+      justify-content: space-between;
+  }
 
-    .pagename {
-        font-size: 30px;
-        font-weight: bold;
-        color: white;
-    }
+  .pagename {
+      font-size: 30px;
+      font-weight: bold;
+      color: white;
+  }
 
-    .BMW_container {
-        display: flex;
-    }
+  .BMW_container {
+      display: flex;
+  }
 
-    .BMW_normal {
-        font-size: 15px;
-        font-weight: bold;
-        color: white;
-        /* color: rgb(243, 139, 43); */
+  .BMW_normal {
+      font-size: 15px;
+      font-weight: bold;
+      color: white;
+      /* color: rgb(243, 139, 43); */
 
-        font-style:italic;
-    }
-    .BMW_BMW {
-        padding-left: 5px;
-        font-size: 30px;
-        font-weight: bold;
-        color: rgb(255, 201, 14);
+      font-style:italic;
+  }
+  .BMW_BMW {
+      padding-left: 5px;
+      font-size: 30px;
+      font-weight: bold;
+      color: rgb(255, 201, 14);
 
-        font-style:italic;
-        -webkit-text-stroke: 1px white;
-        text-shadow: 2px 2px 4px gray;
-    }
-    .BMWimg {
-        width: 40px;
-        height: 40px;
-        margin-left: 20px;
-        margin-right: 20px;
-        border-radius: 5px;
-    }
+      font-style:italic;
+      -webkit-text-stroke: 1px white;
+      /* text-shadow: 2px 2px 4px gray; */
+  }
+  .BMWimg {
+      width: 40px;
+      height: 40px;
+      margin-left: 20px;
+      margin-right: 20px;
+      border-radius: 5px;
+      border: 2px solid white;
+  }
 
   .text {
     text-align: center;

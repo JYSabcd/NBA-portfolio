@@ -1,47 +1,79 @@
 <script lang="ts">
   import "../app.postcss";
-  import { Button, Dropdown, DropdownItem, Chevron } from 'flowbite-svelte'
+  import { Button, Dropdown, DropdownItem, Chevron } from "flowbite-svelte";
+
+  let el_main;
+
+  function ScrollTop() {
+    el_main.scrollTop = 0;
+  }
 </script>
 
 <header>
-    <a class="menu" href="/home"><img src="/logo-nba.svg" alt="logo-nba.svg" /></a>
-    <a class="menu" href="/home">&#xd648;</a>
-    <div class="menu">
-        <Button class="menu"><Chevron><p class="fontsize">순위</p></Chevron></Button>
-        <Dropdown headerClass = "line">
-            <a href="teamranking">
-                <DropdownItem>팀 순위</DropdownItem>
-            </a>
-            <a href="playerranking">
-                <DropdownItem>개인 순위</DropdownItem>
-            </a>
-        </Dropdown>
-    </div>
-    <div class="menu">
-        <Button class="menu"><Chevron><p class="fontsize">선수 정보</p></Chevron></Button>
-        <Dropdown >
-            <a href="playerinformation">
-                <DropdownItem>선수 세부 정보</DropdownItem>
-            </a>
-            <a href="compareplayer">
-                <DropdownItem>선수 비교하기</DropdownItem>
-            </a>
-        </Dropdown>
-    </div>
-    <div class="menu">
-        <Button class="menu"><Chevron><p class="fontsize">선수 분석</p></Chevron></Button>
-        <Dropdown >
-            <a href="playerprediction">
-                <DropdownItem>다음 시즌 예측하기</DropdownItem>
-            </a>
-            <a href="showsimilarplayers">
-                <DropdownItem>비슷한 선수 보여주기</DropdownItem>
-            </a>
-        </Dropdown>
-    </div>
-    <a class="menu" href="/timeformatch">경기 기록보기</a>
-  </header>
-<main>
+  <div class="menu">
+    <Button class="text-lg font-bold py-2" href="/home" on:click={ScrollTop}
+      ><img src="/logo-nba.svg" alt="logo-nba.svg" /></Button
+    >
+  </div>
+  <div class="menu">
+    <Button class="text-lg font-bold py-2" href="/home" on:click={ScrollTop}
+      >홈</Button
+    >
+  </div>
+  <div class="menu">
+    <Button class="text-lg font-bold py-2"><Chevron>순위</Chevron></Button>
+    <Dropdown class="z-50 hover:bg-gray-100">
+      <DropdownItem
+        class="text-base font-bold w-50 hover:bg-gray-300"
+        href="/teamranking"
+        on:click={ScrollTop}>팀 순위</DropdownItem
+      >
+      <DropdownItem
+        class="text-base font-bold w-50 hover:bg-gray-300"
+        href="/playerranking"
+        on:click={ScrollTop}>개인 순위</DropdownItem
+      >
+    </Dropdown>
+  </div>
+  <div class="menu">
+    <Button class="text-lg font-bold py-2"><Chevron>선수 정보</Chevron></Button>
+    <Dropdown class="z-50">
+      <DropdownItem
+        class="text-base font-bold w-50 hover:bg-gray-300"
+        href="/playerinformation"
+        on:click={ScrollTop}>선수 세부 정보</DropdownItem
+      >
+      <DropdownItem
+        class="text-base font-bold w-50 hover:bg-gray-300"
+        href="/compareplayer"
+        on:click={ScrollTop}>선수 비교하기</DropdownItem
+      >
+    </Dropdown>
+  </div>
+  <div class="menu">
+    <Button class="text-lg font-bold py-2"><Chevron>선수 분석</Chevron></Button>
+    <Dropdown class="z-50">
+      <DropdownItem
+        class="text-base font-bold w-50 hover:bg-gray-300"
+        href="/playerprediction"
+        on:click={ScrollTop}>다음 시즌 예측하기</DropdownItem
+      >
+      <DropdownItem
+        class="text-base font-bold w-50 hover:bg-gray-300"
+        href="/showsimilarplayers"
+        on:click={ScrollTop}>비슷한 선수 보여주기</DropdownItem
+      >
+    </Dropdown>
+  </div>
+  <div class="menu">
+    <Button
+      class="text-lg font-bold py-2"
+      href="/timeformatch"
+      on:click={ScrollTop}>경기 기록보기</Button
+    >
+  </div>
+</header>
+<main bind:this={el_main}>
   <div id="container">
     <slot />
   </div>
@@ -57,22 +89,12 @@
   }
   .menu {
     display: inline-flex;
-    justify-content: center;
-    align-items: center;
     height: 50px;
-    flex-grow: 1;
-    color: white;
     background-color: black;
-    text-align: center;
-    font-size: 18px;
-    transition: 0.3s;
-  }
-  .menu:hover {
-    cursor: pointer;
-  }
-
-  a {
-    text-decoration: none;
+    flex-grow: 1;
+    justify-content: center;
+    padding-top: 3px;
+    padding-bottom: 3px;
   }
   main {
     overflow: auto;
@@ -86,8 +108,5 @@
     max-width: 1300px;
     height: calc(100vh - 50px);
     background-color: white;
-  }
-  .fontsize{
-    font-size: 18px;
   }
 </style>
