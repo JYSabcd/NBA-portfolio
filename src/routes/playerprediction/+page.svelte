@@ -21,6 +21,7 @@
   ];
 
   let SelectedSeason = "2022-23";
+  let SaveSelectedSeason = SelectedSeason;
 
   let SelectedTeamname = "Atlanta Hawks";
 
@@ -30,9 +31,8 @@
 
   let Mainplayerstats = [];
 
-  let PredictionArray = [];
-
   let tablename = "";
+  let tablename2 = "";
 
   let MainplayerSeason = "";
 
@@ -42,7 +42,9 @@
       `playerprediction/api/PlayerRoaster?Season=${SelectedSeason}&TeamID=${TeamID}`
     );
     Playerroaster = await response1.json();
-    tablename = SelectedSeason + " 시즌 " + SelectedTeamname;
+    tablename = SelectedSeason + " 시즌 ";
+    tablename2 = SelectedTeamname;
+    SaveSelectedSeason = SelectedSeason;
   }
 
   async function GETMainPlayer(PlayerID) {
@@ -54,10 +56,10 @@
 
   async function GETMainplayerstats(PlayerID) {
     const response3 = await fetch(
-      `playerprediction/api/Mainplayer2?Season=${SelectedSeason}&PlayerID=${PlayerID}`
+      `playerprediction/api/Mainplayer2?Season=${SaveSelectedSeason}&PlayerID=${PlayerID}`
     );
     Mainplayerstats = await response3.json();
-    MainplayerSeason = SelectedSeason;
+    MainplayerSeason = SaveSelectedSeason;
   }
   function SelectPlayer(ArrayIndex) {
     const PlayerID = Playerroaster[ArrayIndex][6];
@@ -71,6 +73,13 @@
     el.scrollIntoView({
       behavior: "smooth",
     });
+  }
+
+  function GetNextSeason(SeasonString) {
+    let Year1 = parseInt(SeasonString.slice(0, 4))+1;
+    let Year2 = Year1 + 1;
+
+    return Year1.toString() + "-" + Year2.toString().slice(2,4);
   }
 </script>
 
@@ -91,12 +100,49 @@
       </div>
   </div>
 
+  <div class="groupbox0">
+    <div class="explain">
+      <strong>선수 예측 방법</strong> : 1996-97시즌부터 2022-23시즌까지의 선수들의
+      기록을 각 나이별로 출전시간, 득점, 리바운드, 어시스트의 각 나이별 평균 기록을
+      구했다. 그리고 최댓값을 1로 정하고 나머지들을 최댓값을 기준으로 환산하여
+      일정한 비율로 구했다. 그 다음 각 나이별 상승세 또는 하락세를 구해서 그 선수의
+      기록에 곱해주어 다음 시즌을 예측하였다.
+    </div>
+
+    <div class="grapecontainer">
+      <div class="avgtablecontainer">
+      <table class="avgtable">
+        <tr>
+          <th>나이</th>
+          <th>출전시간</th>
+          <th>득점</th>
+          <th>리바운드</th>
+          <th>어시스트</th>
+        </tr>
+
+        {#each NBAAGE as age, i}
+        <tr>
+          <td>{age}</td>
+          <td>{NBAMIN[i]}</td>
+          <td>{NBAPTS[i]}</td>
+          <td>{NBAREB[i]}</td>
+          <td>{NBAAST[i]}</td>
+        </tr>
+        {/each}
+      </table>
+    </div>      
+
+    <img class="grape" src="/NBAavggrape.png" alt="Grape" /> 
+
+    </div>
+  </div>
+
   <div class="groupbox1">
     <div>
-      <div class="selectinformation">시즌연도</div>
+      <div class="selectinformation">시즌 연도</div>
       <select class="overflow selectbox" bind:value={SelectedSeason}>
         {#each SeasonArray as Season}
-          <option class="option" value={Season}>
+          <option class="selected" value={Season}>
             {Season}
           </option>
         {/each}
@@ -104,10 +150,10 @@
     </div>
 
     <div>
-      <div class="selectinformation">팀이름</div>
-      <select class="overflow selectbox" bind:value={SelectedTeamname}>
+      <div class="selectinformation">팀 이름</div>
+      <select class="overflow selectbox2" bind:value={SelectedTeamname}>
         {#each TeamnameArray as teamname}
-          <option class="option" value={teamname}>
+          <option class="selected" value={teamname}>
             {teamname}
           </option>
         {/each}
@@ -119,9 +165,9 @@
 
   {#if Playerroaster.length > 0}
     <div class="groupbox2">
-      <div class="text">{tablename} 선수들</div>
+      <div class="tabletitle">{tablename}&nbsp;&nbsp;<span class="fontsize_name">{tablename2}</span>&nbsp;&nbsp;선수들</div>
       <table class="table1">
-        <tr class="th">
+        <tr>
           {#each TableHeaders as header}
             <th class="option">
               {header}
@@ -157,7 +203,7 @@
 
   {#if Mainplayer.length > 0}
     <div id="section" class="groupbox3">
-      <div class="name">{MainplayerSeason}년도 {Mainplayer[1]}</div>
+      <div class="tabletitle">{MainplayerSeason}년도&nbsp;&nbsp;<span class="fontsize_name">{Mainplayer[1]}</span></div>
       <div class="image">
         <img
           src="https://cdn.nba.com/headshots/nba/latest/1040x760/{Mainplayer[0]}.png"
@@ -167,16 +213,16 @@
       </div>
 
       <table class="table2">
-        <tr class="th">
-          <th class="thwidth">나이</th>
-          <th class="thwidth">평균 득점</th>
-          <th class="thwidth">평균 리바운드</th>
-          <th class="thwidth">평균 어시스트</th>
-          <th class="thwidth">평균 출전 시간</th>
+        <tr>
+          <th>나이</th>
+          <th>평균 득점</th>
+          <th>평균 리바운드</th>
+          <th>평균 어시스트</th>
+          <th>평균 출전 시간</th>
         </tr>
         <tr>
           <td class="center"
-            >{parseFloat(SelectedSeason.slice(0, 5)) -
+            >{parseFloat(SaveSelectedSeason.slice(0, 5)) -
               Mainplayer[2].slice(0, 4)}세</td
           >
           <td class="center"
@@ -205,17 +251,10 @@
       <img src="/Arrow/Arrow.png" alt="Arrow" class="arrow" />
 
       <div class="name2">
-        {parseFloat(SelectedSeason.slice(0, 5)) + 1} -
-        {#if parseFloat(SelectedSeason.slice(5)) + 1 === 100}
-          00
-        {:else if parseFloat(SelectedSeason.slice(5)) + 1 < 10}
-          0{parseFloat(SelectedSeason.slice(5)) + 1}
-        {:else if parseFloat(SelectedSeason.slice(5)) + 1 >= 10}
-          {parseFloat(SelectedSeason.slice(5)) + 1}
-        {/if}년도 {Mainplayer[1]} 기록 예측
+        {GetNextSeason(SaveSelectedSeason)}년도 {Mainplayer[1]} 기록 예측
       </div>
       <table class="table2">
-        <tr class="th">
+        <tr>
           <th>나이</th>
           <th>평균 득점</th>
           <th>평균 리바운드</th>
@@ -224,7 +263,7 @@
         </tr>
         <tr>
           <td
-            >{parseFloat(SelectedSeason.slice(0, 5)) -
+            >{parseFloat(SaveSelectedSeason.slice(0, 5)) -
               Mainplayer[2].slice(0, 4) +
               1}세</td
           >
@@ -234,14 +273,14 @@
                   parseFloat(Mainplayerstats[2]) *
                   (parseFloat(
                     NBAAVG[
-                      parseFloat(SelectedSeason.slice(0, 5)) -
+                      parseFloat(SaveSelectedSeason.slice(0, 5)) -
                         Mainplayer[2].slice(0, 4) +
                         1
                     ].PTS
                   ) /
                     parseFloat(
                       NBAAVG[
-                        parseFloat(SelectedSeason.slice(0, 5)) -
+                        parseFloat(SaveSelectedSeason.slice(0, 5)) -
                           Mainplayer[2].slice(0, 4)
                       ].PTS
                     ))
@@ -254,14 +293,14 @@
                   parseFloat(Mainplayerstats[3]) *
                   (parseFloat(
                     NBAAVG[
-                      parseFloat(SelectedSeason.slice(0, 5)) -
+                      parseFloat(SaveSelectedSeason.slice(0, 5)) -
                         Mainplayer[2].slice(0, 4) +
                         1
                     ].REB
                   ) /
                     parseFloat(
                       NBAAVG[
-                        parseFloat(SelectedSeason.slice(0, 5)) -
+                        parseFloat(SaveSelectedSeason.slice(0, 5)) -
                           Mainplayer[2].slice(0, 4)
                       ].REB
                     ))
@@ -274,14 +313,14 @@
                   parseFloat(Mainplayerstats[4]) *
                   (parseFloat(
                     NBAAVG[
-                      parseFloat(SelectedSeason.slice(0, 5)) -
+                      parseFloat(SaveSelectedSeason.slice(0, 5)) -
                         Mainplayer[2].slice(0, 4) +
                         1
                     ].AST
                   ) /
                     parseFloat(
                       NBAAVG[
-                        parseFloat(SelectedSeason.slice(0, 5)) -
+                        parseFloat(SaveSelectedSeason.slice(0, 5)) -
                           Mainplayer[2].slice(0, 4)
                       ].AST
                     ))
@@ -294,14 +333,14 @@
                   parseFloat(Mainplayerstats[1]) *
                   (parseFloat(
                     NBAAVG[
-                      parseFloat(SelectedSeason.slice(0, 5)) -
+                      parseFloat(SaveSelectedSeason.slice(0, 5)) -
                         Mainplayer[2].slice(0, 4) +
                         1
                     ].MIN
                   ) /
                     parseFloat(
                       NBAAVG[
-                        parseFloat(SelectedSeason.slice(0, 5)) -
+                        parseFloat(SaveSelectedSeason.slice(0, 5)) -
                           Mainplayer[2].slice(0, 4)
                       ].MIN
                     ))
@@ -310,48 +349,6 @@
           >
         </tr>
       </table>
-      <img class="grape" src="/NBAavggrape.png" alt="Grape" />
-      <div class="nbastat-container">
-        <table class="nbastat">
-          <tr>
-            <td class="nbatable">나이</td>
-            {#each NBAAGE as age}
-              <td class="nbatable2">{age}</td>
-            {/each}
-          </tr>
-          <tr>
-            <td class="nbatable">출전시간</td>
-            {#each NBAMIN as min}
-              <td class="nbatable2">{min}</td>
-            {/each}
-          </tr>
-          <tr>
-            <td class="nbatable">득점</td>
-            {#each NBAPTS as pts}
-              <td class="nbatable2">{pts}</td>
-            {/each}
-          </tr>
-          <tr>
-            <td class="nbatable">리바운드</td>
-            {#each NBAREB as reb}
-              <td class="nbatable2">{reb}</td>
-            {/each}
-          </tr>
-          <tr>
-            <td class="nbatable">어시스트</td>
-            {#each NBAAST as ast}
-              <td class="nbatable2">{ast}</td>
-            {/each}
-          </tr>
-        </table>
-      </div>
-      <div class="explain">
-        <strong>선수 예측 방법</strong> : 1996-97시즌부터 2022-23시즌까지의 선수들의
-        기록을 각 나이별로 출전시간, 득점, 리바운드, 어시스트의 각 나이별 평균 기록을
-        구했다. 그리고 최댓값을 1로 정하고 나머지들을 최댓값을 기준으로 환산하여
-        일정한 비율로 구했다. 그 다음 각 나이별 상승세 또는 하락세를 구해서 그 선수의
-        기록에 곱해주어 다음 시즌을 예측하였다
-      </div>
     </div>
   {:else}
     <div id="section" class="airbox" />
@@ -411,17 +408,10 @@
       border: 2px solid white;
   }
 
-  .text {
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 5px;
-    font-size: 23px;
-    font-weight: bold;
-  }
-
   .selectinformation {
-    margin-bottom: 5px;
     margin-left: 30px;
+    margin-bottom: 5px;
+    font-size: 20px;
     font-weight: bold;
   }
 
@@ -431,17 +421,85 @@
     overflow: auto;
   }
 
-  th {
+  .tabletitle {
+    /* width: calc(100% - 40px); */
+    min-width: 500px;
+    height: 60px;
+    line-height: 60px;
+    background: black;
+    color: white;
+    border-radius: 10px;
+    font-weight: bolder;
+    text-align: center;
+    font-size: 18px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .fontsize_name {
+    font-size: 28px;
+  }
+
+  table {
+    border-collapse: collapse;
     border: 1px solid black;
+  }
+
+  th, td {
+    border: 1px solid black;
+  }
+  
+  table.table1, table.table2 {
+    width: calc(100% - 40px);
+    margin: 30px auto;
+    line-height: 40px;
+  }
+
+  table.table1 th, table.table2 th {
+    min-width: 150px;
+    font-weight: bold;
+    font-size: 18px;
+    background-color: rgb(255, 201, 14);
+  }
+
+  table.table1 td, table.table2 td {
+    min-width: 150px;
+    text-align: center;
+  }
+
+  table.table1 td.playernametd {
+    text-align: left;
+    min-width: 240px;
+    padding-left: 10px;
+  }
+
+  table.avgtable {
+  }
+
+  table.avgtable th{
     font-weight: bold;
     font-size: 17px;
     background-color: rgb(255, 201, 14);
   }
 
-  td {
-    min-width: 150px;
-    border: 1px solid black;
+  table.avgtable td{
+    width: 50px;
     text-align: center;
+  }
+
+  .grapecontainer {
+    display: flex;
+  }
+
+  .avgtablecontainer {
+    overflow-y: auto;
+    height: 500px;
+  }
+
+  .grape {
+    width: 811px;
+    height: 500px;
+    margin: 0 auto;
   }
 
   .center {
@@ -460,23 +518,18 @@
   .button {
     background-color: rgb(243, 139, 43);
     width: 150px;
-    height: 60px;
-    margin-top: 20px;
+    height: 45px;
+    margin-top: 35px;
     margin-left: 50px;
-    padding: 10px 30px;
-    border-radius: 20px;
+    /* padding: 10px 30px; */
+    border-radius: 10px;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 23px;
     color: white;
   }
 
   .button:hover {
     background-color: rgb(201, 115, 34);
-  }
-
-  .playernametd {
-    text-align: left;
-    min-width: 240px;
   }
 
   .playerimage {
@@ -501,40 +554,38 @@
     text-align: center;
     height: 45px;
     cursor: pointer;
-    border-radius: 20px;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .selectbox2 {
+    min-width: 280px;
+    background-color: rgb(229, 231, 235);
+    border: 1px solid black;
+    margin-left: 20px;
+    text-align: center;
+    height: 45px;
+    cursor: pointer;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .selected {
+    border: 1px solid black;
+    font-size: 18px;
+    cursor: pointer;
+    background-color: white;
   }
 
   .image {
     width: 500px;
-    background-color: rgb(233, 196, 240);
+    background-color: rgb(229, 231, 235);
+    border-radius: 10px;
     margin: 0 auto;
+    margin-top: 30px;
     padding-top: 30px;
-    padding-bottom: 30px;
-  }
-
-  table {
-    width: calc(100% - 40px);
-  }
-
-  .table1 {
-    border-collapse: collapse;
-    border: 1px solid black;
-    margin: 30px auto;
-    height: 40px;
-    line-height: 40px;
-  }
-
-  .table2 {
-    border-collapse: collapse;
-    border: 1px solid black;
-    margin: 30px auto;
-    height: 40px;
-    line-height: 40px;
-  }
-
-  .thwidth {
-    min-width: 100px;
-    text-align: center;
   }
 
   .name {
@@ -547,6 +598,19 @@
     font-size: 30px;
     font-weight: bold;
     text-align: center;
+  }
+
+  .groupbox0 {
+    margin: 0px auto;
+    margin-top: 30px;
+    padding: 20px 20px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: white;
+    border-radius: 20px;
+    margin-bottom: 50px;
   }
 
   .groupbox1 {
@@ -586,40 +650,14 @@
   }
 
   .airbox {
-    width: 1115px;
-    height: 715px;
+    width: 90%;
+    height: 896px;
   }
 
   .arrow {
-    width: 80px;
+    width: 50px;
+    height: 50px;
     margin: 0 auto;
-  }
-
-  .grape {
-    width: 900px;
-    height: 550px;
-    margin: 0 auto;
-  }
-
-  .nbastat {
-    margin: 20px auto;
-  }
-  .nbastat-container {
-    overflow-x: auto;
-  }
-
-  .nbatable {
-    min-width: 0px;
-    width: 58px;
-    background-color: rgb(229, 231, 235);
-    background-color: rgb(255, 201, 14);
-    font-weight: bold;
-    font-size: 17px;
-  }
-
-  .nbatable2 {
-    width: 58px;
-    min-width: 0px;
   }
 
   .explain {

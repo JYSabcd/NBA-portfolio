@@ -2,7 +2,7 @@
     import { SeasonArray, SeasonTypeArray } from "../data.js";
 
     /** @type {(string)[]} */
-    let TableHeader = ['선수이름','게임 수','출전 시간','득점','리바운드','어시스트','스틸','블록','야투(%)', '3점(%)', '자유투(%)'];
+    let TableHeader = ['선수 이름','게임 수','출전 시간','득점','리바운드','어시스트','스틸','블록','야투(%)', '3점(%)', '자유투(%)'];
     /** @type {number} */
     const DefaultSortIndex = 3;  // '득점', TableHeader 배열 인덱스
     const DefaultSortMethod = -1;  // 내림차순
@@ -41,18 +41,17 @@
         console.log(TableData);
 	}
 
-    const SetSortIndex = (HeaderName:string) => {
-        //console.log(HeaderName);
-        let index = TableHeader.indexOf(HeaderName);
-        if(index < 0){
+    const SetSortIndex = (HeaderIndex:number) => {
+        //console.log(HeaderIndex);
+        if(HeaderIndex < 0){
             SortIndex = DefaultSortIndex;
             SortMethod = DefaultSortMethod;
         }
         else{
-            if(SortIndex === index){
+            if(SortIndex === HeaderIndex){
                 SortMethod *= -1;   //  정렬방식 변경
             }else{
-                SortIndex = index;
+                SortIndex = HeaderIndex;
             }
         }
         
@@ -79,10 +78,10 @@
 
     <div class="groupbox1">
         <div>
-            <div class="text">시즌연도</div>
+            <div class="selectinformation">시즌 연도</div>
             <select class="selectbox" bind:value={SelectedSeason}>
                 {#each SeasonArray as Season}
-                    <option value={Season}>
+                    <option class="selected" value={Season}>
                         {Season}
                     </option>
                 {/each}
@@ -90,10 +89,10 @@
         </div>
     
         <div>
-            <div class="text">시즌타입</div>
-            <select class="selectbox" bind:value={SelectedSeasonType}>
+            <div class="selectinformation">시즌 타입</div>
+            <select class="selectbox2" bind:value={SelectedSeasonType}>
                 {#each SeasonTypeArray as SeasonType}
-                    <option value={SeasonType}>
+                    <option class="selected" value={SeasonType}>
                         {SeasonType}
                     </option>
                 {/each}
@@ -108,9 +107,9 @@
     <table>
         <thead>
             <tr>
-                <th class="thcolor">순위</th>
+                <th>순위</th>
                 {#each TableHeader as HeaderName, ArrayIndex}
-                    <th class="thcolor" on:click={()=> SetSortIndex(HeaderName)}>
+                    <th on:click={()=> SetSortIndex(ArrayIndex)}>
                         {HeaderName}
                         {#if ArrayIndex === SortIndex && SortMethod === -1}
                             ⬇
@@ -152,9 +151,7 @@
     body {
         /* overflow: hidden; */
         width: 100%;
-        /* padding-top: 20px; */
         background-color: rgb(246, 246, 246);
-        padding-bottom: 0.1px;
     }
 
     .pagenamecontainer {
@@ -241,18 +238,27 @@
     th {
         border: 1px solid black;
         height: 40px;
-        font-size: 15px;
+        font-size: 18px;
         font-weight: bold;
         text-align: center;
-        min-width: 60px;
+        /* min-width: 60px; */
+        background-color: rgb(255, 201, 14);
         transition: 0.3s;
     }
 
     td {
         border: 1px solid black;
         text-align: center;
-        min-width: 60px;
+        /* min-width: 60px; */
         transition: 0.3s;
+    }
+
+    td:nth-child(1) {
+        width: 50px;
+    }
+
+    td:nth-child(n+3) {
+        width: 50px;
     }
 
     th:hover{
@@ -260,31 +266,16 @@
         cursor: pointer;
     }
 
-    .thcolor{
-        background-color: rgb(255, 201, 14);
-        font-size: 18px;
-    }
-
-    .thcolor:hover{
-        cursor: pointer;
-    }
-
-    .thcolor:active{
-        cursor: pointer;
-    }
-
-
-    .button{
-        background-color: rgb(243,139,43);
+    .button {
+        background-color: rgb(243, 139, 43);
         width: 150px;
-        height: 60px;
-        margin-top: 20px;
+        height: 45px;
+        margin-top: 35px;
         margin-left: 50px;
-        padding: 10px 30px;
-        border-radius: 20px;
+        /* padding: 10px 30px; */
+        border-radius: 10px;
         font-weight: bold;
-        font-size: 20px;
-        /* border: 1px solid black; */
+        font-size: 23px;
         color: white;
     }
 
@@ -319,20 +310,45 @@
         text-align: left;
     }
 
-    .selectbox{
+    .selectbox {
         min-width: 220px;
-        background-color: rgb(229,231,235);
+        background-color: rgb(229, 231, 235);
         border: 1px solid black;
-        height: 45px;
-        margin-left: 10px;
-        border-radius: 20px;
-        text-align: center;
-    }
-
-    .text{
         margin-left: 20px;
-        margin-bottom: 5px;
+        text-align: center;
+        height: 45px;
+        cursor: pointer;
+        border-radius: 10px;
+        font-size: 18px;
         font-weight: bold;
     }
-    
+
+    .selectbox2 {
+        min-width: 280px;
+        background-color: rgb(229, 231, 235);
+        border: 1px solid black;
+        margin-left: 20px;
+        text-align: center;
+        height: 45px;
+        cursor: pointer;
+        border-radius: 10px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+
+    .selectinformation {
+        margin-left: 30px;
+        margin-bottom: 5px;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .selected {
+        border: 1px solid black;
+        font-size: 18px;
+        cursor: pointer;
+        background-color: white;
+    }
+        
 </style>

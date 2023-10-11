@@ -43,18 +43,17 @@
         console.log(TableData);
 	}
 
-    const SetSortIndex = (HeaderName:string) => {
-        //console.log(HeaderName);
-        let index = TableHeader.indexOf(HeaderName);
-        if(index < 0){
+    const SetSortIndex = (HeaderIndex:number) => {
+        //console.log(HeaderIndex);
+        if(HeaderIndex < 0){
             SortIndex = DefaultSortIndex;
             SortMethod = DefaultSortMethod;
         }
         else{
-            if(SortIndex === index){
+            if(SortIndex === HeaderIndex){
                 SortMethod *= -1;   //  정렬방식 변경
             }else{
-                SortIndex = index;
+                SortIndex = HeaderIndex;
             }
         }
         
@@ -75,20 +74,16 @@
                 <span class="BMW_normal">ania</span>
                 <span class="BMW_BMW">W</span>
                 <span class="BMW_normal">ebsite</span>
-            </div>
-            <!-- <img class="ballimg" src="/ball_monster.png" alt="BMW ball" /> -->
-            <!-- <img class="BMWimg" src="/Site_Logo.png" alt="BMWimg" /> -->
-            <!-- <img class="ballimg" src="/fireball.jpg" alt="BMW ball" /> -->
-            
+            </div>            
         </div>
     </div>
 
     <div class="groupbox1">
         <div>
-            <div class="text">시즌연도</div>
+            <div class="selectinformation">시즌 연도</div>
             <select class="selectbox" bind:value={SelectedSeason}>
                 {#each SeasonArray as Season}
-                    <option value={Season}>
+                    <option class="selected" value={Season}>
                         {Season}
                     </option>
                 {/each}
@@ -96,10 +91,10 @@
         </div>
         
         <div>
-            <div class="text">컨퍼런스</div>
+            <div class="selectinformation">컨퍼런스</div>
             <select class="selectbox" bind:value={SelectedConference}>
                 {#each ConferenceArray as Conference}
-                    <option value={Conference}>
+                    <option class="selected" value={Conference}>
                         {Conference}
                     </option>
                 {/each}
@@ -107,10 +102,10 @@
         </div>
     
         <div>
-            <div class="text">시즌타입</div>
-            <select class="selectbox" bind:value={SelectedSeasonType}>
+            <div class="selectinformation">시즌 타입</div>
+            <select class="selectbox2" bind:value={SelectedSeasonType}>
                 {#each SeasonTypeArray as SeasonType}
-                    <option value={SeasonType}>
+                    <option class="selected" value={SeasonType}>
                         {SeasonType}
                     </option>
                 {/each}
@@ -125,9 +120,9 @@
     <table>
         <thead>
             <tr>
-                <th class="thcolor">순위</th>
+                <th>순위</th>
                 {#each TableHeader as HeaderName, ArrayIndex}
-                    <th class="thcolor" on:click={()=> SetSortIndex(HeaderName)}>
+                    <th on:click={()=> SetSortIndex(ArrayIndex)}>
                         {HeaderName}
                         {#if ArrayIndex === SortIndex && SortMethod === -1}
                             ⬇
@@ -174,7 +169,6 @@
         /* overflow: hidden; */
         width: 100%;
         background-color: rgb(246, 246, 246);
-        padding-bottom: 0.1px;
     }
 
     .pagenamecontainer {
@@ -258,22 +252,29 @@
         cursor:pointer;
     }
 
-
     th {
         border: 1px solid black;
         height: 40px;
         font-size: 15px;
         font-weight: bold;
         text-align: center;
-        min-width: 60px;
         transition: 0.3s;
+        background-color: rgb(255, 201, 14);
+        font-size: 18px;
     }
 
     td {
         border: 1px solid black;
         text-align: center;
-        min-width: 60px;
         transition: 0.3s;
+    }
+
+    td:nth-child(1) {
+        width: 50px;
+    }
+
+    td:nth-child(n+3) {
+        width: 120px;
     }
 
     th:hover{
@@ -281,30 +282,15 @@
         cursor: pointer;
     }
 
-    .thcolor{
-        background-color: rgb(255, 201, 14);
-        font-size: 18px;
-    }
-
-    .thcolor:hover{
-        cursor: pointer;
-    }
-
-    .thcolor:active{
-        cursor: pointer;
-    }
-
-    .button{
-        background-color: rgb(243,139,43);
+    .button {
+        background-color: rgb(243, 139, 43);
         width: 150px;
-        height: 60px;
-        margin-top: 20px;
+        height: 45px;
+        margin-top: 35px;
         margin-left: 50px;
-        padding: 10px 30px;
-        border-radius: 20px;
+        border-radius: 10px;
         font-weight: bold;
-        font-size: 20px;
-        /* border: 1px solid black; */
+        font-size: 23px;
         color: white;
     }
 
@@ -334,20 +320,43 @@
         text-align: left;
     }
 
-    .selectbox{
+    .selectbox {
         min-width: 220px;
-        background-color: rgb(229,231,235);
+        background-color: rgb(229, 231, 235);
         border: 1px solid black;
-        height: 45px;
-        margin-left: 10px;
-        border-radius: 20px;
-        text-align: center;
-    }
-
-    .text{
         margin-left: 20px;
-        margin-bottom: 5px;
+        text-align: center;
+        height: 45px;
+        cursor: pointer;
+        border-radius: 10px;
+        font-size: 18px;
         font-weight: bold;
     }
 
+    .selectbox2 {
+        min-width: 280px;
+        background-color: rgb(229, 231, 235);
+        border: 1px solid black;
+        margin-left: 20px;
+        text-align: center;
+        height: 45px;
+        cursor: pointer;
+        border-radius: 10px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .selected {
+        border: 1px solid black;
+        font-size: 18px;
+        cursor: pointer;
+        background-color: white;
+    }
+
+    .selectinformation {
+        margin-left: 30px;
+        margin-bottom: 5px;
+        font-size: 20px;
+        font-weight: bold;
+    }
 </style>

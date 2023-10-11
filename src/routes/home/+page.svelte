@@ -213,8 +213,8 @@
         {$store?.selected.toLocaleDateString(undefined, DateOptions)} TOP 5
     </div>
 
-    <div class="line">
-        <div class="box">
+    <div class="rankboxcontainer">
+        <div class="rankbox">
             <div class="title">득점</div>
             <table class="ranktable">
                 {#each RankArray_PTS as Rank}
@@ -227,7 +227,7 @@
                 {/each}
             </table>
         </div>
-        <div class="box">
+        <div class="rankbox">
             <div class="title">리바운드</div>
             <table class="ranktable">
                 {#each RankArray_REB as Rank}
@@ -240,7 +240,7 @@
                 {/each}
             </table>
         </div>
-        <div class="box">
+        <div class="rankbox">
             <div class="title">어시스트</div>
             <table class="ranktable">
                 {#each RankArray_AST as Rank}
@@ -253,10 +253,7 @@
                 {/each}
             </table>
         </div>
-    </div>
-
-    <div class="line">
-        <div class="box">
+        <div class="rankbox">
             <div class="title">블록</div>
             <table class="ranktable">
                 {#each RankArray_BLK as Rank}
@@ -269,7 +266,7 @@
                 {/each}
             </table>
         </div>
-        <div class="box">
+        <div class="rankbox">
             <div class="title">스틸</div>
             <table class="ranktable">
                 {#each RankArray_STL as Rank}
@@ -282,7 +279,7 @@
                 {/each}
             </table>
         </div>
-        <div class="box">
+        <div class="rankbox">
             <div class="title">판타지 포인트</div>
             <table class="ranktable">
                 {#each RankArray_FANTASY_PTS as Rank}
@@ -345,11 +342,12 @@
 
     .gameboardcontainer {
         display: flex;
+        flex-wrap: wrap;
+        justify-content: left;
+        width: 90%;
+        margin: 0px auto;
         border: 3px solid rgb(243,139,43);
         border-radius: 20px;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        margin: 0px 100px;
         background-color: white;
     }
 
@@ -363,11 +361,11 @@
     }
 
     .gameboard {
-        width: 44%;
-        height: 150px;
+        width: calc(33.33% - 10px);
+        height: 120px;
         border: 1px solid black;
         border-radius: 10px;
-        margin: 2% 3% 1% 3%;
+        margin: 5px;
         display: flex;
         justify-content: space-around;
     }
@@ -404,24 +402,29 @@
         margin: auto 0px;
     }
 
-    .line {
+    .rankboxcontainer {
         display: flex;
+        flex-wrap: wrap;
+        justify-content: left;
+        width: 90%;
+        margin: 20px auto;
+    }
+
+    .rankbox {
+        width: calc(33.33% - 10px);
+        height: 220px;
+        margin: 5px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        text-align: center;
+        border-radius: 20px;
+        border: 4px solid rgb(255, 201, 14);
+        font-size: 18px;
     }
 
     .title {
         font-size: 25px;
         font-weight: bold;
-    }
-
-    .box {
-        width: 400px;
-        height: 210px;
-        margin: 20px auto;
-        padding-bottom: 10px;
-        text-align: center;
-        border-radius: 50px;
-        border: 4px solid rgb(255, 201, 14);
-        font-size: 18px;
     }
 
     .mvptitle {
@@ -442,5 +445,6 @@
     .ranktable {
         width: 80%;
         margin: 5px auto;
+        font-weight: bold;
     }
 </style>

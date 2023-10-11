@@ -95,10 +95,10 @@
   </div>
   <div class="groupbox1">
     <div>
-      <div class="selectinformation">시즌연도</div>
+      <div class="selectinformation">시즌 연도</div>
       <select class="overflow selectbox" bind:value={SelectedSeason}>
         {#each SeasonArray as Season}
-          <option class="option" value={Season}>
+          <option class="selected" value={Season}>
             {Season}
           </option>
         {/each}
@@ -106,10 +106,10 @@
     </div>
 
     <div>
-      <div class="selectinformation">팀이름</div>
-      <select class="overflow selectbox" bind:value={SelectedTeamname}>
+      <div class="selectinformation">팀 이름</div>
+      <select class="overflow selectbox2" bind:value={SelectedTeamname}>
         {#each TeamnameArray as teamname}
-          <option class="option" value={teamname}>
+          <option class="selected" value={teamname}>
             {teamname}
           </option>
         {/each}
@@ -313,8 +313,9 @@
   }
 
   .selectinformation {
-    margin-bottom: 5px;
     margin-left: 30px;
+    margin-bottom: 5px;
+    font-size: 20px;
     font-weight: bold;
   }
 
@@ -347,13 +348,13 @@
   .button {
     background-color: rgb(243, 139, 43);
     width: 150px;
-    height: 60px;
-    margin-top: 20px;
+    height: 45px;
+    margin-top: 35px;
     margin-left: 50px;
-    padding: 10px 30px;
-    border-radius: 20px;
+    /* padding: 10px 30px; */
+    border-radius: 10px;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 23px;
     color: white;
   }
 
@@ -392,15 +393,38 @@
     text-align: center;
     height: 45px;
     cursor: pointer;
-    border-radius: 20px;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .selectbox2 {
+    min-width: 280px;
+    background-color: rgb(229, 231, 235);
+    border: 1px solid black;
+    margin-left: 20px;
+    text-align: center;
+    height: 45px;
+    cursor: pointer;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .selected {
+    border: 1px solid black;
+    font-size: 18px;
+    cursor: pointer;
+    background-color: white;
   }
 
   .image {
     width: 500px;
-    background-color: rgb(233, 196, 240);
+    background-color: rgb(229, 231, 235);
+    border-radius: 10px;
     margin: 0 auto;
+    margin-top: 30px;
     padding-top: 30px;
-    padding-bottom: 30px;
   }
 
   table {
@@ -489,7 +513,7 @@
 
   .airbox {
     width: 1115px;
-    height: 715px;
+    height: 1080px;
   }
 
 </style>

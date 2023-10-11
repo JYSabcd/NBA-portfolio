@@ -10,10 +10,11 @@
 </script>
 
 <header>
+  <div class="menucontainer">
   <div class="menu">
-    <Button class="text-lg font-bold py-2" href="/home" on:click={ScrollTop}
-      ><img src="/logo-nba.svg" alt="logo-nba.svg" /></Button
-    >
+    <Button class="text-lg font-bold py-2" href="/home" on:click={ScrollTop}>
+      <img class="logoimg" src="/Logo_BMW.png" alt="Logo_BMW" />
+    </Button>
   </div>
   <div class="menu">
     <Button class="text-lg font-bold py-2" href="/home" on:click={ScrollTop}
@@ -72,6 +73,7 @@
       on:click={ScrollTop}>경기 기록보기</Button
     >
   </div>
+</div>
 </header>
 <main bind:this={el_main}>
   <div id="container">
@@ -81,12 +83,18 @@
 
 <style>
   header {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    padding: 0px calc((100vw - 1300px) / 2);
+    width: 100vw;
     background-color: black;
   }
+
+  .menucontainer {
+    display: flex;
+    justify-content: space-evenly;
+    width: 1300px;
+    margin: 0px auto;
+    background-color: black;
+  }
+
   .menu {
     display: inline-flex;
     height: 50px;
@@ -96,9 +104,13 @@
     padding-top: 3px;
     padding-bottom: 3px;
   }
+  .logoimg {
+    height: 45px;
+  }
   main {
     overflow: auto;
     width: 100vw;
+    min-width: 1300px;
     /* background-color: rgba(197, 253, 253, 0.61); */
     background-color: white;
   }
@@ -107,6 +119,6 @@
     width: 100%;
     max-width: 1300px;
     height: calc(100vh - 50px);
-    background-color: white;
+    background-color: rgb(246, 246, 246);
   }
 </style>

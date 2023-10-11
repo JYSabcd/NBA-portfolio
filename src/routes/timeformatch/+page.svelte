@@ -14,6 +14,7 @@
     let ActionDivs = [];
     let ActionContainerDiv = null;
     let LastestActionIndex = null;
+    let SaveLastActionIndex = null;
     let SelectedAction = null;
 
     let AutoProgress = true;    //  PlayByPlay 자동 진행
@@ -85,6 +86,8 @@
         // 그리기 시간이 초과됐으면 이동(Interval) 종료.
         else {
             clearInterval(interval_ball);
+            interval_ball = null;
+            delay_sum = 0;
 
             if(LastestActionIndex !== null){
                 ActionDivs[LastestActionIndex].style = "border: 1px solid black;";
@@ -161,6 +164,11 @@
         );
         PlaybyPlayArray = await response.json();
 
+        // 일정 시간 뒤 자동으로 플레이 된다.
+        setTimeout(() => {
+            SelectAction(1);
+        }, 500);
+
         //console.log(PlaybyPlayArray);
     }
 
@@ -195,11 +203,12 @@
             ActionDivs[LastestActionIndex].style = "border: 1px solid black;";
         }
         LastestActionIndex = ArrayIndex;
+        SaveLastActionIndex = ArrayIndex;
         ActionDivs[ArrayIndex].style = "border: 2px solid blue;";
         ActionContainerDiv.scrollTop = (ActionDivs[ArrayIndex].clientHeight + (2+4)) * ArrayIndex;
         
-        console.log(ActionDivs[ArrayIndex].clientHeight);
-        console.log(ActionContainerDiv.scrollTop);
+        // console.log(ActionDivs[ArrayIndex].clientHeight);
+        // console.log(ActionContainerDiv.scrollTop);
         // ActionDivs[ArrayIndex].scrollIntoView(true, {behavior: "smooth",block: "nearest", inline: "nearest"});
 
         let Action = PlaybyPlayArray[ArrayIndex];
@@ -247,6 +256,17 @@
         //  [순서 중요] 위에서 Action["PosX"], Action["PosY"]가 설정된 이후에 배열에 넣는다.
         SelectedAction = Action;
     }
+
+    function OnChangeAutoProgress() {
+        if(AutoProgress === true && interval_ball === null){
+            if(SaveLastActionIndex !== null && SaveLastActionIndex < (PlaybyPlayArray.length - 1)){
+                SelectAction(SaveLastActionIndex + 1);
+            } else {
+                SelectAction(1);
+            }
+        }
+    }
+    
 </script>
 
 <body>
@@ -278,7 +298,7 @@
                 bind:value={SelectedScheduleYYYYMM}
             >
                 {#each ScheduleYYYYMMArray as ScheduleYYYYMM}
-                    <option class="option" value={ScheduleYYYYMM}>
+                    <option class="selected" value={ScheduleYYYYMM}>
                         {ScheduleYYYYMM}
                     </option>
                 {/each}
@@ -287,9 +307,9 @@
 
         <div>
             <div class="selectinformation">팀 이름</div>
-            <select class="overflow selectbox" bind:value={SelectedTeamname}>
+            <select class="overflow selectbox2" bind:value={SelectedTeamname}>
                 {#each TeamnameArray as teamname}
-                    <option class="option" value={teamname}>
+                    <option class="selected" value={teamname}>
                         {teamname}
                     </option>
                 {/each}
@@ -350,23 +370,23 @@
             <div class="title">※ 경기를 선택해 주세요.</div>
         {:else}
             <div class="title">{SelectedGame["game_date"].slice(0, 10)}</div>
-            <div>
+            <div class="selectedgame_score">
                 <img
                     src="/TeamLogo/{SelectedGame['home_teamid']}.svg"
                     alt="HomeTeamLogo"
-                    class="TeamLogoImage"
+                    class="selectedgame_teamlogo"
                 />
-                <div class="selectedgame_score">
+                <!-- <div class="selectedgame_score"> -->
                     {SelectedGame["home_gamescore"]}
-                </div>
+                <!-- </div> -->
                 <div class="selectedgame_vs">VS</div>
-                <div class="selectedgame_score">
+                <!-- <div class="selectedgame_score"> -->
                     {SelectedGame["away_gamescore"]}
-                </div>
+                <!-- </div> -->
                 <img
                     src="/TeamLogo/{SelectedGame['away_teamid']}.svg"
                     alt="AwayTeamLogo"
-                    class="TeamLogoImage"
+                    class="selectedgame_teamlogo"
                 />
             </div>
         {/if}
@@ -533,7 +553,7 @@
             {/if}
             </div>
             <label class="AutoProgress">
-                <input type="checkbox" bind:checked={AutoProgress} />
+                <input type="checkbox" bind:checked={AutoProgress} on:change={OnChangeAutoProgress}/>
                 Play By Play 자동 진행
             </label>
         </div>
@@ -678,7 +698,6 @@
         /* overflow: hidden; */
         width: 100%;
         background-color: rgb(246, 246, 246);
-        padding-bottom: 0.1px;
     }
 
     .pagenamecontainer {
@@ -740,23 +759,16 @@
     }
 
     .selectinformation {
-        margin-left: 10px;
+        margin-left: 30px;
         margin-bottom: 5px;
-        margin-left: 20px;
+        font-size: 20px;
         font-weight: bold;
-        /* text-align: center; */
     }
 
     .overflow {
         height: 200px;
         width: 200px;
         overflow: auto;
-    }
-
-    .option {
-        border: 1px solid black;
-        cursor: pointer;
-        background-color: rgb(229, 231, 235);
     }
 
     .selectbox {
@@ -767,19 +779,41 @@
         text-align: center;
         height: 45px;
         cursor: pointer;
-        border-radius: 20px;
+        border-radius: 10px;
+        font-size: 18px;
+        font-weight: bold;
     }
 
-    .button{
-        background-color: rgb(243,139,43);
-        width: 150px;
-        height: 60px;
-        margin-top: 20px;
-        margin-left: 50px;
-        padding: 10px 30px;
-        border-radius: 20px;
+    .selectbox2 {
+        min-width: 280px;
+        background-color: rgb(229, 231, 235);
+        border: 1px solid black;
+        margin-left: 20px;
+        text-align: center;
+        height: 45px;
+        cursor: pointer;
+        border-radius: 10px;
+        font-size: 18px;
         font-weight: bold;
-        font-size: 20px;
+    }
+
+    .selected {
+        border: 1px solid black;
+        font-size: 18px;
+        cursor: pointer;
+        background-color: white;
+    }
+
+    .button {
+        background-color: rgb(243, 139, 43);
+        width: 150px;
+        height: 45px;
+        margin-top: 35px;
+        margin-left: 50px;
+        /* padding: 10px 30px; */
+        border-radius: 10px;
+        font-weight: bold;
+        font-size: 23px;
         color: white;
     }
 
@@ -815,6 +849,11 @@
 
         display: flex;
         justify-content: space-around;
+    }
+
+    .gameboard:hover {
+        cursor: pointer;
+        background-color: rgb(229, 231, 235);
     }
 
     .gameteam {
@@ -902,7 +941,7 @@
 
     .selectedgame_title {
         width: 50%;
-        height: 170px;
+        height: 140px;
         margin: 0 auto;
         display: flex;
         flex-direction: column;
@@ -910,6 +949,8 @@
         align-items: center;
         border-radius: 20px;
         margin-top: 50px;
+        padding-top: 10px;
+        /* padding-bottom: 10px; */
         background-color: white;
         border: 3px solid rgb(243, 139, 43);
     }
@@ -918,6 +959,8 @@
         text-align: center;
         font-size: 20px;
         font-weight: bold;
+        height: 20px;
+        line-height: 20px;
     }
 
     .playerlist_teamname {
@@ -927,12 +970,13 @@
     }
 
     .selectedgame_score {
-        display: inline-block;
-        width: 100px;
+        /* display: inline-block; */
+        width: 100%;
+        height: 100px;
+        line-height: 100px;
         text-align: center;
         font-size: 50px;
         font-weight: bold;
-        line-height: 100px;
     }
 
     .selectedgame_vs {
@@ -942,6 +986,8 @@
         font-weight: bold;
         padding-left: 10px;
         padding-right: 10px;
+        height: 100px;
+        line-height: 100px;
     }
 
     .PbyPContainer {
@@ -989,6 +1035,11 @@
         display: flex;
         border: 1px solid black;
         /* background-color: cornflowerblue; */
+    }
+
+    .PbyP_Action:hover {
+        cursor: pointer;
+        background-color: rgb(229, 231, 235);
     }
 
     .PbyP_Action_JumpBall {
@@ -1165,6 +1216,13 @@
         display: inline-block;
         width: 100px;
         height: 100px;
+    }
+
+    .selectedgame_teamlogo {
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        padding-bottom: 10px;
     }
 
     tr {
