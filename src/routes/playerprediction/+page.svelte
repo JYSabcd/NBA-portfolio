@@ -141,7 +141,7 @@
       </div>
       <div class="textgroup">
         <div class="text2">3. 통계적 분석</div>
-        현재 시즌과 다음 시즌의 명확한 차이는<strong>나이</strong> 입니다.<br />
+        현재 시즌과 다음 시즌의 명확한 차이는 <strong>나이</strong> 입니다.<br />
         스포츠 분야에서는 <strong>"에이징 커브"</strong>를 중요한 지표중 하나로
         판단하고 있습니다.<br />
         그래서 나이를 기준으로 정제된 데이터들의 능력치 별 평균값을 계산하였습니다.<br

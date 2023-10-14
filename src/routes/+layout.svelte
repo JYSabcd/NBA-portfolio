@@ -2,7 +2,7 @@
   import "../app.postcss";
   import { Button, Dropdown, DropdownItem, Chevron } from "flowbite-svelte";
 
-  let el_main;
+  let el_main:HTMLElement;
 
   function ScrollTop() {
     el_main.scrollTop = 0;
