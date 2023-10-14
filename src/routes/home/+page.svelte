@@ -169,128 +169,132 @@
 
 <body>
     <img src="/home_image01.jpg" alt="homeimage01" class="homeimage01" />
-
-    <div class="datepickercontainer">
-        <Datepicker bind:store let:key let:send let:receive selected={DefaultSelectedDate} {theme} {format}>
-            <button class="button_calendar" in:receive|local={{ key }} out:send|local={{ key }}>
-                {dayjs(selecteddate).format(format)}
-            </button>
-        </Datepicker>
-    </div>
-
-    <div class="description_calendar">※ 조회하고 싶은 경기의 날짜로 변경해주세요.</div>
-
-    <div class="gameboardcontainer">
-        {#if schedulearray.length === 0}
-            <div class="nogame">해당 일자에 경기가 없습니다.</div>
-        {/if}
-        {#each schedulearray as schedule, index}
-            <div class="gameboard">
-                <div class="gameteam">
-                    <img
-                        src="/TeamLogo/{schedule['home_teamid']}.svg"
-                        alt="TeamLogo"
-                        class="teamlogo"
-                    />
-                    <div class="teamname">{schedule["home_teamname"]}</div>
+    
+    <div class="groupbox">
+        <div class="datepickercontainer">
+            <Datepicker bind:store let:key let:send let:receive selected={DefaultSelectedDate} {theme} {format}>
+                <button class="button_calendar" in:receive|local={{ key }} out:send|local={{ key }}>
+                    {dayjs(selecteddate).format(format)}
+                </button>
+            </Datepicker>
+        </div>
+    
+        <div class="description_calendar">※ 조회하고 싶은 경기의 날짜로 변경해주세요.</div>
+    
+        <div class="gameboardcontainer">
+            {#if schedulearray.length === 0}
+                <div class="nogame">해당 일자에 경기가 없습니다.</div>
+            {/if}
+            {#each schedulearray as schedule, index}
+                <div class="gameboard">
+                    <div class="gameteam">
+                        <img
+                            src="/TeamLogo/{schedule['home_teamid']}.svg"
+                            alt="TeamLogo"
+                            class="teamlogo"
+                        />
+                        <div class="teamname">{schedule["home_teamname"]}</div>
+                    </div>
+                    <div class="score">{schedule["home_gamescore"]}</div>
+                    <div class="vs">VS</div>
+                    <div class="score">{schedule["away_gamescore"]}</div>
+                    <div class="gameteam">
+                        <img
+                            src="/TeamLogo/{schedule['away_teamid']}.svg"
+                            alt="TeamLogo"
+                            class="teamlogo"
+                        />
+                        <div class="teamname">{schedule["away_teamname"]}</div>
+                    </div>
                 </div>
-                <div class="score">{schedule["home_gamescore"]}</div>
-                <div class="vs">VS</div>
-                <div class="score">{schedule["away_gamescore"]}</div>
-                <div class="gameteam">
-                    <img
-                        src="/TeamLogo/{schedule['away_teamid']}.svg"
-                        alt="TeamLogo"
-                        class="teamlogo"
-                    />
-                    <div class="teamname">{schedule["away_teamname"]}</div>
-                </div>
+            {/each}
+        </div>
+    </div>    
+
+    <div class="groupbox">
+        <div class="mvptitle">
+            {$store?.selected.toLocaleDateString(undefined, DateOptions)} TOP 5
+        </div>
+    
+        <div class="rankboxcontainer">
+            <div class="rankbox">
+                <div class="title">득점</div>
+                <table class="ranktable">
+                    {#each RankArray_PTS as Rank}
+                        <tr>
+                            <td>{Rank[0]}</td>
+                            <td>{Rank[1]}</td>
+                            <td>{Rank[2]}</td>
+                            <td>{Rank[3]}</td>
+                        </tr>
+                    {/each}
+                </table>
             </div>
-        {/each}
-    </div>
-
-    <div class="mvptitle">
-        {$store?.selected.toLocaleDateString(undefined, DateOptions)} TOP 5
-    </div>
-
-    <div class="rankboxcontainer">
-        <div class="rankbox">
-            <div class="title">득점</div>
-            <table class="ranktable">
-                {#each RankArray_PTS as Rank}
-                    <tr>
-                        <td>{Rank[0]}</td>
-                        <td>{Rank[1]}</td>
-                        <td>{Rank[2]}</td>
-                        <td>{Rank[3]}</td>
-                    </tr>
-                {/each}
-            </table>
-        </div>
-        <div class="rankbox">
-            <div class="title">리바운드</div>
-            <table class="ranktable">
-                {#each RankArray_REB as Rank}
-                    <tr>
-                        <td>{Rank[0]}</td>
-                        <td>{Rank[1]}</td>
-                        <td>{Rank[2]}</td>
-                        <td>{Rank[3]}</td>
-                    </tr>
-                {/each}
-            </table>
-        </div>
-        <div class="rankbox">
-            <div class="title">어시스트</div>
-            <table class="ranktable">
-                {#each RankArray_AST as Rank}
-                    <tr>
-                        <td>{Rank[0]}</td>
-                        <td>{Rank[1]}</td>
-                        <td>{Rank[2]}</td>
-                        <td>{Rank[3]}</td>
-                    </tr>
-                {/each}
-            </table>
-        </div>
-        <div class="rankbox">
-            <div class="title">블록</div>
-            <table class="ranktable">
-                {#each RankArray_BLK as Rank}
-                    <tr>
-                        <td>{Rank[0]}</td>
-                        <td>{Rank[1]}</td>
-                        <td>{Rank[2]}</td>
-                        <td>{Rank[3]}</td>
-                    </tr>
-                {/each}
-            </table>
-        </div>
-        <div class="rankbox">
-            <div class="title">스틸</div>
-            <table class="ranktable">
-                {#each RankArray_STL as Rank}
-                    <tr>
-                        <td>{Rank[0]}</td>
-                        <td>{Rank[1]}</td>
-                        <td>{Rank[2]}</td>
-                        <td>{Rank[3]}</td>
-                    </tr>
-                {/each}
-            </table>
-        </div>
-        <div class="rankbox">
-            <div class="title">판타지 포인트</div>
-            <table class="ranktable">
-                {#each RankArray_FANTASY_PTS as Rank}
-                    <tr>
-                        <td>{Rank[0]}</td>
-                        <td>{Rank[1]}</td>
-                        <td>{Rank[2]}</td>
-                        <td>{Rank[3]}</td>
-                    </tr>
-                {/each}
-            </table>
+            <div class="rankbox">
+                <div class="title">리바운드</div>
+                <table class="ranktable">
+                    {#each RankArray_REB as Rank}
+                        <tr>
+                            <td>{Rank[0]}</td>
+                            <td>{Rank[1]}</td>
+                            <td>{Rank[2]}</td>
+                            <td>{Rank[3]}</td>
+                        </tr>
+                    {/each}
+                </table>
+            </div>
+            <div class="rankbox">
+                <div class="title">어시스트</div>
+                <table class="ranktable">
+                    {#each RankArray_AST as Rank}
+                        <tr>
+                            <td>{Rank[0]}</td>
+                            <td>{Rank[1]}</td>
+                            <td>{Rank[2]}</td>
+                            <td>{Rank[3]}</td>
+                        </tr>
+                    {/each}
+                </table>
+            </div>
+            <div class="rankbox">
+                <div class="title">블록</div>
+                <table class="ranktable">
+                    {#each RankArray_BLK as Rank}
+                        <tr>
+                            <td>{Rank[0]}</td>
+                            <td>{Rank[1]}</td>
+                            <td>{Rank[2]}</td>
+                            <td>{Rank[3]}</td>
+                        </tr>
+                    {/each}
+                </table>
+            </div>
+            <div class="rankbox">
+                <div class="title">스틸</div>
+                <table class="ranktable">
+                    {#each RankArray_STL as Rank}
+                        <tr>
+                            <td>{Rank[0]}</td>
+                            <td>{Rank[1]}</td>
+                            <td>{Rank[2]}</td>
+                            <td>{Rank[3]}</td>
+                        </tr>
+                    {/each}
+                </table>
+            </div>
+            <div class="rankbox">
+                <div class="title">판타지 포인트</div>
+                <table class="ranktable">
+                    {#each RankArray_FANTASY_PTS as Rank}
+                        <tr>
+                            <td>{Rank[0]}</td>
+                            <td>{Rank[1]}</td>
+                            <td>{Rank[2]}</td>
+                            <td>{Rank[3]}</td>
+                        </tr>
+                    {/each}
+                </table>
+            </div>
         </div>
     </div>
 </body>
@@ -339,6 +343,19 @@
     .button_calendar:hover {
         background-color: rgb(201, 115, 34);
     }
+    
+    .groupbox {
+        margin: 0px auto;
+        margin-top: 30px;
+        padding: 20px 20px;
+        width: 90%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background-color: white;
+        border-radius: 20px;
+        margin-bottom: 30px;
+    }
 
     .gameboardcontainer {
         display: flex;
@@ -346,6 +363,7 @@
         justify-content: left;
         width: 90%;
         margin: 0px auto;
+        padding: 5px;
         border: 3px solid rgb(243,139,43);
         border-radius: 20px;
         background-color: white;
@@ -384,7 +402,7 @@
         width: 70%;
     }
     .teamname {
-        font-size: 15px;
+        font-size: 12px;
         font-weight: bolder;
         text-align: center;
         width: 100%;
@@ -392,13 +410,13 @@
 
     .score {
         width: 20%;
-        font-size: 40px;
+        font-size: 35px;
         text-align: center;
         margin: auto 0px;
     }
 
     .vs {
-        font-size: 20px;
+        font-size: 15px;
         margin: auto 0px;
     }
 
@@ -419,7 +437,7 @@
         text-align: center;
         border-radius: 20px;
         border: 4px solid rgb(255, 201, 14);
-        font-size: 18px;
+        font-size: 17px;
     }
 
     .title {
@@ -429,7 +447,7 @@
 
     .mvptitle {
         margin: 20px auto;
-        margin-top: 40px;
+        margin-top: 30px;
         width: 600px;
         height: 70px;
         line-height: 70px;

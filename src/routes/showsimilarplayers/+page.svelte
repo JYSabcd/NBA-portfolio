@@ -23,6 +23,7 @@
   let SimilarPlayerArray = [];
 
   let tablename = "";
+  let tablename2 = "";
 
   let MainplayerSeason = "";
 
@@ -32,7 +33,8 @@
       `showsimilarplayers/api/PlayerRoaster?Season=${SelectedSeason}&TeamID=${TeamID}`
     );
     Playerroaster = await response1.json();
-    tablename = SelectedSeason + " 시즌 " + SelectedTeamname;
+    tablename = SelectedSeason + " 시즌 ";
+    tablename2 = SelectedTeamname;
   }
 
   async function GETMainPlayer(PlayerID) {
@@ -121,7 +123,7 @@
 
   {#if Playerroaster.length > 0}
     <div class="groupbox2">
-      <div class="text">{tablename} 선수들</div>
+      <div class="tabletitle">{tablename}&nbsp;&nbsp;<span class="fontsize_name">{tablename2}</span>&nbsp;&nbsp;선수들</div>
       <table class="table1">
         <tr class="th">
           {#each TableHeaders as header}
@@ -159,7 +161,7 @@
 
   {#if Mainplayer.length > 0}
     <div id="section" class="groupbox3">
-      <div class="name">{MainplayerSeason}년도 {Mainplayer[1]}</div>
+      <div class="tabletitle">{MainplayerSeason}년도&nbsp;&nbsp;<span class="fontsize_name">{Mainplayer[1]}</span></div>
       <div class="image">
         <img
           src="https://cdn.nba.com/headshots/nba/latest/1040x760/{Mainplayer[0]}.png"
@@ -180,7 +182,7 @@
         <tr>
           <td
             >{parseFloat(SelectedSeason.slice(0, 5)) -
-              Mainplayer[2].slice(0, 4)}세</td
+              Mainplayer[2].slice(0, 4)+1}세</td
           >
           <td
             >{Mainplayerstats[2] !== undefined
@@ -208,9 +210,7 @@
         </tr>
       </table>
 
-      <div class="listname">
-        {MainplayerSeason}년도 {Mainplayer[1]}과 비슷한 선수
-      </div>
+      <div class="tabletitle">{MainplayerSeason}년도&nbsp;&nbsp;<span class="fontsize_name">{Mainplayer[1]}</span>&nbsp;&nbsp;선수와 비슷한 선수들</div>
       <table class="table3">
         <tr>
           <th>선수 이름</th>
@@ -244,6 +244,11 @@
             <td class="table3td">{parseFloat(SimilarPlayer["min"]).toFixed(1)}</td>
           </tr>
         {/each}
+        {#if SimilarPlayerArray.length === 0}
+          <tr>
+            <td colspan="8">비슷한 조건의 선수가 없습니다.</td>
+          </tr>
+        {/if}
       </table>
     </div>
   {:else}
@@ -304,12 +309,23 @@
       border: 2px solid white;
   }
 
-  .text {
+  .tabletitle {
+    min-width: 500px;
+    max-width: calc(100% - 40px);
+    height: 60px;
+    line-height: 60px;
+    background: black;
+    color: white;
+    border-radius: 10px;
+    font-weight: bolder;
     text-align: center;
-    margin-top: 20px;
-    margin-bottom: 5px;
-    font-size: 23px;
-    font-weight: bold;
+    font-size: 18px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  .fontsize_name {
+    font-size: 28px;
   }
 
   .selectinformation {

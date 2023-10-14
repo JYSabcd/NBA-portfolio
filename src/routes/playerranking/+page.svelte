@@ -2,7 +2,7 @@
     import { SeasonArray, SeasonTypeArray } from "../data.js";
 
     /** @type {(string)[]} */
-    let TableHeader = ['선수 이름','게임 수','출전 시간','득점','리바운드','어시스트','스틸','블록','야투(%)', '3점(%)', '자유투(%)'];
+    let TableHeader = ['선수 이름','게임 수','출전시간','득점','리바운드','어시스트','스틸','블록','필드골(%)', '3점(%)', '자유투(%)'];
     /** @type {number} */
     const DefaultSortIndex = 3;  // '득점', TableHeader 배열 인덱스
     const DefaultSortMethod = -1;  // 내림차순
@@ -109,7 +109,7 @@
             <tr>
                 <th>순위</th>
                 {#each TableHeader as HeaderName, ArrayIndex}
-                    <th on:click={()=> SetSortIndex(ArrayIndex)}>
+                    <th class="thminwidth" on:click={()=> SetSortIndex(ArrayIndex)}>
                         {HeaderName}
                         {#if ArrayIndex === SortIndex && SortMethod === -1}
                             ⬇
@@ -241,9 +241,12 @@
         font-size: 18px;
         font-weight: bold;
         text-align: center;
-        /* min-width: 60px; */
         background-color: rgb(255, 201, 14);
         transition: 0.3s;
+    }
+
+    .thminwidth{
+        min-width: 80px;
     }
 
     td {

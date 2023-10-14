@@ -73,7 +73,7 @@ export async function GET({url}) {
 
         if(actions[i]["actionType"] === "Free Throw"){
             actions[i]["xLegacy"] = 0;
-            actions[i]["yLegacy"] = 167;    //  200이 원래 위치인데 .svelte 에서 보정값을 곱해주는 관계로 167
+            actions[i]["yLegacy"] = 167;    //  140이 원래 위치인데 .svelte 에서 보정값을 곱해주는 관계로 167
         } 
         
         if(actions[i]["pointsTotal"] === 0){

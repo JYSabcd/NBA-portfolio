@@ -156,7 +156,7 @@
 
   {#if Mainplayer.length > 0}
     <div id="section" class="groupbox3">
-      <div class="playertitle">{MainplayerSeason}년도&nbsp;&nbsp;<span class="fontsize_name">{Mainplayer[1]}</span></div>
+      <div class="playertitle">{MainplayerSeason}년도&nbsp;&nbsp;<span class="fontsize_name">{Mainplayer[1]}</span>&nbsp;&nbsp;선수 세부 정보</div>
 
       <div class="mainplayerimage">
         <img
@@ -335,8 +335,8 @@
   }
   
   .tabletitle {
-    /* width: calc(100% - 40px); */
     min-width: 500px;
+    max-width: calc(100% - 40px);
     height: 60px;
     line-height: 60px;
     background: black;
