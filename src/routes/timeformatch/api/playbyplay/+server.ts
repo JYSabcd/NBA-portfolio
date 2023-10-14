@@ -46,53 +46,57 @@ const options = {
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({url}) {
+    try{
 
-    let URL = "https://stats.nba.com/stats/playbyplayv3?EndPeriod=10&EndRange=55800&RangeType=2&StartPeriod=1&StartRange=0"
-        + "&GameID=" + url.searchParams.get('GameID');
-
-    const res = await fetch(URL, options);
-    const ResJson = await res.json();
-
-    /** @type {{}[]} */
-    let TableData: {}[] = [];
-
-    /** @type {{}[]} */
-    let actions = ResJson.game.actions;
-
-    let CurrentScore_Home =  0;
-    let CurrentScore_Away =  0;
-
-    for(let i = 0; i < actions.length; i++){
-        if(actions[i]["actionType"] !== "Made Shot" 
-        && actions[i]["actionType"] !== "Missed Shot"
-        && actions[i]["actionType"] !== "Free Throw"
-        && actions[i]["actionType"] !== "Jump Ball"
-        ){
-            continue;
-        }
-
-        if(actions[i]["actionType"] === "Free Throw"){
-            actions[i]["xLegacy"] = 0;
-            actions[i]["yLegacy"] = 167;    //  140이 원래 위치인데 .svelte 에서 보정값을 곱해주는 관계로 167
-        } 
-        
-        if(actions[i]["pointsTotal"] === 0){
-            //  미스샷일때도 scoreHome, scoreAway 값을 현재 스코어로 넣는다.
-            actions[i]["scoreHome"] = CurrentScore_Home.toString();
-            actions[i]["scoreAway"] = CurrentScore_Away.toString();
-        } else{
-            //  pointsTotal을 현재 득점한 값으로 바꾼다.
-            if(actions[i]["location"] === "h"){
-                actions[i]["pointsTotal"] = actions[i]["pointsTotal"] - CurrentScore_Home - CurrentScore_Away;
-                CurrentScore_Home = CurrentScore_Home + actions[i]["pointsTotal"];
-            }else{
-                actions[i]["pointsTotal"] = actions[i]["pointsTotal"] - CurrentScore_Home - CurrentScore_Away;
-                CurrentScore_Away = CurrentScore_Away + actions[i]["pointsTotal"];
+        let URL = "https://stats.nba.com/stats/playbyplayv3?EndPeriod=10&EndRange=55800&RangeType=2&StartPeriod=1&StartRange=0"
+            + "&GameID=" + url.searchParams.get('GameID');
+    
+        const res = await fetch(URL, options);
+        const ResJson = await res.json();
+    
+        /** @type {{}[]} */
+        let TableData: {}[] = [];
+    
+        /** @type {{}[]} */
+        let actions = ResJson.game.actions;
+    
+        let CurrentScore_Home =  0;
+        let CurrentScore_Away =  0;
+    
+        for(let i = 0; i < actions.length; i++){
+            if(actions[i]["actionType"] !== "Made Shot" 
+            && actions[i]["actionType"] !== "Missed Shot"
+            && actions[i]["actionType"] !== "Free Throw"
+            && actions[i]["actionType"] !== "Jump Ball"
+            ){
+                continue;
             }
-        }        
-        
-        TableData.push(actions[i]);
+    
+            if(actions[i]["actionType"] === "Free Throw"){
+                actions[i]["xLegacy"] = 0;
+                actions[i]["yLegacy"] = 167;    //  140이 원래 위치인데 .svelte 에서 보정값을 곱해주는 관계로 167
+            } 
+            
+            if(actions[i]["pointsTotal"] === 0){
+                //  미스샷일때도 scoreHome, scoreAway 값을 현재 스코어로 넣는다.
+                actions[i]["scoreHome"] = CurrentScore_Home.toString();
+                actions[i]["scoreAway"] = CurrentScore_Away.toString();
+            } else{
+                //  pointsTotal을 현재 득점한 값으로 바꾼다.
+                if(actions[i]["location"] === "h"){
+                    actions[i]["pointsTotal"] = actions[i]["pointsTotal"] - CurrentScore_Home - CurrentScore_Away;
+                    CurrentScore_Home = CurrentScore_Home + actions[i]["pointsTotal"];
+                }else{
+                    actions[i]["pointsTotal"] = actions[i]["pointsTotal"] - CurrentScore_Home - CurrentScore_Away;
+                    CurrentScore_Away = CurrentScore_Away + actions[i]["pointsTotal"];
+                }
+            }        
+            
+            TableData.push(actions[i]);
+        }
+    
+        return json(TableData);
+    } catch(err){
+        return new Response(String(err), { status:500})
     }
-
-    return json(TableData);
 }

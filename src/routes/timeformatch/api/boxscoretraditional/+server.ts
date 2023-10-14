@@ -30,45 +30,49 @@ const arrHeader = ['TEAM_ID','PLAYER_ID','PLAYER_NAME','COMMENT','MIN','PTS','RE
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({url}) {
+    try{
 
-    let URL = "https://stats.nba.com/stats/boxscoretraditionalv2"
-        + "?GameID=" + url.searchParams.get('GameID');
-    const res = await fetch(URL, options);
-    const ResJson = await res.json();
-
-    /** @type {number[]} */
-    let arrHeaderIndex: number[] = [];
-    /** @type {(number|string)[][]} */
-    let TableData: (number|string)[][] = [];
-
-    /** @type {string[]} */
-    let headers = [];
-    headers = ResJson.resultSets[0].headers;
-
-    for(let i = 0; i < arrHeader.length; i++){
-        let index = headers.indexOf(arrHeader[i]);
-
-        if(index === -1){
-            console.error("헤더 이름을 찾지 못했다.", arrHeader[i]);
-            index = 0;  //  배열 인덱스에 -1 이 들어가면 에러가 발생하므로 0으로 바꿔주자.. 하지만 잘못된 값을 참조할것이다.
+        let URL = "https://stats.nba.com/stats/boxscoretraditionalv2"
+            + "?GameID=" + url.searchParams.get('GameID');
+        const res = await fetch(URL, options);
+        const ResJson = await res.json();
+    
+        /** @type {number[]} */
+        let arrHeaderIndex: number[] = [];
+        /** @type {(number|string)[][]} */
+        let TableData: (number|string)[][] = [];
+    
+        /** @type {string[]} */
+        let headers = [];
+        headers = ResJson.resultSets[0].headers;
+    
+        for(let i = 0; i < arrHeader.length; i++){
+            let index = headers.indexOf(arrHeader[i]);
+    
+            if(index === -1){
+                console.error("헤더 이름을 찾지 못했다.", arrHeader[i]);
+                index = 0;  //  배열 인덱스에 -1 이 들어가면 에러가 발생하므로 0으로 바꿔주자.. 하지만 잘못된 값을 참조할것이다.
+            }
+    
+            arrHeaderIndex[i] = index;
         }
-
-        arrHeaderIndex[i] = index;
-    }
-
-    /** @type {(number|string)[][]} */
-    let rowSet = ResJson.resultSets[0].rowSet;
-
-    for(let i = 0; i < rowSet.length; i++){
-        /** @type {(number|string)[]} */
-        let rowData = [];
-
-        for(let j = 0; j < arrHeaderIndex.length; j++){
-            rowData.push(rowSet[i][arrHeaderIndex[j]]);
+    
+        /** @type {(number|string)[][]} */
+        let rowSet = ResJson.resultSets[0].rowSet;
+    
+        for(let i = 0; i < rowSet.length; i++){
+            /** @type {(number|string)[]} */
+            let rowData = [];
+    
+            for(let j = 0; j < arrHeaderIndex.length; j++){
+                rowData.push(rowSet[i][arrHeaderIndex[j]]);
+            }
+            
+            TableData.push(rowData);
         }
-        
-        TableData.push(rowData);
+    
+        return json(TableData);
+    } catch(err){
+        return new Response(String(err), { status:500})
     }
-
-    return json(TableData);
 }
