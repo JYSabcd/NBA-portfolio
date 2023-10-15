@@ -28,9 +28,12 @@
   let Playerroaster = [];
 
   let Mainplayer = [];
+  let Mainplayerage = 0;
 
   let Mainplayerstats = [];
-  let Mainplayerage = 0;
+  //  예측Stat과 비교해서 증감값을 표시할때 사용하기 위해 미리 계산해놓는다.
+  let Mainplayer_displaystats = []; //  .소수점 버림으로 1자리까지만 표시 xx.x
+  let Prediction_displaystats = []; //  .소수점 버림으로 1자리까지만 표시 xx.x
 
   let tablename = "";
   let tablename2 = "";
@@ -53,8 +56,7 @@
       `playerprediction/api/Mainplayer1?PlayerID=${PlayerID}`
     );
     Mainplayer = await response2.json();
-    Mainplayerage =
-      parseInt(SaveSelectedSeason.slice(0, 4)) - Mainplayer[2].slice(0, 4);
+    Mainplayerage = parseInt(SaveSelectedSeason.slice(0, 4)) - Mainplayer[2].slice(0, 4);
   }
 
   async function GETMainplayerstats(PlayerID) {
@@ -63,6 +65,20 @@
     );
     Mainplayerstats = await response3.json();
     MainplayerSeason = SaveSelectedSeason;
+
+    // 소수점 1자리만 남기고 버리기
+    Mainplayer_displaystats[2] = Math.floor(Mainplayerstats[2]*10)/10;
+    Mainplayer_displaystats[3] = Math.floor(Mainplayerstats[3]*10)/10;
+    Mainplayer_displaystats[4] = Math.floor(Mainplayerstats[4]*10)/10;
+    Mainplayer_displaystats[1] = Math.floor(Mainplayerstats[1]*10)/10;
+
+    // 다음 시즌(나이+1) 예측하기 (단, 예측은 19세~38세까지만 가능)
+    if(Mainplayerage >= 19 && Mainplayerage <= 38){
+      Prediction_displaystats[2] = Math.floor(Mainplayerstats[2] * NBAAVG[Mainplayerage + 1].PTS / NBAAVG[Mainplayerage].PTS * 10) / 10;
+      Prediction_displaystats[3] = Math.floor(Mainplayerstats[3] * NBAAVG[Mainplayerage + 1].PTS / NBAAVG[Mainplayerage].PTS * 10) / 10;
+      Prediction_displaystats[4] = Math.floor(Mainplayerstats[4] * NBAAVG[Mainplayerage + 1].PTS / NBAAVG[Mainplayerage].PTS * 10) / 10;
+      Prediction_displaystats[1] = Math.floor(Mainplayerstats[1] * NBAAVG[Mainplayerage + 1].PTS / NBAAVG[Mainplayerage].PTS * 10) / 10;
+    }
   }
   function SelectPlayer(ArrayIndex) {
     const PlayerID = Playerroaster[ArrayIndex][6];
@@ -108,7 +124,7 @@
       <div class="text1">&#91;예측 방법 설명&#93;</div>
       <div class="textgroup">
         <div class="text2">1. 데이터 수집</div>
-        NBA API 를 활용해서<strong
+        NBA API 를 활용해서 <strong
           >1996년부터 약 27년간의 12,846건 데이터</strong
         >를 로컬DB에 저장 합니다.<br />
         <div class="text3">&nbsp;&nbsp;&nbsp;&#60;데이터 상세 목록&#62;</div>
@@ -290,25 +306,25 @@
           <th>평균 출전 시간(분)</th>
         </tr>
         <tr>
-          <td class="center">{Mainplayerage}세</td>
-          <td class="center"
-            >{Mainplayerstats[2] !== undefined
-              ? parseFloat(Mainplayerstats[2]).toFixed(1)
+          <td>{Mainplayerage}세</td>
+          <td
+            >{Mainplayer_displaystats[2] !== undefined
+              ? Mainplayer_displaystats[2].toFixed(1)
               : "--"}</td
           >
-          <td class="center"
-            >{Mainplayerstats[3] !== undefined
-              ? parseFloat(Mainplayerstats[3]).toFixed(1)
+          <td
+            >{Mainplayer_displaystats[3] !== undefined
+              ? Mainplayer_displaystats[3].toFixed(1)
               : "--"}</td
           >
-          <td class="center"
-            >{Mainplayerstats[4] !== undefined
-              ? parseFloat(Mainplayerstats[4]).toFixed(1)
+          <td
+            >{Mainplayer_displaystats[4] !== undefined
+              ? Mainplayer_displaystats[4].toFixed(1)
               : "--"}</td
           >
-          <td class="center"
-            >{Mainplayerstats[1] !== undefined
-              ? parseFloat(Mainplayerstats[1]).toFixed(1)
+          <td
+            >{Mainplayer_displaystats[1] !== undefined
+              ? Mainplayer_displaystats[1].toFixed(1)
               : "--"}</td
           >
         </tr>
@@ -333,42 +349,30 @@
         </tr>
         <tr>
           <td>{Mainplayerage + 1}세</td>
+          {#if Mainplayerage >= 19 && Mainplayerage <= 38}
           <td
-            >{Mainplayerstats[2] !== undefined
-              ? (
-                  parseFloat(Mainplayerstats[2]) *
-                  (parseFloat(NBAAVG[Mainplayerage + 1].PTS) /
-                    parseFloat(NBAAVG[Mainplayerage].PTS))
-                ).toFixed(1)
+            >{Prediction_displaystats[2] !== undefined
+              ? Prediction_displaystats[2].toFixed(1)
               : "--"}</td
           >
           <td
-            >{Mainplayerstats[3] !== undefined
-              ? (
-                  parseFloat(Mainplayerstats[3]) *
-                  (parseFloat(NBAAVG[Mainplayerage + 1].REB) /
-                    parseFloat(NBAAVG[Mainplayerage].REB))
-                ).toFixed(1)
+            >{Prediction_displaystats[3] !== undefined
+              ? Prediction_displaystats[3].toFixed(1)
               : "--"}</td
           >
           <td
-            >{Mainplayerstats[4] !== undefined
-              ? (
-                  parseFloat(Mainplayerstats[4]) *
-                  (parseFloat(NBAAVG[Mainplayerage + 1].AST) /
-                    parseFloat(NBAAVG[Mainplayerage].AST))
-                ).toFixed(1)
+            >{Prediction_displaystats[4] !== undefined
+              ? Prediction_displaystats[4].toFixed(1)
               : "--"}</td
           >
           <td
-            >{Mainplayerstats[1] !== undefined
-              ? (
-                  parseFloat(Mainplayerstats[1]) *
-                  (parseFloat(NBAAVG[Mainplayerage + 1].MIN) /
-                    parseFloat(NBAAVG[Mainplayerage].MIN))
-                ).toFixed(1)
+            >{Prediction_displaystats[1] !== undefined
+              ? Prediction_displaystats[1].toFixed(1)
               : "--"}</td
           >
+          {:else}
+          <td colspan="4">19세 ~ 38세 선수만 예측 가능합니다.</td>
+          {/if}
         </tr>
       </table>
     </div>
@@ -550,10 +554,6 @@
     width: 811px;
     height: 500px;
     margin: 0 auto;
-  }
-
-  .center {
-    text-align: center;
   }
 
   .firsttr {

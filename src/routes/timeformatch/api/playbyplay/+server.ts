@@ -12,11 +12,12 @@ const headersList = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,/;q=0.8,application/signed-exchange;v=b3',
     'Accept-Encoding': 'gzip, deflate, br',
     'Accept-Language': 'en-US,en;q=0.9',
-    };
+};
 
 const options = {
     method: 'GET',
-    headers: headersList
+    headers: headersList,
+
 };
 
 // {
@@ -48,10 +49,10 @@ const options = {
 export async function GET({url}) {
     try{
 
-        let URL = "https://stats.nba.com/stats/playbyplayv3?EndPeriod=10&EndRange=55800&RangeType=2&StartPeriod=1&StartRange=0"
+        let myurl = "https://stats.nba.com/stats/playbyplayv3?EndPeriod=10&EndRange=55800&RangeType=2&StartPeriod=1&StartRange=0"
             + "&GameID=" + url.searchParams.get('GameID');
-    
-        const res = await fetch(URL, options);
+        console.log(myurl)
+        const res = await fetch(myurl, options);
         const ResJson = await res.json();
     
         /** @type {{}[]} */
