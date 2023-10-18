@@ -638,12 +638,6 @@
     padding-top: 30px;
   }
 
-  .name {
-    font-size: 35px;
-    font-weight: bold;
-    text-align: center;
-  }
-
   .name2 {
     font-size: 30px;
     font-weight: bold;
