@@ -133,7 +133,7 @@
                             </td>
                         {:else if ColIndex == 1}
                             <td>{data[ColIndex]}</td>
-                        {:else if ColIndex == 8 || ColIndex == 9 || ColIndex == 10}
+                        {:else if ColIndex >= 8}
                             <td>{(Number(data[ColIndex])*100).toFixed(1)}</td>
                         {:else if ColIndex !== 1}
                             <td>{Number(data[ColIndex]).toFixed(1)}</td>
@@ -149,7 +149,6 @@
 
 <style>
     body {
-        /* overflow: hidden; */
         width: 100%;
         background-color: rgb(246, 246, 246);
     }

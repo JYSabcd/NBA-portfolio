@@ -67,7 +67,7 @@
 
         const timehalf = draw_time_shooting / 2;
         const sizeup_ratio =
-            (timehalf - Math.abs(timehalf - delay_sum)) / timehalf;            
+            (timehalf - Math.abs(timehalf - delay_sum)) / timehalf;
         let BallScale = 1;
 
         if (delay_sum <= draw_time_shooting) {

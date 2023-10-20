@@ -418,6 +418,7 @@
     .vs {
         font-size: 15px;
         margin: auto 0px;
+        font-weight: bold;
     }
 
     .rankboxcontainer {
