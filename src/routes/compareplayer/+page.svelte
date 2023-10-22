@@ -11,25 +11,25 @@
     let IsAverageMode = false; //  false : 평균값 사용 안함, true : 평균값 사용 (Player2 정보에 평균값 표시)
     let IsSelectedSeason1Mode = false;
 
-    let playerrosters1 = []; //  api에서 얻어온 플레이어 리스트
-    let playerrosters2 = [];
+    let playerrosters1:(number|string)[] = []; //  api에서 얻어온 플레이어 리스트
+    let playerrosters2:(number|string)[] = [];
 
-    let PlayerData1 = []; //  api에서 얻어온 선수 기록
-    let PlayerData2 = [];
-    let Average = []; //  api에서 얻어온 한 시즌 선수들의 평균 (58경기 이상 선수만)
+    let PlayerData1:(number|string)[] = []; //  api에서 얻어온 선수 기록
+    let PlayerData2:(number|string)[] = [];
+    let Average:(number|string)[] = []; //  api에서 얻어온 한 시즌 선수들의 평균 (58경기 이상 선수만)
 
     //  큰 값의 색을 바꿔주기위해서 td 들의 bind:this 를 저장한다.
-    let PlayerDataTD1 = []; //  td array
-    let PlayerDataTD2 = []; //  td array
-    let AverageDataTD2 = []; //  td array
+    let PlayerDataTD1:any[] = []; //  td array
+    let PlayerDataTD2:any[] = []; //  td array
+    let AverageDataTD2:any[] = []; //  td array
 
     let SelectedSeason1 = "";
     let SelectedTeamname1 = "";
-    let SelectedPlayerInfo1 = []; //  ["PlayerName", PlayerID]
+    let SelectedPlayerInfo1:(number|string)[] = []; //  ["PlayerName", PlayerID]
 
     let SelectedSeason2 = "";
     let SelectedTeamname2 = "";
-    let SelectedPlayerInfo2 = []; //  ["PlayerName", PlayerID]
+    let SelectedPlayerInfo2:(number|string)[] = []; //  ["PlayerName", PlayerID]
 
     async function ChangeRoster1() {
         if (SelectedTeamname1 === "" || SelectedSeason1 === "") {
@@ -40,7 +40,7 @@
 
         let TeamID1 = TeamObj[SelectedTeamname1]["TeamID"];
         const response1 = await fetch(
-            `compareplayer/api/playerrosters?Season=${SelectedSeason1}&TeamID=${TeamID1}`
+            `http://nba-project.kro.kr:3000/compareplayer/api/playerrosters?Season=${SelectedSeason1}&TeamID=${TeamID1}`
         );
         IsSelectedSeason1Mode = true;
         playerrosters1 = await response1.json();
@@ -55,14 +55,14 @@
 
         let TeamID2 = TeamObj[SelectedTeamname2]["TeamID"];
         const response2 = await fetch(
-            `compareplayer/api/playerrosters?Season=${SelectedSeason2}&TeamID=${TeamID2}`
+            `http://nba-project.kro.kr:3000/compareplayer/api/playerrosters?Season=${SelectedSeason2}&TeamID=${TeamID2}`
         );
         playerrosters2 = await response2.json();
     }
 
     async function PlayerDataLoading1() {
         const response3 = await fetch(
-            `compareplayer/api/playerstats?Season=${SelectedSeason1}&PlayerID=${SelectedPlayerInfo1[1]}`
+            `http://nba-project.kro.kr:3000/compareplayer/api/playerstats?Season=${SelectedSeason1}&PlayerID=${SelectedPlayerInfo1[1]}`
         );
         PlayerData1 = await response3.json();
 
@@ -298,6 +298,7 @@
                 </div>
 
                 {#if PlayerCT1 === PlayerCT_PlusButton}
+                    <!-- svelte-ignore a11y-click-events-have-key-events -->
                     <div class="comparebox firstp1" on:click={Selecting1}>
                         <div class="PlusText">+</div>
                     </div>
@@ -369,6 +370,7 @@
                             alt="Player Headshot"
                         />
 
+                        <!-- svelte-ignore a11y-click-events-have-key-events -->
                         <div class="reset2" on:click={Reset1}>선수 초기화</div>
                     </div>
                 {/if}
@@ -471,6 +473,7 @@
                         <div class="comparebox thirdp2">
                             <img src="/NBA-Average-Logo.png" alt="NBA logo" />
 
+                            <!-- svelte-ignore a11y-click-events-have-key-events -->
                             <div class="reset2" on:click={Reset2}>선수 초기화</div>
                         </div>
                         
@@ -483,6 +486,7 @@
                                 ? SelectedPlayerInfo2[0]
                                 : "---"}
                         </div>
+                        <!-- svelte-ignore a11y-click-events-have-key-events -->
                         <div class="comparebox firstp2" on:click={Selecting2}>
                             <div class="PlusText">+</div>
                         </div>
@@ -497,9 +501,11 @@
                             : "---"}
                     </div>
                     {#if PlayerCT2 === PlayerCT_PlusButton}
+                        <!-- svelte-ignore a11y-click-events-have-key-events -->
                         <div class="comparebox firstp2" on:click={Selecting2}>
                             <div class="PlusText">+</div>
 
+                            <!-- svelte-ignore a11y-click-events-have-key-events -->
                             <div class="NBAAverage" on:click|stopPropagation={Averagebutton}>
                                 NBA 평균
                             </div>
@@ -576,6 +582,7 @@
                                 alt="Player Headshot"
                             />
 
+                            <!-- svelte-ignore a11y-click-events-have-key-events -->
                             <div class="reset2" on:click={Reset2}>선수 초기화</div>
                         </div>
                     {/if}
@@ -583,6 +590,7 @@
             </div>
         </div>
 
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div class="resetAll" on:click={ResetAll}>전체 선수 초기화</div>
     </div>
 </body>

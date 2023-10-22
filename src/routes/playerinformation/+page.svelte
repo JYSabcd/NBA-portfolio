@@ -14,11 +14,11 @@
 
   let SelectedTeamname = "Atlanta Hawks";
 
-  let Playerroaster = [];
+  let Playerroaster:string[] = [];
 
-  let Mainplayer = [];
+  let Mainplayer:(number|string)[] = [];
 
-  let Mainplayerstats = [];
+  let Mainplayerstats:string[] = [];
 
   let MainplayerSeason = "";
 
@@ -28,30 +28,30 @@
   async function PlayerRoaster() {
     let TeamID = TeamObj[SelectedTeamname]["TeamID"];
     const response1 = await fetch(
-      `playerinformation/api/PlayerRoaster?Season=${SelectedSeason}&TeamID=${TeamID}`
+      `http://nba-project.kro.kr:3000/playerinformation/api/PlayerRoaster?Season=${SelectedSeason}&TeamID=${TeamID}`
     );
     Playerroaster = await response1.json();
     tablename = SelectedSeason + " 시즌 ";
     tablename2 = SelectedTeamname;
   }
 
-  async function GETMainPlayer(PlayerID) {
+  async function GETMainPlayer(PlayerID:any) {
     const response2 = await fetch(
-      `playerinformation/api/MainPlayer1?PlayerID=${PlayerID}`
+      `http://nba-project.kro.kr:3000/playerinformation/api/MainPlayer1?PlayerID=${PlayerID}`
     );
     Mainplayer = await response2.json();
     console.log(Mainplayer);
   }
 
-  async function GETMainplayerstats(PlayerID) {
+  async function GETMainplayerstats(PlayerID:any) {
     const response3 = await fetch(
-      `playerinformation/api/MainPlayer2?Season=${SelectedSeason}&PlayerID=${PlayerID}`
+      `http://nba-project.kro.kr:3000/playerinformation/api/MainPlayer2?Season=${SelectedSeason}&PlayerID=${PlayerID}`
     );
     Mainplayerstats = await response3.json();
     MainplayerSeason = SelectedSeason;
   }
 
-  function SelectPlayer(ArrayIndex) {
+  function SelectPlayer(ArrayIndex:any) {
     const PlayerID = Playerroaster[ArrayIndex][6];
 
     GETMainPlayer(PlayerID);

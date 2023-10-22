@@ -25,15 +25,15 @@
 
   let SelectedTeamname = "Atlanta Hawks";
 
-  let Playerroaster = [];
+  let Playerroaster:string[] = [];
 
-  let Mainplayer = [];
+  let Mainplayer:number[] = [];
   let Mainplayerage = 0;
 
   let Mainplayerstats = [];
   //  예측Stat과 비교해서 증감값을 표시할때 사용하기 위해 미리 계산해놓는다.
-  let Mainplayer_displaystats = []; //  .소수점 버림으로 1자리까지만 표시 xx.x
-  let Prediction_displaystats = []; //  .소수점 버림으로 1자리까지만 표시 xx.x
+  let Mainplayer_displaystats:number[] = []; //  .소수점 버림으로 1자리까지만 표시 xx.x
+  let Prediction_displaystats:number[] = []; //  .소수점 버림으로 1자리까지만 표시 xx.x
 
   let tablename = "";
   let tablename2 = "";
@@ -43,7 +43,7 @@
   async function PlayerRoaster() {
     let TeamID = TeamObj[SelectedTeamname]["TeamID"];
     const response1 = await fetch(
-      `playerprediction/api/PlayerRoaster?Season=${SelectedSeason}&TeamID=${TeamID}`
+      `http://nba-project.kro.kr:3000/playerprediction/api/PlayerRoaster?Season=${SelectedSeason}&TeamID=${TeamID}`
     );
     Playerroaster = await response1.json();
     tablename = SelectedSeason + " 시즌 ";
@@ -51,17 +51,17 @@
     SaveSelectedSeason = SelectedSeason;
   }
 
-  async function GETMainPlayer(PlayerID) {
+  async function GETMainPlayer(PlayerID:any) {
     const response2 = await fetch(
-      `playerprediction/api/Mainplayer1?PlayerID=${PlayerID}`
+      `http://nba-project.kro.kr:3000/playerprediction/api/Mainplayer1?PlayerID=${PlayerID}`
     );
     Mainplayer = await response2.json();
     Mainplayerage = parseInt(SaveSelectedSeason.slice(0, 4)) - Mainplayer[2].slice(0, 4);
   }
 
-  async function GETMainplayerstats(PlayerID) {
+  async function GETMainplayerstats(PlayerID:any) {
     const response3 = await fetch(
-      `playerprediction/api/Mainplayer2?Season=${SaveSelectedSeason}&PlayerID=${PlayerID}`
+      `http://nba-project.kro.kr:3000/playerprediction/api/Mainplayer2?Season=${SaveSelectedSeason}&PlayerID=${PlayerID}`
     );
     Mainplayerstats = await response3.json();
     MainplayerSeason = SaveSelectedSeason;
@@ -80,7 +80,7 @@
       Prediction_displaystats[1] = Math.floor(Mainplayerstats[1] * NBAAVG[Mainplayerage + 1].PTS / NBAAVG[Mainplayerage].PTS * 10) / 10;
     }
   }
-  function SelectPlayer(ArrayIndex) {
+  function SelectPlayer(ArrayIndex:any) {
     const PlayerID = Playerroaster[ArrayIndex][6];
 
     GETMainPlayer(PlayerID);

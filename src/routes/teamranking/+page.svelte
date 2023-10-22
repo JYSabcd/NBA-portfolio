@@ -32,7 +32,7 @@
     }
 
     async function TeamRankingSearch() {
-		const response = await fetch(`teamranking/api?Conference=${SelectedConference}&Season=${SelectedSeason}&SeasonType=${SelectedSeasonType}`);
+		const response = await fetch(`http://nba-project.kro.kr:3000/teamranking/api?Conference=${SelectedConference}&Season=${SelectedSeason}&SeasonType=${SelectedSeasonType}`);
 		TableData = await response.json();
 
         // 데이터 조회 후 기본방식으로 정렬하기

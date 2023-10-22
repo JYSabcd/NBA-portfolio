@@ -32,8 +32,8 @@
         day: "numeric",
     };
 
-    let store;
-    let selecteddate = DefaultSelectedDate;
+    let store:any;
+    let selecteddate:any = DefaultSelectedDate;
 
     // 이 반응성 코드는 날짜가 변하는 걸 캐치해서 받아와 GetSchedule을 한번 더 돌리는 것이다.
     $: {
@@ -44,7 +44,7 @@
 
     //  Schedule 컬럼
     //  game_date,game_id,home_teamid,home_teamabbreviation,home_teamcityname,home_teamname,home_gamescore,away_teamid,away_teamabbreviation,away_teamcityname,away_teamname,away_gamescore
-    let schedulearray = [];
+    let schedulearray:string[] = [];
 
     async function GetSchedule() {
         if (!browser) {
@@ -52,7 +52,7 @@
         }
 
         const response = await fetch(
-            `home/db/getschedule?SelectedDate=${selecteddate}`
+            `http://nba-project.kro.kr:3000/home/db/getschedule?SelectedDate=${selecteddate}`
         );
 
         schedulearray = await response.json();
@@ -62,14 +62,14 @@
         GetRankFromAPI();
     }
 
-    let RankAPIData: (number | string)[][];
+    let RankAPIData: any[][];
 
-    let RankArray_PTS: (number | string)[] = [];
-    let RankArray_REB: (number | string)[] = [];
-    let RankArray_AST: (number | string)[] = [];
-    let RankArray_BLK: (number | string)[] = [];
-    let RankArray_STL: (number | string)[] = [];
-    let RankArray_FANTASY_PTS: (number | string)[] = [];
+    let RankArray_PTS: any[] = [];
+    let RankArray_REB: any[] = [];
+    let RankArray_AST: any[] = [];
+    let RankArray_BLK: any[] = [];
+    let RankArray_STL: any[] = [];
+    let RankArray_FANTASY_PTS: any[] = [];
 
     function CompareDescending(a: (number | string)[], b: (number | string)[]) {
         if (a[0] < b[0]) {
@@ -87,7 +87,7 @@
         }
 
         const response = await fetch(
-            `home/api/leaguedashplayerstats?DateFrom=${selecteddate}&DateTo=${selecteddate}`
+            `http://nba-project.kro.kr:3000/home/api/leaguedashplayerstats?DateFrom=${selecteddate}&DateTo=${selecteddate}`
         );
 
         RankAPIData = await response.json();
