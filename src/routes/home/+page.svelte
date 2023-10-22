@@ -52,7 +52,7 @@
         }
 
         const response = await fetch(
-            `http://nba-project.kro.kr:3000/home/db/getschedule?SelectedDate=${selecteddate}`
+            `https://nba-project.kro.kr:3000/home/db/getschedule?SelectedDate=${selecteddate}`
         );
 
         schedulearray = await response.json();
@@ -87,7 +87,7 @@
         }
 
         const response = await fetch(
-            `http://nba-project.kro.kr:3000/home/api/leaguedashplayerstats?DateFrom=${selecteddate}&DateTo=${selecteddate}`
+            `https://nba-project.kro.kr:3000/home/api/leaguedashplayerstats?DateFrom=${selecteddate}&DateTo=${selecteddate}`
         );
 
         RankAPIData = await response.json();

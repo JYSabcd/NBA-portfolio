@@ -30,7 +30,7 @@
   async function PlayerRoaster() {
     let TeamID = TeamObj[SelectedTeamname]["TeamID"];
     const response1 = await fetch(
-      `http://nba-project.kro.kr:3000/showsimilarplayers/api/PlayerRoaster?Season=${SelectedSeason}&TeamID=${TeamID}`
+      `https://nba-project.kro.kr:3000/showsimilarplayers/api/PlayerRoaster?Season=${SelectedSeason}&TeamID=${TeamID}`
     );
     Playerroaster = await response1.json();
     tablename = SelectedSeason + " 시즌 ";
@@ -39,14 +39,14 @@
 
   async function GETMainPlayer(PlayerID) {
     const response2 = await fetch(
-      `http://nba-project.kro.kr:3000/showsimilarplayers/api/MainPlayer1?PlayerID=${PlayerID}`
+      `https://nba-project.kro.kr:3000/showsimilarplayers/api/MainPlayer1?PlayerID=${PlayerID}`
     );
     Mainplayer = await response2.json();
   }
 
   async function GETMainplayerstats(PlayerID) {
     const response3 = await fetch(
-      `http://nba-project.kro.kr:3000/showsimilarplayers/api/MainPlayer2?Season=${SelectedSeason}&PlayerID=${PlayerID}`
+      `https://nba-project.kro.kr:3000/showsimilarplayers/api/MainPlayer2?Season=${SelectedSeason}&PlayerID=${PlayerID}`
     );
     Mainplayerstats = await response3.json();
     MainplayerSeason = SelectedSeason;
@@ -54,7 +54,7 @@
 
   async function GETSimilarPlayer(PlayerID) {
     const response3 = await fetch(
-      `http://nba-project.kro.kr:3000/showsimilarplayers/db/fn_similarplayer?Season=${SelectedSeason}&PlayerID=${PlayerID}`
+      `https://nba-project.kro.kr:3000/showsimilarplayers/db/fn_similarplayer?Season=${SelectedSeason}&PlayerID=${PlayerID}`
     );
     SimilarPlayerArray = await response3.json();
   }

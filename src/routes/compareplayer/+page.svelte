@@ -40,7 +40,7 @@
 
         let TeamID1 = TeamObj[SelectedTeamname1]["TeamID"];
         const response1 = await fetch(
-            `http://nba-project.kro.kr:3000/compareplayer/api/playerrosters?Season=${SelectedSeason1}&TeamID=${TeamID1}`
+            `https://nba-project.kro.kr:3000/compareplayer/api/playerrosters?Season=${SelectedSeason1}&TeamID=${TeamID1}`
         );
         IsSelectedSeason1Mode = true;
         playerrosters1 = await response1.json();
@@ -55,14 +55,14 @@
 
         let TeamID2 = TeamObj[SelectedTeamname2]["TeamID"];
         const response2 = await fetch(
-            `http://nba-project.kro.kr:3000/compareplayer/api/playerrosters?Season=${SelectedSeason2}&TeamID=${TeamID2}`
+            `https://nba-project.kro.kr:3000/compareplayer/api/playerrosters?Season=${SelectedSeason2}&TeamID=${TeamID2}`
         );
         playerrosters2 = await response2.json();
     }
 
     async function PlayerDataLoading1() {
         const response3 = await fetch(
-            `http://nba-project.kro.kr:3000/compareplayer/api/playerstats?Season=${SelectedSeason1}&PlayerID=${SelectedPlayerInfo1[1]}`
+            `https://nba-project.kro.kr:3000/compareplayer/api/playerstats?Season=${SelectedSeason1}&PlayerID=${SelectedPlayerInfo1[1]}`
         );
         PlayerData1 = await response3.json();
 
