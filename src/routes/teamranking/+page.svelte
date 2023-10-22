@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { SeasonArray, SeasonTypeArray } from "../data.js";
+    import { baseurl, SeasonArray, SeasonTypeArray } from "../data.js";
 
     /** @type {(string)[]} */
     let TableHeader = ['팀','게임수','승','패','승률','필드골 성공률(%)','3점 성공률(%)','자유투 성공률(%)'];
@@ -32,7 +32,7 @@
     }
 
     async function TeamRankingSearch() {
-		const response = await fetch(`https://nba-project.kro.kr:3000/teamranking/api?Conference=${SelectedConference}&Season=${SelectedSeason}&SeasonType=${SelectedSeasonType}`);
+		const response = await fetch(`${baseurl}/teamranking/api?Conference=${SelectedConference}&Season=${SelectedSeason}&SeasonType=${SelectedSeasonType}`);
 		TableData = await response.json();
 
         // 데이터 조회 후 기본방식으로 정렬하기

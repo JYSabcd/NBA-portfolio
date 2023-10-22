@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { SeasonArray, TeamnameArray, TeamObj } from "../data.js";
+  import { baseurl, SeasonArray, TeamnameArray, TeamObj } from "../data.js";
 
   const TableHeaders = [
     "선수 이름",
@@ -28,7 +28,7 @@
   async function PlayerRoaster() {
     let TeamID = TeamObj[SelectedTeamname]["TeamID"];
     const response1 = await fetch(
-      `https://nba-project.kro.kr:3000/playerinformation/api/PlayerRoaster?Season=${SelectedSeason}&TeamID=${TeamID}`
+      `${baseurl}/playerinformation/api/PlayerRoaster?Season=${SelectedSeason}&TeamID=${TeamID}`
     );
     Playerroaster = await response1.json();
     tablename = SelectedSeason + " 시즌 ";
@@ -37,7 +37,7 @@
 
   async function GETMainPlayer(PlayerID:any) {
     const response2 = await fetch(
-      `https://nba-project.kro.kr:3000/playerinformation/api/MainPlayer1?PlayerID=${PlayerID}`
+      `${baseurl}/playerinformation/api/MainPlayer1?PlayerID=${PlayerID}`
     );
     Mainplayer = await response2.json();
     console.log(Mainplayer);
@@ -45,7 +45,7 @@
 
   async function GETMainplayerstats(PlayerID:any) {
     const response3 = await fetch(
-      `https://nba-project.kro.kr:3000/playerinformation/api/MainPlayer2?Season=${SelectedSeason}&PlayerID=${PlayerID}`
+      `${baseurl}/playerinformation/api/MainPlayer2?Season=${SelectedSeason}&PlayerID=${PlayerID}`
     );
     Mainplayerstats = await response3.json();
     MainplayerSeason = SelectedSeason;

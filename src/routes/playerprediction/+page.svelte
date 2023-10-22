@@ -1,5 +1,6 @@
 <script lang="ts">
   import {
+    baseurl,
     SeasonArray,
     TeamnameArray,
     TeamObj,
@@ -43,7 +44,7 @@
   async function PlayerRoaster() {
     let TeamID = TeamObj[SelectedTeamname]["TeamID"];
     const response1 = await fetch(
-      `https://nba-project.kro.kr:3000/playerprediction/api/PlayerRoaster?Season=${SelectedSeason}&TeamID=${TeamID}`
+      `${baseurl}/playerprediction/api/PlayerRoaster?Season=${SelectedSeason}&TeamID=${TeamID}`
     );
     Playerroaster = await response1.json();
     tablename = SelectedSeason + " 시즌 ";
@@ -53,7 +54,7 @@
 
   async function GETMainPlayer(PlayerID:any) {
     const response2 = await fetch(
-      `https://nba-project.kro.kr:3000/playerprediction/api/Mainplayer1?PlayerID=${PlayerID}`
+      `${baseurl}/playerprediction/api/Mainplayer1?PlayerID=${PlayerID}`
     );
     Mainplayer = await response2.json();
     Mainplayerage = parseInt(SaveSelectedSeason.slice(0, 4)) - Mainplayer[2].slice(0, 4);
@@ -61,7 +62,7 @@
 
   async function GETMainplayerstats(PlayerID:any) {
     const response3 = await fetch(
-      `https://nba-project.kro.kr:3000/playerprediction/api/Mainplayer2?Season=${SaveSelectedSeason}&PlayerID=${PlayerID}`
+      `${baseurl}/playerprediction/api/Mainplayer2?Season=${SaveSelectedSeason}&PlayerID=${PlayerID}`
     );
     Mainplayerstats = await response3.json();
     MainplayerSeason = SaveSelectedSeason;

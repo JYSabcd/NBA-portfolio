@@ -2,6 +2,7 @@
     import { browser } from "$app/environment"; // browser가 열리기 전에 데이터들이 먼저 받아와져 작동 오류가 생기는 부분을 보완하기 위함이다. 아래 browser참고
     import { Datepicker } from "svelte-calendar";
     import dayjs from "dayjs";
+    import { baseurl } from "../data.js";
 
     const theme = {
         calendar: {
@@ -52,7 +53,7 @@
         }
 
         const response = await fetch(
-            `https://nba-project.kro.kr:3000/home/db/getschedule?SelectedDate=${selecteddate}`
+            `${baseurl}/home/db/getschedule?SelectedDate=${selecteddate}`
         );
 
         schedulearray = await response.json();
@@ -87,7 +88,7 @@
         }
 
         const response = await fetch(
-            `https://nba-project.kro.kr:3000/home/api/leaguedashplayerstats?DateFrom=${selecteddate}&DateTo=${selecteddate}`
+            `${baseurl}/home/api/leaguedashplayerstats?DateFrom=${selecteddate}&DateTo=${selecteddate}`
         );
 
         RankAPIData = await response.json();

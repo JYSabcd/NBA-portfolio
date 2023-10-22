@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { ScheduleYYYYMMArray, TeamnameArray, TeamObj } from "../data.js";
+    import { baseurl, ScheduleYYYYMMArray, TeamnameArray, TeamObj } from "../data.js";
 
     let SelectedScheduleYYYYMM = "2023-01";
 
@@ -150,7 +150,7 @@
     async function GetScheduleByTeam() {
         let TeamID = TeamObj[SelectedTeamname]["TeamID"];
         const response = await fetch(
-            `https://nba-project.kro.kr:3000/timeformatch/db/GetScheduleByTeam?ScheduleYYYYMM=${SelectedScheduleYYYYMM}&TeamID=${TeamID}`
+            `${baseurl}/timeformatch/db/GetScheduleByTeam?ScheduleYYYYMM=${SelectedScheduleYYYYMM}&TeamID=${TeamID}`
         );
         ScheduleArray = await response.json();
         //console.log(ScheduleArray);
@@ -160,7 +160,7 @@
         //console.log(`SelectGame(${GameID})`);
 
         const response = await fetch(
-            `https://nba-project.kro.kr:3000/timeformatch/api/playbyplay?GameID=${GameID}`
+            `${baseurl}/timeformatch/api/playbyplay?GameID=${GameID}`
         );
         PlaybyPlayArray = await response.json();
 
@@ -174,7 +174,7 @@
 
     async function GetBoxScoreTraditional(GameID) {
         const response = await fetch(
-            `https://nba-project.kro.kr:3000/timeformatch/api/boxscoretraditional?GameID=${GameID}`
+            `${baseurl}/timeformatch/api/boxscoretraditional?GameID=${GameID}`
         );
         PlayerStatArray = await response.json();
 

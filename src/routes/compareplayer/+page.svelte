@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { SeasonArray, TeamnameArray, TeamObj } from "../data.js";
+    import { baseurl, SeasonArray, TeamnameArray, TeamObj } from "../data.js";
 
     const PlayerCT_PlusButton = 0;
     const PlayerCT_Selecting = 1;
@@ -40,7 +40,7 @@
 
         let TeamID1 = TeamObj[SelectedTeamname1]["TeamID"];
         const response1 = await fetch(
-            `https://nba-project.kro.kr:3000/compareplayer/api/playerrosters?Season=${SelectedSeason1}&TeamID=${TeamID1}`
+            `${baseurl}/compareplayer/api/playerrosters?Season=${SelectedSeason1}&TeamID=${TeamID1}`
         );
         IsSelectedSeason1Mode = true;
         playerrosters1 = await response1.json();
@@ -55,14 +55,14 @@
 
         let TeamID2 = TeamObj[SelectedTeamname2]["TeamID"];
         const response2 = await fetch(
-            `https://nba-project.kro.kr:3000/compareplayer/api/playerrosters?Season=${SelectedSeason2}&TeamID=${TeamID2}`
+            `${baseurl}/compareplayer/api/playerrosters?Season=${SelectedSeason2}&TeamID=${TeamID2}`
         );
         playerrosters2 = await response2.json();
     }
 
     async function PlayerDataLoading1() {
         const response3 = await fetch(
-            `https://nba-project.kro.kr:3000/compareplayer/api/playerstats?Season=${SelectedSeason1}&PlayerID=${SelectedPlayerInfo1[1]}`
+            `${baseurl}/compareplayer/api/playerstats?Season=${SelectedSeason1}&PlayerID=${SelectedPlayerInfo1[1]}`
         );
         PlayerData1 = await response3.json();
 
@@ -98,7 +98,7 @@
 
     async function PlayerDataLoading2() {
         const response4 = await fetch(
-            `compareplayer/api/playerstats?Season=${SelectedSeason2}&PlayerID=${SelectedPlayerInfo2[1]}`
+            `${baseurl}/compareplayer/api/playerstats?Season=${SelectedSeason2}&PlayerID=${SelectedPlayerInfo2[1]}`
         );
         PlayerData2 = await response4.json();
 
@@ -131,7 +131,7 @@
         Reset2(); //  평균값은 플레이어2에 적용되므로 기존에 선택된 값이 있다면 초기화 시킨다.
 
         const response5 = await fetch(
-            `compareplayer/api/playerstatsaverage?Season=${SelectedSeason1}`
+            `${baseurl}/compareplayer/api/playerstatsaverage?Season=${SelectedSeason1}`
         );
         IsAverageMode = true;
         Average = await response5.json();

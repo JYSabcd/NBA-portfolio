@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { SeasonArray, SeasonTypeArray } from "../data.js";
+    import { baseurl, SeasonArray, SeasonTypeArray } from "../data.js";
 
     /** @type {(string)[]} */
     let TableHeader = ['선수 이름','게임 수','출전시간','득점','리바운드','어시스트','스틸','블록','필드골(%)', '3점(%)', '자유투(%)'];
@@ -30,7 +30,7 @@
     }
 
     async function PlayerRankingSearch() {
-		const response = await fetch(`https://nba-project.kro.kr:3000/playerranking/api?Season=${SelectedSeason}&SeasonType=${SelectedSeasonType}`);
+		const response = await fetch(`${baseurl}/playerranking/api?Season=${SelectedSeason}&SeasonType=${SelectedSeasonType}`);
 		TableData = await response.json();
 
         // 데이터 조회 후 기본방식으로 정렬하기
