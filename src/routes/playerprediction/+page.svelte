@@ -76,9 +76,9 @@
     // 다음 시즌(나이+1) 예측하기 (단, 예측은 19세~38세까지만 가능)
     if(Mainplayerage >= 19 && Mainplayerage <= 38){
       Prediction_displaystats[2] = Math.floor(Mainplayerstats[2] * NBAAVG[Mainplayerage + 1].PTS / NBAAVG[Mainplayerage].PTS * 10) / 10;
-      Prediction_displaystats[3] = Math.floor(Mainplayerstats[3] * NBAAVG[Mainplayerage + 1].PTS / NBAAVG[Mainplayerage].PTS * 10) / 10;
-      Prediction_displaystats[4] = Math.floor(Mainplayerstats[4] * NBAAVG[Mainplayerage + 1].PTS / NBAAVG[Mainplayerage].PTS * 10) / 10;
-      Prediction_displaystats[1] = Math.floor(Mainplayerstats[1] * NBAAVG[Mainplayerage + 1].PTS / NBAAVG[Mainplayerage].PTS * 10) / 10;
+      Prediction_displaystats[3] = Math.floor(Mainplayerstats[3] * NBAAVG[Mainplayerage + 1].REB / NBAAVG[Mainplayerage].REB * 10) / 10;
+      Prediction_displaystats[4] = Math.floor(Mainplayerstats[4] * NBAAVG[Mainplayerage + 1].AST / NBAAVG[Mainplayerage].AST * 10) / 10;
+      Prediction_displaystats[1] = Math.floor(Mainplayerstats[1] * NBAAVG[Mainplayerage + 1].MIN / NBAAVG[Mainplayerage].MIN * 10) / 10;
     }
   }
   function SelectPlayer(ArrayIndex:any) {
