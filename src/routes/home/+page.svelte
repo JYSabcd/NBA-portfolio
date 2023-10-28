@@ -169,7 +169,7 @@
 </script>
 
 <body>
-    <img src="/home_image02.jpg" alt="homeimage01" class="homeimage01" />
+    <img src="/home_image01.jpg" alt="homeimage01" class="homeimage01" />
     
     <div class="groupbox">
         <div class="datepickercontainer">
