@@ -51,7 +51,7 @@ export async function GET({url}) {
 
         let myurl = "https://stats.nba.com/stats/playbyplayv3?EndPeriod=10&EndRange=55800&RangeType=2&StartPeriod=1&StartRange=0"
             + "&GameID=" + url.searchParams.get('GameID');
-        console.log(myurl)
+        console.log(myurl);
         const res = await fetch(myurl, options);
         const ResJson = await res.json();
     

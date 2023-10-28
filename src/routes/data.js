@@ -1,7 +1,7 @@
 export const baseurl = 
-"https://nba-project.kro.kr:3000" //  aws
+// "https://nba-project.kro.kr:3000" //  aws
 //"http://localhost:3000"   //  local
-//""  //  server.ts in sveltekit
+""  //  server.ts in sveltekit
 ;
 
 export const SeasonArray = [
