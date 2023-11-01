@@ -228,6 +228,10 @@
               가드 - 포워드
             {:else if Mainplayer[7] === "Forward-Center"}
               포워드 - 센터
+            {:else if Mainplayer[7] === "Forward-Guard"}
+              포워드 - 가드
+            {:else if Mainplayer[7] === "Center-Forward"}
+              센터 - 포워드
             {/if}
           </td>
         </tr>
